@@ -27,7 +27,7 @@ use core\Application;
         <ul class="nav nav-pills">
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    <?php echo !isset(Application::$app->user) ? 'Hardik Traders' : Application::$app->user->getDisplayName(); ?>
+                    <?php echo !isset(Application::$app->user) ? 'HT' : Application::$app->user->getDisplayName(); ?>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <?php if(!isset(Application::$app->user)): ?>
