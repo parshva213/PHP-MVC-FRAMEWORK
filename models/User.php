@@ -3,6 +3,7 @@ namespace models;
 
 use core\Application;
 use core\UserModel;
+use core\DbModel;
 
 class User extends UserModel {
     const STASTUS_INACTIVE = 0;
@@ -23,22 +24,9 @@ class User extends UserModel {
     }
     
 
-    public static function findOne($where){
-        $db = Application::$app->db->pdo;
-        $tableName = static::tableNAME();
-        $attributes = array_keys($where);
-        
-        
-        $params = implode(" AND ",array_map(fn($a) => "$a = :$a", $attributes));
-        $sql="SELECT * FROM $tableName WHERE $params;";
-
-        $statement = $db->prepare($sql);
-        foreach($where as $k => $v){
-            $statement->bindValue(":$k", $v);
-        }
-        $statement->execute();
-       
-        return $statement->fetchObject(static::class);
+    public static function findOne(array $where): ?self
+    {
+        return parent::findOne($where);
     }
 
     public function attributes(): array

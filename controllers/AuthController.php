@@ -43,8 +43,14 @@ class AuthController extends Controller
         if ($request->isPost()){
             $user->loadData($request->getBody());
             if($user->validate() && $user->save()){
+                Application::$app->login($user);
                 Application::$app->session->setFlash('success', "Thanks for registering");
-                Application::$app->response->redirect('/');
+                echo "<form id='redirectForm' method='POST' action='/login'>";
+                echo "<input type='hidden' name='email' value='{$user->email}'>";
+                echo "<input type='hidden' name='password' value='{$user->conform_password}'>";
+                echo "</form>";
+                echo "<script>document.getElementById('redirectForm').submit();</script>";
+                return;
             }
 
         }
