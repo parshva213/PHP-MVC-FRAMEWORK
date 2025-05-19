@@ -1,1 +1,1 @@
-<h3>Welcome <?php echo $name ?></h3>
+<h3>Welcome <?php echo $name; $this->title = "Home"; ?></h3>

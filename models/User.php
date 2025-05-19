@@ -6,6 +6,7 @@ use core\UserModel;
 use core\DbModel;
 
 class User extends UserModel {
+    public ?int $id = null; // Allow null until it is set
     const STASTUS_INACTIVE = 0;
     const STASTUS_ACTIVE = 1;
     const STASTUS_DELETED = 2;
@@ -15,7 +16,7 @@ class User extends UserModel {
     public string $email = "";
     public string $password = "";
     public string $conform_password = "";
-    public int $status = SELF::STASTUS_INACTIVE; // Default to 'active'
+    public int $status = SELF::STASTUS_ACTIVE; // Default to 'active'
     public string $created_at = "";   // Let MySQL handle this, but define to avoid warnings
 
     public static function tableNAME(): string
@@ -54,7 +55,7 @@ class User extends UserModel {
 
     public static function primaryKey(): string
     {
-        return 'id';   
+        return 'id'; // Ensure this matches your database schema
     }
 
     public function getDisplayName(): string

@@ -23,12 +23,12 @@ class AuthController extends Controller
         $session = Application::$app->session;
         $response = Application::$app->response;
         $loginForm = new LoginForm();
+        $redirect = Application::$app->session->get('redirect') ?? '/';
+        Application::$app->session->set('redirect', '/');
         if ($request->isPost()){
             $loginForm->loadData($request->getBody());
             if($loginForm->validate() && $loginForm->login()){
                 $session->setFlash('success', "Login Successful");
-                $redirect = Application::$app->session->get('redirect') ?? '/';
-                Application::$app->session->remove('redirect');
                 $response->redirect($redirect);
             }
 
@@ -39,18 +39,13 @@ class AuthController extends Controller
         ]);
     }
     public function register(Request $request){
+        $response = Application::$app->response;
         $user = new User();
         if ($request->isPost()){
             $user->loadData($request->getBody());
             if($user->validate() && $user->save()){
-                Application::$app->login($user);
                 Application::$app->session->setFlash('success', "Thanks for registering");
-                echo "<form id='redirectForm' method='POST' action='/login'>";
-                echo "<input type='hidden' name='email' value='{$user->email}'>";
-                echo "<input type='hidden' name='password' value='{$user->conform_password}'>";
-                echo "</form>";
-                echo "<script>document.getElementById('redirectForm').submit();</script>";
-                return;
+                $response->redirect('login');
             }
 
         }

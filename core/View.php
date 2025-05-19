@@ -45,8 +45,8 @@ class View
         if ($view === '_error' && isset($params['exception'])) {
             $exception = $params['exception'];
         }
-        $layoutContent = $this->layoutContent();
         $viewContent = $this->readerOnlyView($view,$params);
+        $layoutContent = $this->layoutContent();
         return str_replace('{{content}}',$viewContent,$layoutContent);
     }
 

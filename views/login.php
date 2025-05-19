@@ -2,6 +2,7 @@
 <?php
 use form\Form;
 $form = Form::begin('', "post");
+$this->title = "Login";
 // vishal.m@currently.club
 echo $form->field($model, ['name' => "email", "type" => 'email', 'label' => "Email"]);
 echo $form->field($model, ['name' => "password", "type" => 'password', 'label' => "Password"]);

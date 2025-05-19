@@ -5,6 +5,7 @@ use core\Application;
 use core\Controller;
 use core\Request;
 use models\ProfileForm;
+use models\ContactForm;
 
 class SiteController extends Controller{
     
@@ -15,8 +16,19 @@ class SiteController extends Controller{
         return $this->render('home',$params);
     }
 
-    public function Contact(){
-        return $this->render('contact');
+    public function Contact(Request $request){
+        $contact = new ContactForm();
+        if ($request->isPost()){
+            $session = Application::$app->session;
+            $contact->loadData($request->getBody());
+            if($contact->validate() && $contact->submit()){
+                $session->setFlash('success', "Submited Successful");
+            }
+        }
+        $this->setLayout('main');
+        return $this->render('contact',[
+            'model' => $contact
+        ]);;
     }
 
     public function handleContact(Request $request){
@@ -29,7 +41,6 @@ class SiteController extends Controller{
         if (!isset(Application::$app->user)) {
             Application::$app->session->set('redirect', '/profile');
             Application::$app->response->redirect('/login');
-            return;
         }
         $profile = new ProfileForm();
         $this->setLayout('main');

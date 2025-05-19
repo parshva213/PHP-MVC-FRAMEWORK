@@ -4,7 +4,8 @@ namespace form;
 
 use core\Model;
 
-class Field{
+abstract class Field
+{
     public Model $model;
     public array $attribute;
 
@@ -14,28 +15,24 @@ class Field{
         $this->attribute = $attribute;
     }
 
+    abstract public function renderInput(): string;
 
-    public function __toString()
+    public function __toString(): string
     {
-        return sprintf('
+        return sprintf(
+            '
             <div class="form-group">
                 <label>%s</label>
-                <input type="%s" name="%s" value="%s" class="form-control%s">
-                <div class="invalid-ffeedback">
+                %s
+                <div class="invalid-feedback">
                     %s
                 </div>
             </div>
             ',
-            $this->attribute['label'], 
-            $this->attribute['type'],
-            $this->attribute['name'],
-            $this->model->{$this->attribute['name']},
-            $this->model->hasError($this->attribute['name']) ? ' is-invalid' : '',
-            $this->model->getFirstError($this->attribute['name'])
+            $this->attribute['label'] ?? '', // Default to an empty string if 'label' is not set
+            $this->renderInput(), // Render the input field (implemented by subclasses)
+            $this->model->getFirstError($this->attribute['name'] ?? '') ?? '' // Default to an empty string if no error exists
         );
     }
-
-    
 }
-
 ?>

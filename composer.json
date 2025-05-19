@@ -1,4 +1,5 @@
 {
+    "$schema": "https://getcomposer.org/schema.json",
     "name": "parsh/php-mvc-framework",
     "description": "A simple PHP MVC framework",
     "type": "project",

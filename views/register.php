@@ -1,5 +1,6 @@
 <h3>Register Page</h3>
 <?php
+$this->title = "register";
 use form\Form;
 $form = Form::begin('', "post");
 ?>
