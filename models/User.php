@@ -58,7 +58,7 @@ class User extends UserModel {
         return 'id'; // Ensure this matches your database schema
     }
 
-    public static function getDisplayName(): string
+    public function getDisplayName(): string
     {
         return ucfirst($this->firstName) . ' ' . ucfirst($this->lastName);
     }
