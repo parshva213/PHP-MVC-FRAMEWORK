@@ -6,8 +6,15 @@ class other extends Field
 {
     public function fieldtodisplay(): string
     {
-        // Implement the rendering logic for other fields
-        return '<input type="text" name="' . ($this->attribute['name'] ?? '') . '" class="form-control">';
+        if ($this->attribute['type'] !== 'hidden') {
+            $html = sprintf("<label for='%s'>%s</label>", $this->attribute['name'] ?? '', $this->attribute['label'] ?? '');
+        } else {
+            $html = '';
+        }
+
+        $html .= sprintf("<input type='%s' name='%s'%s class='form-control%s'>", $this->attribute['type'], $this->attribute['name'] ?? '', isset($this->attribute['value']) ? " value='" . htmlspecialchars($this->attribute['value']) . "'" : '', $this->model->hasError($this->attribute['name']) ? ' is-invalid' : '');
+
+        return $html;
     }
 }
 ?>

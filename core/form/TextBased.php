@@ -6,8 +6,11 @@ class TextBased extends Field
 {
     public function fieldtodisplay(): string
     {
-        // Implement the rendering logic for TextBased fields
-        return '<input type="text" name="' . ($this->attribute['name'] ?? '') . '" class="form-control">';
+        $html = sprintf("<label for='%s'>%s</label><br>", $this->attribute['name'] ?? '', $this->attribute['label'] ?? '');
+        $html = sprintf("<input type='%s' name='%s' class='form-control%s'>",$this->attribute['type'], $this->attribute['name'] ?? "", $this->model->hasError($this->attribute['name']) ? " is-invalid" : "");
+
+        return $html;
     }
 }
 ?>
+

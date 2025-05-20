@@ -6,8 +6,9 @@ class FileBased extends Field
 {
     public function fieldtodisplay(): string
     {
-        // Implement the rendering logic for FileBased fields
-        return '<input type="text" name="' . ($this->attribute['name'] ?? '') . '" class="form-control">';
+        $html = sprintf("<label for='%s'>%s</label><br>", $this->attribute['name'] ?? '', $this->attribute['label'] ?? '');
+        $html = sprintf("<input type='%s' name='%s'%s class='form-control%s'>", $this->attribute['type'], $this->attribute['name'] ?? '', isset($this->attribute['accept']) && is_array($this->attribute['accept']) ? " accept='" . implode(", ", $this->attribute['accept']) . "'" : '', $this->model->hasError($this->attribute['name']) ? ' is-invalid' : '');
+        return $html;
     }
 }
 ?>
