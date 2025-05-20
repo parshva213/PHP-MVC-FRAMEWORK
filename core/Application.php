@@ -19,9 +19,9 @@ class Application
     public Controller $controller;
     public function __construct($rootpath, array $config)
     {
-        $this->userClass = $config['userClass'];
-        self::$ROOT_DIR = $rootpath;
         self::$app = $this;
+        self::$ROOT_DIR = $rootpath;
+        $this->userClass = $config['userClass'];
         $this->request = new Request();
         $this->response = new Response();
         $this->session = new session();

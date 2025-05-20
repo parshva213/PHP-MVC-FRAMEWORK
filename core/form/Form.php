@@ -19,8 +19,6 @@ class Form
 
     public function field(Model $model, $attribute)
     {
-        // Use InputField as the default implementation
-        return new InputField($model, $attribute);
+        return new Field($model, $attribute);
     }
 }
-?>

@@ -7,7 +7,8 @@ use core\Model;
 abstract class Field
 {
     public Model $model;
-    public array $attribute;
+    public array $attribute = [];
+    public array $type = [];
 
     public function __construct(Model $model, array $attribute)
     {
@@ -15,24 +16,42 @@ abstract class Field
         $this->attribute = $attribute;
     }
 
-    abstract public function renderInput(): string;
+    abstract public function fieldtodisplay(): string;
 
     public function __toString(): string
     {
         return sprintf(
             '
             <div class="form-group">
-                <label>%s</label>
                 %s
                 <div class="invalid-feedback">
                     %s
                 </div>
             </div>
             ',
-            $this->attribute['label'] ?? '', // Default to an empty string if 'label' is not set
-            $this->renderInput(), // Render the input field (implemented by subclasses)
+            $this->fieldtodisplay(), // Render the input field (implemented by subclasses)
             $this->model->getFirstError($this->attribute['name'] ?? '') ?? '' // Default to an empty string if no error exists
         );
+    }
+
+    public function fieldcheck($fild) : string 
+{
+        $array = [
+            'TextBased' => ['text','password','email','search','tel','url'],
+            'MultilineText' => ['textarea'],
+            'Numeric' => ['number','range'],
+            'DateAndTime' => ['date','datetime-local','month','time','week'],
+            'FileBased' => ['file','image'],
+            'Choice' => ['checkbox','radio'],
+            'OptionalChoice' => ['select'],
+            'other' => ['submit','reset','button','color','hidden']
+        ];
+        foreach($array as $k1 => $v1){
+            if (in_array($fild, $v1)) {
+                return $k1;
+            }
+        }
+        return '';
     }
 }
 ?>

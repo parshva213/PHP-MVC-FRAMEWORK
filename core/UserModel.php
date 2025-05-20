@@ -4,7 +4,7 @@ namespace core;
 use core\DbModel;
 
 abstract class UserModel extends DbModel{
-    abstract public function getDisplayName():string;
+    abstract public static function getDisplayName():string;
 }
 
 ?>

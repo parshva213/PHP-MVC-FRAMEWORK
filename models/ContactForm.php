@@ -13,6 +13,13 @@ class ContactForm extends Model
     public string $submit = "submit";
     public array $array = [];
 
+    public function __construct()
+    {
+        // parent::__construct();
+        if (isset($_POST['body'])) {
+            $this->body = trim($_POST['body']);
+        }
+    }
 
     public function rules(): array
     {
@@ -31,6 +38,7 @@ class ContactForm extends Model
             $this->resetFields();
             return true;
         } else {
+            $this->array['email'][] =  self::RULE_EMAIL_NOT_FOUND;
             $user = (new User())->findOne(['email' => $this->email]);
             if ($user) {
                 // Clear all fields after successful submission

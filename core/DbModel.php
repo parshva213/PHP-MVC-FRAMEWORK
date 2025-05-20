@@ -11,6 +11,7 @@ abstract class DbModel extends Model
 
     abstract public function attributes(): array;
     abstract public static function primaryKey(): string;
+    
 
 
     public function save() {
@@ -37,7 +38,7 @@ abstract class DbModel extends Model
         }
         $statement->execute();
         $record = $statement->fetchObject(static::class);
-        return $record ?: null;
+        return $record ?? null;
     }
     
 }

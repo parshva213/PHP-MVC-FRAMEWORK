@@ -27,7 +27,7 @@ use core\Application;
         <ul class="nav nav-pills">
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    <?php echo !isset(Application::$app->user) ? 'HT' : Application::$app->user->getDisplayName(); ?>
+                    <?php echo !isset(Application::$app->user) ? 'HT' : Application::$app->userClass::getDisplayName(); ?>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <?php if(!isset(Application::$app->user)): ?>
@@ -46,6 +46,7 @@ use core\Application;
             <div class="alert alert-success">
                 <?php 
                     echo Application::$app->session->getFlash('success');
+                    Application::$app->session->remove('success')
                 ?>
             </div>
         <?php endif; ?>
