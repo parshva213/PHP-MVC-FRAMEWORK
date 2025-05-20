@@ -4,7 +4,7 @@ namespace form;
 
 use core\Model;
 
-abstract class Field
+abstract class Field extends Form
 {
     public Model $model;
     public array $attribute = [];
@@ -29,29 +29,36 @@ abstract class Field
                 </div>
             </div>
             ',
-            $this->fieldtodisplay(), // Render the input field (implemented by subclasses)
+            $this->setfile(), // Render the input field (implemented by subclasses)
             $this->model->getFirstError($this->attribute['name'] ?? '') ?? '' // Default to an empty string if no error exists
         );
     }
 
+    public function setfile(){
+        $file = $this->fieldcheck($this->attribute['type']);
+        $filds =  new $file();
+        return $filds->fieldtodisplay();
+    }
+
     public function fieldcheck($fild) : string 
-{
+    {
         $array = [
-            'TextBased' => ['text','password','email','search','tel','url'],
-            'MultilineText' => ['textarea'],
-            'Numeric' => ['number','range'],
-            'DateAndTime' => ['date','datetime-local','month','time','week'],
-            'FileBased' => ['file','image'],
-            'Choice' => ['checkbox','radio'],
-            'OptionalChoice' => ['select'],
-            'other' => ['submit','reset','button','color','hidden']
+            "TextBased" => ["text", "password", "email", "search", "tel", "url"],
+            "MultilineText" => ["textarea"],
+            "Numeric" => ["number", "range"],
+            "DateAndTime" => ["date", "datetime-local", "month", "time", "week"],
+            "FileBased" => ["file", "image"],
+            "Choice" => ["checkbox", "radio"],
+            "OptionalChoice" => ["select"],
+            "Other" => ["submit", "reset", "button", "color", "hidden"]
         ];
-        foreach($array as $k1 => $v1){
+        foreach($array as $k => $v1){
             if (in_array($fild, $v1)) {
-                return $k1;
+                return $k;
             }
         }
         return '';
     }
 }
+
 ?>

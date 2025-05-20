@@ -4,7 +4,7 @@ namespace form;
 
 use core\Model;
 
-class Form
+abstract class Form
 {
     public static function begin($action, $method)
     {
