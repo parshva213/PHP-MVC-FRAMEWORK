@@ -11,6 +11,14 @@ class LoginForm extends DbModel
     public string $email = "";
     public string $password = "";
 
+    public function __construct()
+    {
+        if (isset($_POST['password'])) 
+            $this->password = trim($_POST['password']);
+        if (isset($_POST['email'])) 
+            $this->email = trim($_POST['email']);
+    }
+
     public function rules(): array
     {
         return [
@@ -37,16 +45,18 @@ class LoginForm extends DbModel
     public function login()
     {
         $user = (new User())->findOne(['email' => $this->email]);
-        if ($user){
-            // Correct password verification logic
-            if (password_verify($this->password, $user->password)) {
-                return Application::$app->login($user);
-            }
-            $this->addError('password', self::RULE_PASSWORD_NOT_FOUND);
-            return false; // Stop further execution if password is incorrect
+        if (!$user) {
+            $this->addError('email', self::RULE_EMAIL_NOT_FOUND);
+            return false;
         }
-        $this->addError('email', self::RULE_EMAIL_NOT_FOUND);
-        return false; // Stop further execution if user not found
+
+        if (!($this->password === $user->password)) {
+            $this->addError('password', self::RULE_PASSWORD_NOT_FOUND);
+            return false;
+        }
+
+        return Application::$app->login($user);
+
     }
     
 }

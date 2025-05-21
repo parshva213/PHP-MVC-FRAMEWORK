@@ -15,16 +15,18 @@ class ContactForm extends Model
 
     public function __construct()
     {
-        // parent::__construct();
-        if (isset($_POST['body'])) {
+        if (isset($_POST['body']))
             $this->body = trim($_POST['body']);
-        }
+        if (isset($_POST['subject']))
+            $this->subject = trim($_POST['subject']);
+        if (isset($_POST['email']))
+            $this->email = trim($_POST['email']);
     }
 
     public function rules(): array
     {
         $array = [
-            'subject' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min'=>5], [self::RULE_MAX, 'min'=>100]],
+            'subject' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min'=>5], [self::RULE_MAX, 'max'=>100]],
             'email' => [self::RULE_REQUIRED, self::RULE_EMAIL],
             'body' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min'=>20]]
         ];
@@ -40,7 +42,7 @@ class ContactForm extends Model
         } else {
             $this->array['email'][] =  self::RULE_EMAIL_NOT_FOUND;
             $user = (new User())->findOne(['email' => $this->email]);
-            if ($user) {
+            if ($user !== null) {
                 // Clear all fields after successful submission
                 $this->resetFields();
                 return true;

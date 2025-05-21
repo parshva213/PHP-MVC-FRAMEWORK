@@ -2,7 +2,7 @@
 
 namespace form;
 
-class Choice extends Field
+class Choice extends InputField
 {
     public function fieldtodisplay(): string
     {

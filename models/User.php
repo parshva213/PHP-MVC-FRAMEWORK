@@ -19,6 +19,20 @@ class User extends UserModel {
     public int $status = SELF::STASTUS_ACTIVE; // Default to 'active'
     public string $created_at = "";   // Let MySQL handle this, but define to avoid warnings
 
+    public function __construct()
+    {
+        if (isset($_POST['firstName']))
+            $this->firstName = trim($_POST['firstName']);
+        if (isset($_POST['lastName']))
+            $this->lastName = trim($_POST['lastName']);
+        if (isset($_POST['email']))
+            $this->email = trim($_POST['email']);
+        if (isset($_POST['password']))
+            $this->password = trim($_POST['password']);
+        if (isset($_POST['conform_password']))
+            $this->conform_password = trim($_POST['conform_password']);
+    }
+
     public static function tableNAME(): string
     {
         return 'users';
@@ -49,7 +63,7 @@ class User extends UserModel {
 
     public function save() {
         $this->status = self::STASTUS_ACTIVE;
-        $this->password = password_hash($this->password,PASSWORD_DEFAULT);
+        $this->password = md5($this->password,PASSWORD_DEFAULT);
         return parent::save();
     }
 

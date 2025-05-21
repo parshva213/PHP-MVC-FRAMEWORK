@@ -4,7 +4,7 @@ namespace form;
 
 use PhpOption\Option;
 
-class OptionalChoice extends Field
+class OptionalChoice extends InputField
 {
     public function fieldtodisplay(): string
     {

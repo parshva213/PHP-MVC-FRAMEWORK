@@ -1,13 +1,18 @@
 <h3>Login</h3>
 <?php
-use form\Form;
-$form = Form::begin('', "post");
+use form\HtmlForm;
+use form\other;
+use form\TextBased;
+
+$form = HtmlForm::begin('', "post");
 $this->title = "Login";
+
 // vishal.m@currently.club
-echo $form->field($model, ['name' => "email", "type" => 'email', 'label' => "Email"]);
-echo $form->field($model, ['name' => "password", "type" => 'password', 'label' => "Password"]);
+echo new TextBased($model, ['type' => 'email', 'name' => 'email', 'label' => 'Email']);
+echo new TextBased($model, ['type' => 'password', 'name' => 'password', 'label' => 'Password']);
+echo new other($model, ['type' => 'submit', 'name' => 'send', 'value' => 'submit' ]);
 ?>
 <button type="submit">Submit</button>
 <?php
-Form::end();
+HtmlForm::end();
 ?>

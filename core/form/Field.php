@@ -16,7 +16,8 @@ abstract class Field extends Form
         $this->attribute = $attribute;
     }
 
-    abstract public function fieldtodisplay(): string;
+    abstract public function setfile(): string;
+
 
     public function __toString(): string
     {
@@ -34,31 +35,25 @@ abstract class Field extends Form
         );
     }
 
-    public function setfile(){
-        $file = $this->fieldcheck($this->attribute['type']);
-        $filds =  new $file();
-        return $filds->fieldtodisplay();
-    }
-
-    public function fieldcheck($fild) : string 
-    {
-        $array = [
-            "TextBased" => ["text", "password", "email", "search", "tel", "url"],
-            "MultilineText" => ["textarea"],
-            "Numeric" => ["number", "range"],
-            "DateAndTime" => ["date", "datetime-local", "month", "time", "week"],
-            "FileBased" => ["file", "image"],
-            "Choice" => ["checkbox", "radio"],
-            "OptionalChoice" => ["select"],
-            "Other" => ["submit", "reset", "button", "color", "hidden"]
-        ];
-        foreach($array as $k => $v1){
-            if (in_array($fild, $v1)) {
-                return $k;
-            }
-        }
-        return '';
-    }
+    // public function fieldcheck($fild) : string 
+    // {
+    //     $array = [
+    //         "TextBased" => ["text", "password", "email", "search", "tel", "url"],
+    //         "MultilineText" => ["textarea"],
+    //         "Numeric" => ["number", "range"],
+    //         "DateAndTime" => ["date", "datetime-local", "month", "time", "week"],
+    //         "FileBased" => ["file", "image"],
+    //         "Choice" => ["checkbox", "radio"],
+    //         "OptionalChoice" => ["select"],
+    //         "Other" => ["submit", "reset", "button", "color", "hidden"]
+    //     ];
+    //     foreach($array as $k => $v1){
+    //         if (in_array($fild, $v1)) {
+    //             return $k;
+    //         }
+    //     }
+    //     return '';
+    // }
 }
 
 ?>

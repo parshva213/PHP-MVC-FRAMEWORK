@@ -2,7 +2,7 @@
 
 namespace form;
 
-class MultilineText extends Field
+class MultilineText extends InputField
 {
     public function fieldtodisplay(): string
     {

@@ -33,14 +33,16 @@ abstract class DbModel extends Model
         $attributes = array_keys($where);
         $sql = "SELECT * FROM $tableName WHERE " . implode(" AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
         $statement = Application::$app->db->pdo->prepare($sql);
+        
         foreach ($where as $key => $value) {
             $statement->bindValue(":$key", $value);
         }
+        
         $statement->execute();
         $record = $statement->fetchObject(static::class);
-        return $record ?? null;
-    }
-    
+
+        return $record === false ? null : $record;
+    }    
 }
 
 ?>
