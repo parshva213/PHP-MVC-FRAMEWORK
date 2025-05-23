@@ -13,11 +13,14 @@ class User extends UserModel {
 
     public string $firstName = "";
     public string $lastName = "";
-    public string $email = "";
+    public string $username = "";
     public string $password = "";
     public string $conform_password = "";
+    public string $user_type = "";
+    public string $email = "";
+    public string $address = "";
     public int $status = SELF::STASTUS_ACTIVE; // Default to 'active'
-    public string $created_at = "";   // Let MySQL handle this, but define to avoid warnings
+    public string $user_created_on = "";   // Let MySQL handle this, but define to avoid warnings
 
     public function __construct()
     {
@@ -25,17 +28,23 @@ class User extends UserModel {
             $this->firstName = trim($_POST['firstName']);
         if (isset($_POST['lastName']))
             $this->lastName = trim($_POST['lastName']);
-        if (isset($_POST['email']))
-            $this->email = trim($_POST['email']);
+        if (isset($_POST['username']))
+            $this->username = trim($_POST['username']);
         if (isset($_POST['password']))
             $this->password = trim($_POST['password']);
         if (isset($_POST['conform_password']))
             $this->conform_password = trim($_POST['conform_password']);
+        if (isset($_POST['user_type']))
+            $this->user_type = trim($_POST['user_type']);
+        if (isset($_POST['email']))
+            $this->email = trim($_POST['email']);
+        if (isset($_POST['address']))
+            $this->address = trim($_POST['address']);
     }
 
     public static function tableNAME(): string
     {
-        return 'users';
+        return 'ausers';
     }
     
 
@@ -47,7 +56,7 @@ class User extends UserModel {
     public function attributes(): array
     {
         // Only include columns that exist in your table
-        return ['firstName', 'lastName', 'email', 'password', 'status'];
+        return ['firstName', 'lastName', 'username', 'password', 'user_type','email', 'address', 'status'];
         // Remove 'created_at' from here, let MySQL set it automatically
     }
 
@@ -55,6 +64,9 @@ class User extends UserModel {
         return [
             'firstName' => [self::RULE_REQUIRED],
             'lastName' => [self::RULE_REQUIRED],
+            'username' => [self::RULE_REQUIRED],
+            'user_type' => [self::RULE_REQUIRED],
+            'address' => [self::RULE_REQUIRED],
             'email' => [self::RULE_REQUIRED, self::RULE_EMAIL, [self::RULE_UNIQUE, 'class' => self::class]],
             'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min'=>8], [self::RULE_MAX, 'max' => 24]],
             'conform_password' => [self::RULE_REQUIRED, [self::RULE_MATCH, 'match' => 'password']]
@@ -69,7 +81,7 @@ class User extends UserModel {
 
     public static function primaryKey(): string
     {
-        return 'id'; // Ensure this matches your database schema
+        return 'uid'; // Ensure this matches your database schema
     }
 
     public function getDisplayName(): string

@@ -1,57 +1,150 @@
-<?php
+<?php 
 use core\Application;
 ?>
-
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?php echo $this->title ?></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ENjdO4Dr2bkBIFxQpeoSzu3e0p3FQck7nKqkLkFf9CbtGozYQnN0pQ5ErvY+XW9N" crossorigin="anonymous">
-  </head>
-  <body>
-    <nav id="navbar-example2" class="navbar bg-body-tertiary px-3 mb-3">
-        <ul class="nav nav-pills">
-            <li class="nav-item">
-                <a class="navbar-brand" href="#">Navbar</a>
+  <?php include "needs.php"; ?>
+  <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
+    <!-- App Wrapper -->
+    <div class="app-wrapper">
+
+      <!-- Header -->
+      <nav class="app-header navbar navbar-expand bg-body">
+        <div class="container-fluid">
+          <!-- Left Navbar -->
+
+          <!-- Right Navbar -->
+          <ul class="navbar-nav ms-auto">
+            <!-- Notifications -->
+            <li class="nav-item dropdown">
+              <a class="nav-link" data-bs-toggle="dropdown" href="#">
+                <i class="bi bi-bell-fill"></i>
+                <span class="navbar-badge badge text-bg-warning">15</span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+                <span class="dropdown-item dropdown-header">15 Notifications</span>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item">
+                  <i class="bi bi-envelope me-2"></i> 4 new messages
+                  <span class="float-end text-secondary fs-7">3 mins</span>
+                </a>
+                <a href="#" class="dropdown-item">
+                  <i class="bi bi-people-fill me-2"></i> 8 friend requests
+                  <span class="float-end text-secondary fs-7">12 hours</span>
+                </a>
+                <a href="#" class="dropdown-item">
+                  <i class="bi bi-file-earmark-fill me-2"></i> 3 new reports
+                  <span class="float-end text-secondary fs-7">2 days</span>
+                </a>
+                <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+              </div>
             </li>
+
+            <!-- Fullscreen Toggle -->
             <li class="nav-item">
-                <a class="nav-link" href="/">Home</a>
+              <a class="nav-link" href="#" data-lte-toggle="fullscreen">
+                <i data-lte-icon="maximize" class="bi bi-arrows-fullscreen"></i>
+                <i data-lte-icon="minimize" class="bi bi-fullscreen-exit" style="display: none"></i>
+              </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/contact">Contact</a>
+
+            <!-- User Menu -->
+            <li class="nav-item dropdown user-menu">
+              <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                <span class="d-none d-md-inline">
+                  <?= Application::$app->user ? Application::$app->user->getDisplayName() : 'Hardik Traders'; ?>
+                </span>
+              </a>
             </li>
-        </ul>
-        <ul class="nav nav-pills">
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    <?php echo !isset(Application::$app->user) ? 'Hardik Traders' : Application::$app->user->getDisplayName(); ?>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <?php if(!isset(Application::$app->user)): ?>
-                        <li><a class="dropdown-item" href="/login">Login</a></li>
-                        <li><a class="dropdown-item" href="/register">Register</a></li>
-                    <?php else: ?>
-                        <li><a class="dropdown-item" href="/profile">Profile</a></li>
-                        <li><a class="dropdown-item" href="/logout">Logout</a></li>
-                    <?php endif; ?>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Sidebar -->
+      <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+        <div class="sidebar-brand">
+          <a href="/" class="brand-link">
+            <img src="images/ht_r_logo.png" alt="Hardik Traders Logo" class="brand-image opacity-75 shadow">
+            <span class="brand-text fw-light">Hardik Traders</span>
+          </a>
+        </div>
+        <div class="sidebar-wrapper">
+          <nav class="mt-2">
+            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon bi bi-speedometer"></i>
+                  <p>Dashboard <i class="nav-arrow bi bi-chevron-right"></i></p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/dashboard" class="nav-link">
+                      <i class="nav-icon bi bi-circle"></i>
+                      <p>Main Dashboard</p>
+                    </a>
+                  </li>
                 </ul>
-            </div>
-        </ul>
-    </nav>
-    <div class="container">
-        <?php if(Application::$app->session->getFlash('success')): ?>
-            <div class="alert alert-success">
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <!-- Sidebar Footer Dropdown (at bottom of sidebar) -->
+        <div class="sidebar-footer dropdown dropup text-center bg-dark text-white p-2">
+          <a class="dropdown-toggle text-white text-decoration-none" href="#" role="button" id="helpMenu" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
+            Hardik Traders
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="helpMenu">
+            <li><a class="dropdown-item" href="/login">Log In</a></li>
+            <li><a class="dropdown-item" href="/contact">Contact Us</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="app-main">
+        <div class="app-content-header">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-6">
+                <h3 class="mb-0">
                 <?php 
-                    echo Application::$app->session->getFlash('success');
-                    Application::$app->session->remove('success')
+                if (Application::$app->request->getPath() === '/')
+                  echo "Welcome ";
                 ?>
+                Hardik Traders
+              </h3>
+              </div>
+              <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-end">
+                  <li class="breadcrumb-item"><a href="/">Home</a></li>
+                  <li class="breadcrumb-item active">
+                    <?= str_replace("/", "", Application::$app->request->getPath()); ?>
+                  </li>
+                </ol>
+              </div>
             </div>
-        <?php endif; ?>
-        {{content}}
+          </div>
+        </div>
+
+        <div class="app-content">
+          <div class="container">
+            <?php if (Application::$app->session->getFlash('success')): ?>
+              <div class="alert alert-success">
+                <?= Application::$app->session->getFlash('success'); ?>
+                <?php Application::$app->session->remove('success'); ?>
+              </div>
+            <?php endif; ?>
+            {{content}}
+          </div>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="app-footer">
+        <div class="float-end d-none d-sm-inline">Anything you want</div>
+        <strong>&copy; 2014–2024 <a href="https://adminlte.io" class="text-decoration-none">AdminLTE.io</a>.</strong>
+        All rights reserved.
+      </footer>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
   </body>
 </html>

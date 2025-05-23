@@ -13,4 +13,3 @@ class TextBased extends InputField
     }
 }
 ?>
-

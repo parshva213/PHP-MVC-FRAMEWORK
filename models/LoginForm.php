@@ -8,22 +8,22 @@ use models\User;
 
 class LoginForm extends DbModel
 {
-    public string $email = "";
+    public string $username = "";
     public string $password = "";
 
     public function __construct()
     {
+        if (isset($_POST['username'])) 
+            $this->username = trim($_POST['username']);
         if (isset($_POST['password'])) 
             $this->password = trim($_POST['password']);
-        if (isset($_POST['email'])) 
-            $this->email = trim($_POST['email']);
     }
 
     public function rules(): array
     {
         return [
-            'email' => [self::RULE_REQUIRED, self::RULE_EMAIL, self::RULE_EMAIL_NOT_FOUND],
-            'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min'=>8], [self::RULE_MAX, 'max' => 24], self::RULE_PASSWORD_NOT_FOUND]
+            'username' => [self::RULE_REQUIRED, self::RULE_USER_NOT_FOUND],
+            'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min'=>8], [self::RULE_MAX, 'max' => 24], self::RULE_PASSWORD_NOT_VERIFY]
         ];
     }
 
@@ -39,19 +39,19 @@ class LoginForm extends DbModel
 
     public function attributes(): array
     {
-        return ['email', 'password']; // Replace with the actual attributes if needed
+        return ['username', 'password']; // Replace with the actual attributes if needed
     }
 
     public function login()
     {
-        $user = (new User())->findOne(['email' => $this->email]);
+        $user = (new User())->findOne(['username' => $this->username]);
         if (!$user) {
-            $this->addError('email', self::RULE_EMAIL_NOT_FOUND);
+            $this->addError('username', self::RULE_USER_NOT_FOUND);
             return false;
         }
 
         if (!($this->password === $user->password)) {
-            $this->addError('password', self::RULE_PASSWORD_NOT_FOUND);
+            $this->addError('password', self::RULE_PASSWORD_NOT_VERIFY);
             return false;
         }
 

@@ -18,26 +18,26 @@ class AuthController extends Controller
         $this->registerMiddleware(new AuthMiddleweare(['profile']));
     }
 
-    public function login(Request $request){
-        // If you need session or response, get them via Application::$app
-        $session = Application::$app->session;
-        $response = Application::$app->response;
-        $loginForm = new LoginForm();
-        $redirect = Application::$app->session->get('redirect') ?? '/';
-        Application::$app->session->set('redirect', '/');
-        if ($request->isPost()){
-            $loginForm->loadData($request->getBody());
-            if($loginForm->validate() && $loginForm->login()){
-                $session->setFlash('success', "Login Successful");
-                $response->redirect($redirect);
-            }
+        public function login(Request $request){
+            // If you need session or response, get them via Application::$app
+            $session = Application::$app->session;
+            $response = Application::$app->response;
+            $loginForm = new LoginForm();
+            $redirect = Application::$app->session->get('redirect') ?? '/';
+            Application::$app->session->set('redirect', '/');
+            if ($request->isPost()){
+                $loginForm->loadData($request->getBody());
+                if($loginForm->validate() && $loginForm->login()){
+                    $session->setFlash('success', "Login Successful");
+                    $response->redirect($redirect);
+                }
 
+            }
+            $this->setLayout('auth');
+            return $this->render('login',[
+                'model' => $loginForm
+            ]);
         }
-        $this->setLayout('auth');
-        return $this->render('login',[
-            'model' => $loginForm
-        ]);
-    }
     public function register(Request $request){
         $response = Application::$app->response;
         $user = new User();

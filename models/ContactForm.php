@@ -2,13 +2,18 @@
 
 namespace models;
 
+use core\Application;
 use core\Model;
+use core\Session;
 
 class ContactForm extends Model
 {
+    public Session $session;
+
     public string $subject = "";
     public string $email = "";
     public string $body = "";
+    public string $name = "";
     public string $check = "";
     public string $submit = "submit";
     public array $array = [];
@@ -17,6 +22,8 @@ class ContactForm extends Model
     {
         if (isset($_POST['body']))
             $this->body = trim($_POST['body']);
+        if (isset($_POST['name']))
+            $this->name = trim($_POST['name']);
         if (isset($_POST['subject']))
             $this->subject = trim($_POST['subject']);
         if (isset($_POST['email']))
@@ -28,28 +35,16 @@ class ContactForm extends Model
         $array = [
             'subject' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min'=>5], [self::RULE_MAX, 'max'=>100]],
             'email' => [self::RULE_REQUIRED, self::RULE_EMAIL],
-            'body' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min'=>20]]
+            'body' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min'=>20]],
+            'name' => [self::RULE_REQUIRED]
         ];
         return $array;
     }
 
     public function submit(): bool
     {
-        if ($this->check === "on") {
-            // Clear all fields after successful submission
-            $this->resetFields();
+        $this->resetFields();
             return true;
-        } else {
-            $this->array['email'][] =  self::RULE_EMAIL_NOT_FOUND;
-            $user = (new User())->findOne(['email' => $this->email]);
-            if ($user !== null) {
-                // Clear all fields after successful submission
-                $this->resetFields();
-                return true;
-            }
-            $this->addError('email', self::RULE_EMAIL_NOT_FOUND);
-            return false; // Stop further execution if user not found
-        }
     }
 
     /**
@@ -60,6 +55,7 @@ class ContactForm extends Model
         $this->subject = "";
         $this->email = "";
         $this->body = "";
+        $this->name = "";
         $this->check = "";
         $this->submit = "submit";
     }
