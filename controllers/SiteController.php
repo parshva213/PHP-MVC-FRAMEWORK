@@ -20,10 +20,6 @@ class SiteController extends Controller
 
     public function Home()
     {
-        if (!isset(Application::$app->user)) {
-            Application::$app->session->set('redirect', '/');
-            Application::$app->response->redirect('/login');
-        }
         $namedis = Application::$app->user ? Application::$app->user->getDisplayName() : "Guest!";
         $params = [
             'name' => $namedis
@@ -57,7 +53,8 @@ class SiteController extends Controller
     public function profile()
     {
         if (!isset(Application::$app->user)) {
-            Application::$app->session->set('redirect', '/profile');
+            $path = Application::$app->request->getPath();
+            Application::$app->session->set('redirect', $path);
             Application::$app->response->redirect('/login');
         }
         $profile = new ProfileForm();
@@ -83,6 +80,6 @@ class SiteController extends Controller
     public function userview()
     {
         $this->setLayout('main');
-        return $this->render('view/users');
+        return $this->render('view/usersView');
     }
 }

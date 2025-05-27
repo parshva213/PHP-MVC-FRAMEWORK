@@ -34,8 +34,8 @@ $records = $statement->fetchAll(PDO::FETCH_ASSOC);
                         <td><?= htmlspecialchars($record['firstname'] . ' ' . $record['lastname']) ?></td>
                         <td><?= htmlspecialchars($record['username']) ?></td>
                         <td><?= htmlspecialchars($role) ?></td>
-                        <td><?= htmlspecialchars($record['email']) ?></td>
-                        <td><?= htmlspecialchars($record['contact']) ?></td>
+                        <td><a href="mailto:<?= htmlspecialchars($record['email']) ?>"><i class="bi bi-envelope-at"></i><?= htmlspecialchars($record['email']) ?></a></td>
+                        <td><a href="tel:<?= htmlspecialchars($record['contact']) ?>"><i class="bi bi-telephone"></i><?= htmlspecialchars($record['contact']) ?></a></td>
                         <td><?= htmlspecialchars($record['address']) ?></td>
                         <td>
                             <button type="submit" class="btn btn-outline-success allow-btn edit-slink" data-uid="<?= htmlspecialchars($record['uid']) ?>">Allow</button>
@@ -74,51 +74,3 @@ $records = $statement->fetchAll(PDO::FETCH_ASSOC);
         });
     });
 </script>
-
-
-<!-- <script>
-    alert(1);
-    $(document).ready(function() {
-
-        $('body').on('submit', '.edit-slink', function(e) {
-
-            alert(1);
-            $.ajax({
-                url: "demo_test.txt",
-                success: function(result) {
-                    $("#div1").html(result);
-                }
-            });
-        });
-    });
-</script> -->
-
-
-
-<!-- <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const buttons = document.querySelectorAll('.allow-btn');
-        buttons.forEach(button => {
-            button.addEventListener('click', function() {
-                const uid = this.getAttribute('data-uid');
-                fetch('giveAccessPermission.php', {
-                        method: 'POST',
-                        body: 'uid=' + encodeURIComponent(uid)
-                    })
-                    .then(response => response.text())
-                    .then(result => {
-                        if (result === 'success') {
-                            alert("User deleted successfully");
-                            location.reload(); // reload the page to update table
-                        } else {
-                            alert("Error: " + result);
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                        alert("An error occurred");
-                    });
-            })
-        })
-    });
-</script> -->

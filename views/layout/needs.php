@@ -26,19 +26,45 @@
 
   <!-- Custom Inline Styles -->
   <style>
-    .app-sidebar {
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
+    .toggle-button {
+      display: none;
     }
 
-    .sidebar-wrapper {
-      flex-grow: 1;
-      overflow-y: auto;
-    }
 
-    .sidebar-footer {
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    @media screen and (max-width: 768px) {
+
+
+      .app-sidebar {
+        position: fixed;
+        left: -250px;
+        /* Hide sidebar off-screen */
+
+      }
+
+      .sidebar-wrapper {
+        min-height: 90vh;
+      }
+
+      .toggle-button {
+        display: block;
+      }
+
+      .sidebar-visible {
+        left: 0;
+        transition: left 0.3s ease-in-out;
+        position: fixed;
+        background-color: #000;
+        bottom: 0;
+        top: 0;
+        z-index: 9999;
+        width: 100%;
+      }
+
+      .app-main {
+        margin-left: 0;
+        transition: margin-left 0.3s ease-in-out;
+      }
+
     }
   </style>
 </head>
@@ -81,42 +107,25 @@
         },
       });
     }
-
-    // Enable SortableJS for drag-and-drop cards
-    const connectedSortables = document.querySelectorAll(".connectedSortable");
-    connectedSortables.forEach((connectedSortable) => {
-      new Sortable(connectedSortable, {
-        group: "shared",
-        handle: ".card-header",
-      });
-    });
-
-    // Cursor styling for sortable cards
-    document.querySelectorAll(".connectedSortable .card-header").forEach((header) => {
-      header.style.cursor = "move";
-    });
-
-    // [Optional] ApexCharts and jsVectorMap usage should be placed here,
-    // after checking if the elements exist like:
-    const chartElement = document.querySelector("#salesChart");
-    if (chartElement) {
-      const options = {
-        series: [70],
-        chart: {
-          height: 350,
-          type: "radialBar"
-        }
-      };
-      const chart = new ApexCharts(chartElement, options);
-      chart.render();
-    }
-
-    const mapElement = document.querySelector("#worldMap");
-    if (mapElement) {
-      new jsVectorMap({
-        selector: "#worldMap",
-        map: "world",
-      });
-    }
   });
+
+  function toggleSidebar() {
+    console.log("Toggle Sidebar function called");
+    const sidebar = document.querySelector('.app-sidebar') ?? document.querySelector('.sidebar-visible');
+    if (sidebar) {
+      console.log("Sidebar element found");
+      if (sidebar.classList.contains('sidebar-visible')) {
+        sidebar.classList.remove('sidebar-visible');
+        sidebar.classList.add('app-sidebar');
+      } else {
+        sidebar.classList.add('sidebar-visible');
+        sidebar.classList.remove('app-sidebar');
+
+      }
+      const mainContent = document.querySelector('.app-main');
+      mainContent.style.marginLeft = 0;
+    } else {
+      console.error("Sidebar element not found");
+    }
+  }
 </script>
