@@ -12,12 +12,6 @@ use models\ContactForm;
 class SiteController extends Controller
 {
 
-    public function delete($id)
-    {
-        $deleteValidator = new DeleteUserFromValidate();
-        return $deleteValidator->delete($id);
-    }
-
     public function Home()
     {
         $namedis = Application::$app->user ? Application::$app->user->getDisplayName() : "Guest!";
@@ -40,24 +34,26 @@ class SiteController extends Controller
         $this->setLayout('main');
         return $this->render('contact', [
             'model' => $contact
-        ]);;
+        ]);
     }
 
-    public function handleContact(Request $request)
-    {
-        $body = $request->getBody();
-        var_dump($body);
-        echo "Handling Submitted Data";
-    }
-
-    public function profile()
+    public function profile(Request $request)
     {
         if (!isset(Application::$app->user)) {
             $path = Application::$app->request->getPath();
             Application::$app->session->set('redirect', $path);
             Application::$app->response->redirect('/login');
         }
+
         $profile = new ProfileForm();
+        $profile->fetch();
+        if ($request->isPost()) {
+            $session = Application::$app->session;
+            $profile->loadData($request->getBody());
+            if ($profile->validate() && $profile->submit()) {
+                $session->setFlash('success', "Submited Successful");
+            }
+        }
         $this->setLayout('main');
         return $this->render('profile', [
             'model' => $profile
@@ -67,19 +63,5 @@ class SiteController extends Controller
     public function logout()
     {
         return $this->render('logout');
-    }
-    public function givePermission()
-    {
-        return $this->render('access/givePermission');
-    }
-    public function giveAccess()
-    {
-        return $this->render('access/giveAccessPermission');
-    }
-
-    public function userview()
-    {
-        $this->setLayout('main');
-        return $this->render('view/usersView');
     }
 }

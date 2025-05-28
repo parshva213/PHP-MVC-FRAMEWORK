@@ -65,8 +65,8 @@ include "needs.php";
     </nav>
 
     <!-- Sidebar -->
-    <aside class="app-sidebar bg-body-secondary shadow" data-widget="pushmenu" data-bs-theme="dark">
-      <div class="sidebar-brand">
+    <aside class="app-sidebar bg-body-secondary shadow" data-widget="pushmenu" data-bs-theme="dark" style="width: 13%;">
+      <div class="sidebar-brand" style="width: 100%;">
         <a href="/" class="brand-link">
           <img src="images/ht_r_logo.png" alt="Hardik Traders Logo" class="brand-image opacity-75 shadow">
           <span class="brand-text fw-light">Hardik Traders</span>
@@ -85,7 +85,7 @@ include "needs.php";
         <i class="bi bi-list"></i> Menu
       </button> -->
 
-      <div class="sidebar-wrapper" style="overflow-y: auto; max-height: calc(90vh - 25px);">
+      <div class="sidebar-wrapper" style="width: 100%;">
         <nav class="mt-2">
           <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu">
             <?php if (Application::$app->user && Application::$app->user->isAdmin()): ?>
@@ -156,7 +156,7 @@ include "needs.php";
         </nav>
       </div>
       <!-- Sidebar Footer Dropdown (at bottom of sidebar) -->
-      <div class="sidebar-footer dropdown dropup text-center bg-dark text-white p-2">
+      <div class="sidebar-footer dropdown dropup bg-dark text-center text-white" style="position: fixed; bottom: 0; width:13%; height:6%; padding-top:15px; font-size:140%">
         <a class="dropdown-toggle text-white text-decoration-none" href="#" role="button" id="helpMenu" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
           <span class="bi bi-gear">
           </span>Personal
@@ -219,7 +219,7 @@ include "needs.php";
     <!-- Footer -->
     <footer class="app-footer">
       <div class="float-end d-none d-sm-inline">Anything you want</div>
-      <strong>&copy; 2002-<?php echo date("Y") ?> <a href="https://adminlte.io" class="text-decoration-none">HT</a>.</strong>
+      <strong>&copy; 2002-<?php echo date("Y") ?> <!--<a href="https://adminlte.io" class="text-decoration-none">--><a href="#" class="text-decoration-none text-success">HT</a>.</strong>
       All rights reserved.
     </footer>
   </div>

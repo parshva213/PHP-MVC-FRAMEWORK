@@ -14,6 +14,7 @@ abstract class Model
     public const RULE_MATCH = 'match';
     public const RULE_PASSWORD_NOT_VERIFY = 'pass_not_found';
     public const RULE_UNIQUE = 'unique';
+    public const RULE_ACTIVATION = 'Login Activation';
 
 
 
@@ -106,6 +107,7 @@ abstract class Model
             self::RULE_MATCH => 'This field must match the {match} field',
             self::RULE_PASSWORD_NOT_VERIFY => 'This password is invalid',
             self::RULE_UNIQUE => 'This {field} already exist',
+            self::RULE_ACTIVATION => 'User account is not active',
         ];
     }
 

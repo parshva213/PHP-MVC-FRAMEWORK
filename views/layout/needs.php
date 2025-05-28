@@ -30,19 +30,38 @@
       display: none;
     }
 
+    /* Optional: open submenu on hover */
+    .dropdown-menu>.dropend:hover>.dropdown-menu {
+      display: block;
+      margin-top: -1px;
+    }
 
-    @media screen and (max-width: 768px) {
 
+
+    @media screen and (max-width: 992px) {
+
+      .sidebar-footer {
+        text-align: start;
+        width: 100%;
+        display: none;
+      }
 
       .app-sidebar {
         position: fixed;
         left: -250px;
+        transition: right 0.3s ease-in-out;
         /* Hide sidebar off-screen */
 
       }
 
+      .sidebar-brand {
+        display: flex;
+        justify-content: space-between;
+      }
+
       .sidebar-wrapper {
         min-height: 90vh;
+        max-height: 95vh;
       }
 
       .toggle-button {
@@ -64,6 +83,18 @@
         margin-left: 0;
         transition: margin-left 0.3s ease-in-out;
       }
+
+      td {
+        width: fit-content;
+      }
+
+      .user-table {
+        max-height: 900px;
+        overflow-y: auto;
+        max-width: 50px;
+        overflow-x: auto;
+      }
+
 
     }
   </style>
@@ -124,8 +155,18 @@
       }
       const mainContent = document.querySelector('.app-main');
       mainContent.style.marginLeft = 0;
+      const sidebarFooter = document.querySelector('.sidebar-footer');
+      if (sidebarFooter) {
+        sidebarFooter.style.display === 'block' ? sidebarFooter.style.display = 'none' : sidebarFooter.style.display = 'block';
+      }
     } else {
       console.error("Sidebar element not found");
     }
   }
+
+
+  window.addEventListener('resize', function() {
+
+    document.documentElement.style.setProperty('--device-width', window.innerWidth + 'px');
+  });
 </script>

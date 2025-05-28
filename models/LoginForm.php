@@ -13,6 +13,9 @@ class LoginForm extends DbModel
     public string $username = "";
     public string $password = "";
     public string $user_type = "";
+    const STATUS_INACTIVE = 0;
+    const STATUS_ACTIVE = 1;
+    const STATUS_DELETED = 2;
 
     public function __construct()
     {
@@ -35,7 +38,7 @@ class LoginForm extends DbModel
         return "uid";
     }
 
-    public static function tableNAME(): string
+    public static function tableName(): string
     {
         return 'ausers'; // Replace with the actual table name if needed
     }
@@ -60,6 +63,11 @@ class LoginForm extends DbModel
 
         if (!($this->password === $user->password)) {
             $this->addError('password', self::RULE_PASSWORD_NOT_VERIFY);
+            return false;
+        }
+
+        if ($user->status === self::STATUS_ACTIVE) {
+            $this->addError('username', self::RULE_ACTIVATION);
             return false;
         }
 

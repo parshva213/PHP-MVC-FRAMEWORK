@@ -5,7 +5,7 @@ namespace core;
 
 use controllers\SiteController;
 
-class DeleteUserFromValidate extends SiteController
+class   UserActivityManage extends SiteController
 {
     public int $id;
 
@@ -21,6 +21,17 @@ class DeleteUserFromValidate extends SiteController
             } else {
                 return Application::$app->session->setFlash('error', "Failed to verify user with ID {$this->id}.");
             }
+        }
+    }
+
+    public function update($uid, $activity)
+    {
+        $db = Application::$app->db->pdo;
+        $stmt = $db->prepare("UPDATE ausers SET status = ? WHERE uid = ?");
+        if ($stmt->execute([$activity, $uid])) {
+            return Application::$app->session->setFlash('success', "User with ID {$uid} has been updated successfully.");
+        } else {
+            return Application::$app->session->setFlash('error', "Failed to update user with ID {$uid}.");
         }
     }
 }
