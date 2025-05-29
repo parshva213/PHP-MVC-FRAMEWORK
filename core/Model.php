@@ -15,6 +15,10 @@ abstract class Model
     public const RULE_PASSWORD_NOT_VERIFY = 'pass_not_found';
     public const RULE_UNIQUE = 'unique';
     public const RULE_ACTIVATION = 'Login Activation';
+    public const RULE_ISNUM = 'Number';
+
+    public string $val = "";
+
 
 
 
@@ -55,31 +59,38 @@ abstract class Model
                 if ($ruleName === self::RULE_MATCH && isset($rule['match']) && $value !== $this->{$rule['match']}) {
                     $this->addError($attribute, self::RULE_MATCH, ['match' => $rule['match']]);
                 }
+                if ($ruleName === self::RULE_ISNUM && !ctype_digit($value)) {
+                    $this->addError($attribute, self::RULE_ISNUM);
+                }
+
                 if ($ruleName === self::RULE_UNIQUE && is_array($rule)) {
                     $className = $rule['class'];
                     $uniqueAttr = $rule['attribute'] ?? $attribute;
-                    $tableNames = $rule['tables'] ?? []; // Array of table names
+                    $tableNames = $this->tableNAME() ?? []; // Array of table names
 
                     if ($uniqueAttr === 'contact') {
-                        $rawContact = (string) $_POST['contact'];
+                        $rawContact = (string) $value;
                         $value = '+91 ' . substr($rawContact, 0, 5) . '-' . substr($rawContact, 5);
                     }
 
 
-                    foreach ($tableNames as $tableName) {
-                        $statement = Application::$app->db->prepare("SELECT * FROM $tableName WHERE $uniqueAttr = :attr");
-                        $statement->bindValue(":attr", $value);
-                        $statement->execute();
-                        $record = $statement->fetchObject();
 
-                        if ($record) {
-                            $this->addError($attribute, self::RULE_UNIQUE, ['field' => $attribute]);
-                            break; // Exit the loop if a record is found
-                        }
+                    $statement = Application::$app->db->prepare("SELECT * FROM $tableNames WHERE $uniqueAttr = :attr");
+                    $statement->bindValue(":attr", $value);
+                    $statement->execute();
+                    $record = $statement->fetchObject();
+
+                    if ($record) {
+                        $this->addError($attribute, self::RULE_UNIQUE, ['field' => $attribute]);
+                        break; // Exit the loop if a record is found
                     }
                 }
             }
         }
+        // echo "<pre>";
+        // print_r($this->errors);
+        // echo "</pre>";
+        // exit;
         return empty(($this->errors));
     }
 
@@ -108,6 +119,7 @@ abstract class Model
             self::RULE_PASSWORD_NOT_VERIFY => 'This password is invalid',
             self::RULE_UNIQUE => 'This {field} already exist',
             self::RULE_ACTIVATION => 'User account is not active',
+            self::RULE_ISNUM => 'Contains Only Digit',
         ];
     }
 

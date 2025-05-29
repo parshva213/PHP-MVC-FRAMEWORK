@@ -43,7 +43,6 @@ abstract class DbModel extends Model
 
         $statement->execute();
         $record = $statement->fetchObject(static::class);
-
         return $record === false ? null : $record;
     }
 }

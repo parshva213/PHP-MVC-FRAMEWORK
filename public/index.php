@@ -50,4 +50,8 @@ $app->router->get('/givePermission', [UserController::class, 'givePermission']);
 $app->router->post('/giveAccess', [UserController::class, 'giveAccess']);
 $app->router->get('/giveAccess', [UserController::class, 'giveAccess']);
 $app->router->get('/usersview', [UserController::class, 'userview']);
+$app->router->get('/cpass', [SiteController::class, 'cpass']);
+$app->router->post('/cpass', [SiteController::class, 'cpass']);
+$app->router->get('/forget-password', [AuthController::class, 'fpass']);
+$app->router->post('/forget-password', [AuthController::class, 'fpass']);
 $app->run();

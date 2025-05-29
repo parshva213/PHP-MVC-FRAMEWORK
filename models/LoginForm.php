@@ -55,13 +55,13 @@ class LoginForm extends DbModel
 
     public function login()
     {
-        $user = $this->findOne(['username' => $this->username]);
+        $user = user::findOne(['username' => $this->username]);
         if (!$user) {
             $this->addError('username', self::RULE_USER_NOT_FOUND);
             return false;
         }
 
-        if (!($this->password === $user->password)) {
+        if ($this->password !== $user->password) {
             $this->addError('password', self::RULE_PASSWORD_NOT_VERIFY);
             return false;
         }
@@ -70,7 +70,6 @@ class LoginForm extends DbModel
             $this->addError('username', self::RULE_ACTIVATION);
             return false;
         }
-
         return Application::$app->login($user);
     }
 

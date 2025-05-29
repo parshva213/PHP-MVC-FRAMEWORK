@@ -3,59 +3,44 @@
 namespace models;
 
 use core\Application;
-use core\DbModel;
+use core\UpdateUser;
 use PDO;
 
-class ProfileForm extends DbModel
+class ProfileForm extends UpdateUser
 {
     public int $id;
-    const STASTUS_INACTIVE = 0;
-    const STASTUS_ACTIVE = 1;
-    const STASTUS_DELETED = 2;
 
-    const ROLE_OWNER = 'o';
-    const ROLE_MANUFACTURER = 'm';
-    const ROLE_SUPPLIER = 's';
-    const ROLE_CUSTOMER = 'c';
-
-    public string $statement = "";
+    public array $rule = [];
+    public array $needchange = [
+        'firstName' => [],
+        'lastName' => [],
+        'address' => [],
+        'email' => [
+            'email' => [
+                self::RULE_EMAIL,
+                [self::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'email']
+            ]
+        ],
+        'contact' => [
+            'contact' => [
+                self::RULE_ISNUM,
+                [self::RULE_MIN, 'min' => 10],
+                [self::RULE_MAX, 'max' => 10],
+                [self::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'contact'],
+            ]
+        ],
+    ];
 
     public string $firstName = "";
     public string $lastName = "";
-    public string $username = "";
-    public string $current_password = "";
-    public string $password = "";
-    public string $conform_password = "";
-    public string $user_type = "";
     public string $email = "";
     public string $contact = "";
     public string $address = "";
-    public int $status = SELF::STASTUS_ACTIVE; // Default to 'active'
-    public string $user_created_on = "";   // Let MySQL handle this, but define to avoid warnings
 
     public function __construct()
     {
         // Initialize $id from the session or current user if available
         $this->id = Application::$app->session->get('user');
-
-        if (isset($_POST['firstName']))
-            $this->firstName = trim($_POST['firstName']);
-        if (isset($_POST['lastName']))
-            $this->lastName = trim($_POST['lastName']);
-        if (isset($_POST['username']))
-            $this->username = trim($_POST['username']);
-        if (isset($_POST['password']))
-            $this->password = trim($_POST['password']);
-        if (isset($_POST['conform_password']))
-            $this->conform_password = trim($_POST['conform_password']);
-        if (isset($_POST['user_type']))
-            $this->user_type = trim($_POST['user_type']);
-        if (isset($_POST['email']))
-            $this->email = trim($_POST['email']);
-        if (isset($_POST['contact']))
-            $this->contact = trim($_POST['contact']);
-        if (isset($_POST['address']))
-            $this->address = trim($_POST['address']);
     }
 
     public function submit(): bool
@@ -71,31 +56,15 @@ class ProfileForm extends DbModel
         $user = $user[0];
         $this->firstName = $user['firstname'];
         $this->lastName = $user['lastname'];
-        $this->username = $user['username'];
-        $this->user_type = $user['user_type'];
         $this->email = $user['email'];
         $this->address = $user['address'];
-
-        $usercon = $db->query("Select * from usercon where uid = $this->id")->fetchAll(PDO::FETCH_ASSOC);
-        $contact = $usercon[0]['contact'];
-        $con = str_replace(['+91', '-'], '', $contact);
-        $this->contact = $con;
+        $this->contact = str_replace(['+91', '-', ' '], '', $user['contact']);
     }
 
     public function rules(): array
     {
         // Define your validation rules here
-        return [
-            'firstName' => [self::RULE_REQUIRED],
-            'lastName' => [self::RULE_REQUIRED],
-            'username' => [self::RULE_REQUIRED],
-            'password' => [self::RULE_REQUIRED],
-            'conform_password' => [self::RULE_REQUIRED, [self::RULE_MATCH, 'match' => 'password']],
-            'user_type' => [self::RULE_REQUIRED],
-            'email' => [self::RULE_REQUIRED, self::RULE_EMAIL],
-            'contact' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 10], [self::RULE_MAX, 'max' => 15], [self::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'contact', 'tables' => ['causers', 'usercon']]],
-            'address' => [self::RULE_REQUIRED],
-        ];
+        return $this->rule;
     }
 
     public static function tableNAME(): string
@@ -105,33 +74,76 @@ class ProfileForm extends DbModel
 
     public function attributes(): array
     {
-        return [[
+        return [
             'firstName',
             'lastName',
-            'username',
-            'password',
-            'conform_password',
-            'user_type',
             'email',
             'address',
-            'status',
-            'user_created_on'
-        ], ['contact']];
+            'contact'
+        ];
     }
     public static function primaryKey(): string
     {
         return "uid";
     }
-    public function getDisplayName(): string
+
+    public function profilepasscheck(): bool
     {
-        return ucfirst($this->firstName) . ' ' . ucfirst($this->lastName);
-    }
-    public function isAdmin(): bool
-    {
-        $user = Application::$app->user;
-        if ($user && $this->user_type === self::ROLE_OWNER) {
-            return true;
+        $this->fetch(); // Fetch original values from DB
+        $hasChanges = false;
+
+        // STEP 1: Apply RULE_REQUIRED for empty fields
+        foreach (['firstName', 'lastName', 'email', 'contact', 'address'] as $key) {
+            $inputValue = trim($_POST[$key] ?? '');
+            if (empty($inputValue)) {
+                $this->rule = array_merge($this->rule, [
+                    $key => [self::RULE_REQUIRED]
+                ]);
+            }
+
+            // STEP 2: Detect if anything changed (only to trigger other rules)
+            if ($this->{$key} !== $inputValue) {
+                $this->rule = array_merge($this->rule, $this->needchange[$key] ?? "");
+                $this->$key = trim($_POST[$key]);
+            }
         }
-        return false;
+
+        // STEP 3: If any field has changed, apply only field-specific rules (no RULE_REQUIRED)
+        // if ($hasChanges) {
+
+
+        //     // Update model values (already validated as non-empty above)
+        //     $this->firstName = trim($_POST['firstName'] ?? '');
+        //     $this->lastName = trim($_POST['lastName'] ?? '');
+        //     $this->email = trim($_POST['email'] ?? '');
+        //     $this->contact = trim($_POST['contact'] ?? '');
+        //     $this->address = trim($_POST['address'] ?? '');
+        // }
+        // echo "<pre>";
+        // var_dump($this->rule);
+        // echo "</pre>";
+        // exit();
+        return $this->validate();
+    }
+
+
+    public function save()
+    {
+        $db = Application::$app->db->pdo;
+
+        $rawContact = $this->contact;
+        $this->contact = '+91 ' . substr($rawContact, 0, 5) . '-' . substr($rawContact, 5);
+
+        $tableName = $this->tableNAME();
+        $attributes = $this->attributes();
+        $put = implode(', ', array_map(fn($attr) => "$attr = :$attr", $attributes));
+
+
+        $statement = $db->prepare("UPDATE $tableName set $put  where uid = $this->id");
+        foreach ($attributes as $a) {
+            $statement->bindValue(":$a", $this->{$a});
+        }
+        $this->contact = str_replace(['+91', '-', ' '], '', $this->contact);
+        return $statement->execute();
     }
 }
