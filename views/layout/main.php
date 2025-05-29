@@ -219,7 +219,7 @@ include "needs.php";
     <!-- Footer -->
     <footer class="app-footer">
       <div class="float-end d-none d-sm-inline">Anything you want</div>
-      <strong>&copy; 2002-<?php echo date("Y") ?> <!--<a href="https://adminlte.io" class="text-decoration-none">--><a href="#" class="text-decoration-none text-success">HT</a>.</strong>
+      <strong>&copy; 2002-<?php echo date("Y") ?> <a href="https://adminlte.io" class="text-decoration-none">HT</a>.</strong>
       All rights reserved.
     </footer>
   </div>
