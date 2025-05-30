@@ -1,9 +1,9 @@
 <?php
 
-namespace models;
+namespace muser;
 
 use core\Application;
-use core\UpdateUser;
+use cuser\UpdateUser;
 use PDO;
 
 class ProfileForm extends UpdateUser

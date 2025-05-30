@@ -12,8 +12,7 @@ use core\Application;
 use controllers\SiteController;
 use controllers\AuthController;
 use controllers\UserController;
-use models\LoginForm;
-use models\User;
+use muser\LoginForm;
 
 // Check if the script is accessed from a web browser
 if (php_sapi_name() !== 'cli-server' && php_sapi_name() !== 'apache2handler') {

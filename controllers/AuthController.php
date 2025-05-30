@@ -5,10 +5,9 @@ namespace controllers;
 use core\Application;
 use core\Controller;
 use core\Request;
-use models\ChangePassword;
-use models\ForgetPasswordChange;
-use models\LoginForm;
-use models\User;
+use muser\ForgetPasswordChange;
+use muser\LoginForm;
+use muser\User;
 
 class AuthController extends Controller
 {
@@ -18,8 +17,8 @@ class AuthController extends Controller
         $session = Application::$app->session;
         $response = Application::$app->response;
         $loginForm = new LoginForm();
-        $redirect = Application::$app->session->get('redirect') ?? '/';
-        Application::$app->session->set('redirect', '/');
+        $redirect = $session->get('redirect') ?? '/';
+        $session->set('redirect', '/');
         if ($request->isPost()) {
             $loginForm->loadData($request->getBody());
             if ($loginForm->validate() && $loginForm->login()) {

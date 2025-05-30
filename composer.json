@@ -9,6 +9,8 @@
             "controllers\\": "controllers/",
             "models\\": "models/",
             "form\\": "core/form/",
+            "cuser\\": "core/user/",
+            "muser\\": "models/user/",
             "Dotenv\\": "Dotenv/",
             "exception\\": "core/exception"
         }

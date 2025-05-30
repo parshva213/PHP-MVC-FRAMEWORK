@@ -1,11 +1,12 @@
 <?php
 
 
-namespace core;
+namespace cuser;
 
 use controllers\SiteController;
+use core\Application;
 
-class   UserActivityManage extends SiteController
+class UserActivityManage extends SiteController
 {
     public int $id;
 

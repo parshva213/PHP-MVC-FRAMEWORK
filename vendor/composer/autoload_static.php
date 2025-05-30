@@ -15,6 +15,7 @@ class ComposerStaticInit6f209a6c0a6183960c5b5a25387494a8
     public static $prefixLengthsPsr4 = array (
         'm' => 
         array (
+            'muser\\' => 6,
             'models\\' => 7,
         ),
         'f' => 
@@ -27,6 +28,7 @@ class ComposerStaticInit6f209a6c0a6183960c5b5a25387494a8
         ),
         'c' => 
         array (
+            'cuser\\' => 6,
             'core\\' => 5,
             'controllers\\' => 12,
         ),
@@ -51,6 +53,10 @@ class ComposerStaticInit6f209a6c0a6183960c5b5a25387494a8
     );
 
     public static $prefixDirsPsr4 = array (
+        'muser\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/models/user',
+        ),
         'models\\' => 
         array (
             0 => __DIR__ . '/../..' . '/models',
@@ -62,6 +68,10 @@ class ComposerStaticInit6f209a6c0a6183960c5b5a25387494a8
         'exception\\' => 
         array (
             0 => __DIR__ . '/../..' . '/core/exception',
+        ),
+        'cuser\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/core/user',
         ),
         'core\\' => 
         array (

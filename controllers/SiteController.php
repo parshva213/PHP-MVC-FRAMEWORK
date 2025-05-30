@@ -4,11 +4,10 @@ namespace controllers;
 
 use core\Application;
 use core\Controller;
-use core\DeleteUserFromValidate;
 use core\Request;
-use models\ChangePassword;
-use models\ProfileForm;
-use models\ContactForm;
+use muser\ProfileForm;
+use muser\ContactForm;
+use muser\LoginChangePassword;
 
 class SiteController extends Controller
 {
@@ -30,6 +29,8 @@ class SiteController extends Controller
             $contact->loadData($request->getBody());
             if ($contact->validate() && $contact->submit()) {
                 $session->setFlash('success', "Submited Successful");
+            } else {
+                $session->setFlash('error', "Not able to submit");
             }
         }
         $this->setLayout('main');
@@ -80,7 +81,7 @@ class SiteController extends Controller
             Application::$app->response->redirect('/login');
         }
 
-        $cpass = new ChangePassword;
+        $cpass = new LoginChangePassword;
         $cpass->fetch();
         if ($request->isPost()) {
             $session = Application::$app->session;

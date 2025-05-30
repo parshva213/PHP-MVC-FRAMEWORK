@@ -32,6 +32,7 @@ abstract class Model
     }
 
     abstract public function rules(): array;
+    abstract public static function tableName(): string;
 
     public array $errors = [];
 
@@ -66,7 +67,7 @@ abstract class Model
                 if ($ruleName === self::RULE_UNIQUE && is_array($rule)) {
                     $className = $rule['class'];
                     $uniqueAttr = $rule['attribute'] ?? $attribute;
-                    $tableNames = $this->tableNAME() ?? []; // Array of table names
+                    $tableNames = $this->tableNAME() ?? ""; // Array of table names
 
                     if ($uniqueAttr === 'contact') {
                         $rawContact = (string) $value;

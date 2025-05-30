@@ -6,9 +6,11 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'muser\\' => array($baseDir . '/models/user'),
     'models\\' => array($baseDir . '/models'),
     'form\\' => array($baseDir . '/core/form'),
     'exception\\' => array($baseDir . '/core/exception'),
+    'cuser\\' => array($baseDir . '/core/user'),
     'core\\' => array($baseDir . '/core'),
     'controllers\\' => array($baseDir . '/controllers'),
     'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),

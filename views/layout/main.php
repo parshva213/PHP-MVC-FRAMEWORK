@@ -3,11 +3,16 @@
 use core\Application;
 
 include "needs.php";
+
+$app = Application::$app;
+$user = $app->user;
+$session = $app->session;
+$request = $app->request;
 ?>
 <!doctype html>
 <html lang="en">
 
-<body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary" style="display: flex; flex-direction:row;">
   <!-- App Wrapper -->
   <!-- Sidebar -->
   <aside class="app-sidebar bg-body-secondary shadow" data-widget="pushmenu" data-bs-theme="dark" style="width: 13%; position:fixed; top:0; bottom:0; left:0;">
@@ -28,7 +33,7 @@ include "needs.php";
     <div class="sidebar-wrapper" style="width: 100%;">
       <nav class="mt-2">
         <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu">
-          <?php if (Application::$app->user && Application::$app->user->isAdmin()): ?>
+          <?php if ($user && $user->isAdmin()): ?>
             <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon bi bi-speedometer"></i>
@@ -102,7 +107,7 @@ include "needs.php";
         </span>Personal
       </a>
       <ul class=" dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="helpMenu">
-        <?php if (Application::$app->session->get('user')): ?>
+        <?php if ($session->get('user')): ?>
           <li><a class="dropdown-item" href="/logout">Logout</a></li>
           <li><a class="dropdown-item" href="/profile">Profile</a></li>
           <li><a class="dropdown-item" href="/cpass">Change Password</a></li>
@@ -112,9 +117,9 @@ include "needs.php";
       </ul>
     </div>
   </aside>
-  <div class="app-wrapper" style="position:absolute; right:0; width:86%">
+  <div class="app-wrapper" style="position:absolute; right:0; width:87%">
     <!-- Header -->
-    <nav class="navbar navbar-expand bg-body fixed-top ">
+    <nav class="navbar navbar-expand bg-body" style="position: absolute; right:0; width:100%">
       <div class="container-fluid">
         <!-- Left Navbar -->
         <ul class="navbar-nav toggle-button">
@@ -168,14 +173,14 @@ include "needs.php";
 
 
     <!-- Main Content -->
-    <main class="app-main position-absolute" style="top: 3vh; width:100%;">
+    <main class="app-main position-absolute" style="top: 5vh; width:100%;">
       <div class="app-content-header">
         <div class="container-fluid">
           <div class="row">
             <div class="col-sm-6">
               <h3 class="mb-0">
                 <?php
-                if (Application::$app->request->getPath() === '/')
+                if ($request->getPath() === '/')
                   echo "Welcome To";
                 ?>
                 Hardik Traders
@@ -185,7 +190,7 @@ include "needs.php";
               <ol class="breadcrumb float-sm-end">
                 <li class="breadcrumb-item"><a href="/">Home</a></li>
                 <li class="breadcrumb-item active">
-                  <?= str_replace("/", "", Application::$app->request->getPath()); ?>
+                  <?= str_replace("/", "", $request->getPath()); ?>
                 </li>
               </ol>
             </div>
@@ -193,26 +198,24 @@ include "needs.php";
         </div>
       </div>
 
-      <div class="app-content">
-        <div class="container">
-          <?php if (Application::$app->session->getFlash('error')): ?>
-            <div class="alert alert-danger">
-              <?= Application::$app->session->getFlash('error'); ?>
-              <?php Application::$app->session->remove('error'); ?>
-            </div>
-          <?php elseif (Application::$app->session->getFlash('success')): ?>
-            <div class="alert alert-success">
-              <?= Application::$app->session->getFlash('success'); ?>
-              <?php Application::$app->session->remove('success'); ?>
-            </div>
-          <?php endif; ?>
-          {{content}}
-        </div>
+      <div class="container">
+        <?php if ($session->getFlash('error')): ?>
+          <div class="alert alert-danger">
+            <?= $session->getFlash('error'); ?>
+            <?php $session->removeFlash('error'); ?>
+          </div>
+        <?php elseif ($session->getFlash('success')): ?>
+          <div class="alert alert-success">
+            <?= $session->getFlash('success'); ?>
+            <?php $session->removeFlash('success'); ?>
+          </div>
+        <?php endif; ?>
+        {{content}}
       </div>
     </main>
 
     <!-- Footer -->
-    <footer class="app-footer fixed-bottom" style="position:fixed; right:0; width:100%;">
+    <footer class="app-footer" style="position:absolute; right:0; bottom:0; width:100%">
       <div class="float-end d-sm-inline">Anything you want</div>
       <strong>&copy; 2002-<?php echo date("Y") ?> <a href="https://adminlte.io" class="text-decoration-none">HT</a>.</strong>
       All rights reserved.

@@ -27,35 +27,29 @@ class Session
         ];
     }
 
-    public function set($key, $value) {
+    public function set($key, $value)
+    {
         $_SESSION[$key] = $value;
     }
 
-    public function get($key) {
+    public function get($key)
+    {
         return $_SESSION[$key] ?? false;
     }
 
 
     public function getFlash($key)
     {
-        return $_SESSION[self::FLASH_KEY][$key]['value'] ?? false;
+        $message = $_SESSION[self::FLASH_KEY][$key]['value'] ?? false;
+        return $message;
     }
 
-    public function remove($key) {
+    public function removeFlash($key)
+    {
+        unset($_SESSION[self::FLASH_KEY][$key]);
+    }
+    public function remove($key)
+    {
         unset($_SESSION[$key]);
     }
-
-    public function __destruct()
-    {
-        if (!isset($_SESSION[self::FLASH_KEY])) {
-            return;
-        }
-        $flashMessages = &$_SESSION[self::FLASH_KEY];
-        foreach ($flashMessages as $key => $flashMessage) {
-            if ($flashMessage['remove'] === true) {
-                unset($flashMessages[$key]);
-            }
-        }
-    }
 }
-?>

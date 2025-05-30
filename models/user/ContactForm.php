@@ -1,22 +1,18 @@
 <?php
 
-namespace models;
+namespace muser;
 
 use core\Application;
-use core\Model;
-use core\Session;
+use cuser\updateUser;
 
-class ContactForm extends Model
+class ContactForm extends UpdateUser
 {
-    public Session $session;
 
     public string $subject = "";
     public string $email = "";
     public string $body = "";
     public string $name = "";
-    public string $check = "";
     public string $submit = "submit";
-    public array $array = [];
 
     public function __construct()
     {
@@ -33,9 +29,9 @@ class ContactForm extends Model
     public function rules(): array
     {
         $array = [
-            'subject' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min'=>5], [self::RULE_MAX, 'max'=>100]],
+            'subject' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 5], [self::RULE_MAX, 'max' => 100]],
             'email' => [self::RULE_REQUIRED, self::RULE_EMAIL],
-            'body' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min'=>20]],
+            'body' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 20]],
             'name' => [self::RULE_REQUIRED]
         ];
         return $array;
@@ -43,8 +39,17 @@ class ContactForm extends Model
 
     public function submit(): bool
     {
+        $db = Application::$app->db->pdo;
+        $tableName = $this->tableNAME();
+        $attributes = $this->attributes();
+        $params = array_map(fn($attr) => ":$attr", $attributes);
+        $sql = "INSERT INTO $tableName (" . implode(',', $attributes) . ") VALUES (" . implode(',', $params) . ")";
+        $statement = $db->prepare($sql);
+        foreach ($attributes as $a) {
+            $statement->bindValue(":$a", $this->{$a});
+        }
         $this->resetFields();
-            return true;
+        return $statement->execute();
     }
 
     /**
@@ -56,8 +61,23 @@ class ContactForm extends Model
         $this->email = "";
         $this->body = "";
         $this->name = "";
-        $this->check = "";
         $this->submit = "submit";
     }
+
+    public static function tableNAME(): string
+    {
+        return 'contact_messages';
+    }
+    public function attributes(): array
+    {
+        return [
+            'name',
+            'subject',
+            'body'
+        ];
+    }
+    public static function primaryKey(): string
+    {
+        return 'id';
+    }
 }
-?>

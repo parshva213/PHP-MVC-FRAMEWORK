@@ -33,20 +33,8 @@ $users = $db->query("SELECT * FROM ausers")->fetchAll(PDO::FETCH_ASSOC);
                         <td><?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']) ?></td>
                         <td><?= htmlspecialchars($role) ?></td>
                         <td><a href="https://mail.google.com/mail/u/0/#inbox?compose=<?= htmlspecialchars($user['email']) ?>" target="_blank"><i class="bi bi-envelope-at"></i></a>
-                            <?php
-                            $usercon = $db->query("SELECT * FROM usercon WHERE uid = " . $user['uid'])->fetchAll(PDO::FETCH_ASSOC);
-                            if (count($usercon) == 1) {
-                                echo "<a href='tel:" . htmlspecialchars($usercon[0]['contact']) . "'><i class='bi bi-telephone'></i></a>";
-                            } else {
-                            ?>
-                                <?php
-                                foreach ($usercon as $con) {
-                                    echo "<a href='tel:" . htmlspecialchars($con['contact']) . "'><i class='bi bi-telephone'></i></a>";
-                                }
-                                ?>
-                            <?php
-                            }
-                            ?>
+
+                            <a href="tel:<?= htmlspecialchars($user['contact']) ?>"><i class='bi bi-telephone'></i></a>
                             <a href="https://www.google.com/maps/search/?api=1&query=<?= urlencode($user['address']) ?>" target="_blank"><i class="bi bi-map"></i></a>
                         </td>
                         <td class="dropdown">

@@ -1,10 +1,10 @@
 <?php
 
-namespace models;
+namespace muser;
 
 use core\Application;
 use core\DbModel;
-use models\User;
+use muser\User;
 
 class LoginForm extends DbModel
 {
@@ -55,7 +55,7 @@ class LoginForm extends DbModel
 
     public function login()
     {
-        $user = user::findOne(['username' => $this->username]);
+        $user = $this->findOne(['username' => $this->username]);
         if (!$user) {
             $this->addError('username', self::RULE_USER_NOT_FOUND);
             return false;

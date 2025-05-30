@@ -1,9 +1,7 @@
 <?php
 
-namespace models;
+namespace muser;
 
-use core\Application;
-use core\UserModel;
 use core\DbModel;
 
 class User extends DbModel
