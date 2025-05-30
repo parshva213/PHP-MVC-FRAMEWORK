@@ -81,7 +81,7 @@ class LoginForm extends DbModel
     public function isAdmin(): bool
     {
         $user = Application::$app->user;
-        if ($user && $this->user_type === User::ROLE_OWNER) {
+        if ($user && $this->user_type === User::ROLE_ADMIN) {
             return true;
         }
         return false;

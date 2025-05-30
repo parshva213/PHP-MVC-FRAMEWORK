@@ -61,7 +61,6 @@ $this->title = 'Change Password';
                             <div class="text-danger small ms-1"><?= $model->getFirstError('conform_password') ?></div>
                         <?php endif; ?>
                     </div>
-
                     <!-- Remember Me & Submit -->
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-outline-success">Change Password</button>

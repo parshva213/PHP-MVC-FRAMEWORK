@@ -2,6 +2,7 @@
 
 namespace muser;
 
+use core\Application;
 use core\DbModel;
 
 class User extends DbModel
@@ -11,6 +12,7 @@ class User extends DbModel
     const STASTUS_ACTIVE = 1;
     const STASTUS_DELETED = 2;
 
+    const ROLE_ADMIN = 'a';
     const ROLE_OWNER = 'o';
     const ROLE_MANUFACTURER = 'm';
     const ROLE_SUPPLIER = 's';
@@ -107,6 +109,10 @@ class User extends DbModel
 
     public function isAdmin(): bool
     {
+        $user = Application::$app->user;
+        if ($user && $this->user_type === User::ROLE_ADMIN) {
+            return true;
+        }
         return false;
     }
 }
