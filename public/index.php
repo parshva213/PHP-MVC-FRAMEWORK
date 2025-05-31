@@ -36,28 +36,30 @@ $config = [
 
 $app = new Application(dirname(__DIR__), $config);
 
-$app->router->get('/', [SiteController::class, 'Home']);
-$app->router->get('/contact', [SiteController::class, 'Contact']);
-$app->router->post('/contact', [SiteController::class, 'Contact']);
-$app->router->get('/login', [AuthController::class, 'login']);
-$app->router->get('/register', [AuthController::class, 'register']);
-$app->router->post('/login', [AuthController::class, 'login']);
-$app->router->post('/register', [AuthController::class, 'register']);
-$app->router->get('/logout', [SiteController::class, 'logout']);
-$app->router->post('/profile', [SiteController::class, 'profile']);
-$app->router->get('/profile', [SiteController::class, 'profile']);
-$app->router->get('/cpass', [SiteController::class, 'cpass']);
-$app->router->post('/cpass', [SiteController::class, 'cpass']);
-$app->router->get('/forget-password', [AuthController::class, 'fpass']);
-$app->router->post('/forget-password', [AuthController::class, 'fpass']);
-
 if ($app->user->isRole() === Need::ROLE_ADMIN) {
-    $app->router->get('/adminGiveLoginPermission', [AdminController::class, 'usergivePermission']);
     $app->router->post('/adminUserGiveAccess', [AdminController::class, 'usergiveAccess']);
+    $app->router->get('/adminGiveLoginPermission', [AdminController::class, 'usergivePermission']);
     $app->router->get('/adminUserGiveAccess', [AdminController::class, 'usergiveAccess']);
     $app->router->get('/adminProductGiveAccess', [AdminController::class, 'productgiveAccess']);
     $app->router->get('/adminUsersview', [AdminController::class, 'userView']);
     $app->router->get('/adminProductList', [AdminController::class, 'productList']);
 }
+
+$app->router->get('/', [SiteController::class, 'Home']);
+$app->router->post('/contact', [SiteController::class, 'Contact']);
+$app->router->post('/profile', [SiteController::class, 'profile']);
+$app->router->post('/cpass', [SiteController::class, 'cpass']);
+$app->router->get('/contact', [SiteController::class, 'Contact']);
+$app->router->get('/logout', [SiteController::class, 'logout']);
+$app->router->get('/cpass', [SiteController::class, 'cpass']);
+$app->router->get('/profile', [SiteController::class, 'profile']);
+
+$app->router->get('/login', [AuthController::class, 'login']);
+$app->router->get('/register', [AuthController::class, 'register']);
+$app->router->get('/forget-password', [AuthController::class, 'fpass']);
+$app->router->post('/login', [AuthController::class, 'login']);
+$app->router->post('/register', [AuthController::class, 'register']);
+$app->router->post('/forget-password', [AuthController::class, 'fpass']);
+
 
 $app->run();

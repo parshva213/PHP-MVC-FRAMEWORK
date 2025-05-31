@@ -8,7 +8,7 @@ class AdminController extends Controller
 {
 
     public string $rootPages = "viewAdmin/viewPages/";
-    public string $rootAccess = "viewAdmin/accessHanel/";
+    public string $rootAccess = "viewAdmin/accessHandel/";
 
     public function usergivePermission()
     {
@@ -17,7 +17,7 @@ class AdminController extends Controller
     }
     public function usergiveAccess()
     {
-        $this->setLayout('main');
+        $this->setLayout('auth');
         return $this->render($this->rootAccess . 'userHandelPermission');
     }
 
@@ -34,6 +34,7 @@ class AdminController extends Controller
     }
     public function productgiveAccess()
     {
+        $this->setLayout('auth');
         return $this->render($this->rootAccess . 'manageProductHendel');
     }
 }

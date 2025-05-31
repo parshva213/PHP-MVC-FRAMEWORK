@@ -26,6 +26,7 @@ $products = $db->query("SELECT * FROM product")->fetchAll(PDO::FETCH_ASSOC);
                 <th>Quantity</th>
                 <th>MRP</th>
                 <th>Selling Price</th>
+                <th>State</th>
                 <th>Created At</th>
                 <th>Updated At</th>
                 <th>Action</th>
@@ -36,36 +37,31 @@ $products = $db->query("SELECT * FROM product")->fetchAll(PDO::FETCH_ASSOC);
             if (count($products) > 0) {
                 foreach ($products as $p) {
             ?>
-                    <tr>
-                        <td><?php echo $p['pid'] ?></td>
-                        <td><?php echo $p['pname'] ?></td>
-                        <td><?php echo $p['product_type'] ?></td>
-                        <td><?php echo $p['hsfno'] ?></td>
-                        <td><?php echo $p['description'] ?></td>
-                        <td><?php echo $p['uploaded_by_uid'] ?></td>
-                        <td><?php echo $p['user_type'] ?></td>
-                        <td><?php echo $p['pstate'] ?></td>
-                        <td><?php echo $p['quantity'] ?></td>
-                        <td><?php echo $p['mrp'] ?></td>
-                        <td><?php echo $p['selling_price'] ?></td>
-                        <td><?php echo $p['created_at'] ?></td>
-                        <td><?php echo $p['last_updated_at'] ?></td>
-                        <td>
+                    <tr id="product-<?= htmlspecialchars($p['pid']) ?>">
+                        <td class="product-pid"><?php echo $p['pid'] ?></td>
+                        <td class="product-name"><?php echo $p['pname'] ?></td>
+                        <td class="product-type"><?php echo $p['product_type'] ?></td>
+                        <td class="product-hsfno"><?php echo $p['hsfno'] ?></td>
+                        <td class="product-description"><?php echo $p['description'] ?></td>
+                        <td class="product-uid"><?php echo $p['uploaded_by_uid'] ?></td>
+                        <td class="product-user-role"><?php echo $p['user_type'] ?></td>
+                        <td class="product-status"><?php echo $p['pstatus'] ?></td>
+                        <td class="product-quantity"><?php echo $p['quantity'] ?></td>
+                        <td class="product-mrp"><?php echo $p['mrp'] ?></td>
+                        <td class="product-sp"><?php echo $p['selling_price'] ?></td>
+                        <td class="product-state"><?php echo $p['pstate'] ?></td>
+                        <td class="product-created"><?php echo $p['created_at'] ?></td>
+                        <td class="product-updated"><?php echo $p['last_updated_at'] ?></td>
+                        <td class="product-action dropdown">
                             <a href="#" class="text-black" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-three-dots-vertical"></i>
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu action-list">
                                 <!-- Nested Dropdown Item -->
                                 <li>
-                                    <?php if ($p['productstate'] != Need::PRODUCT_STATE_ACTIVE): ?>
-                                        <button type="button" class="dropdown-item text-success allow-btn edit-state" data-pid="<?= htmlspecialchars($p['pid']) ?>" data-state="<?= Need::PRODUCT_STATE_ACTIVE ?>">
-                                            Active
-                                        </button>
-                                    <?php elseif ($p['productstate'] != Need::PRODUCT_STATE_INACTIVE): ?>
-                                        <button type="button" class="dropdown-item text-danger allow-btn edit-state" data-pid="<?= htmlspecialchars($p['pid']) ?>" data-state="<?= Need::PRODUCT_STATE_INACTIVE ?>">
-                                            In Active
-                                        </button>
-                                    <?php endif; ?>
+                                    <button type="button" class="dropdown-item text-success allow-btn edit-state" data-pid="<?= htmlspecialchars($p['pid']) ?>" data-state="<?= (($p['pstate'] != Need::PRODUCT_STATE_ACTIVE) ? Need::PRODUCT_STATE_ACTIVE : Need::PRODUCT_STATE_INACTIVE) ?>">
+                                        State
+                                    </button>
                                 </li>
                             </ul>
                         </td>
@@ -100,9 +96,9 @@ $products = $db->query("SELECT * FROM product")->fetchAll(PDO::FETCH_ASSOC);
                     state: state
                 },
                 success: function(response) {
-
-                    location.reload(); // optionally refresh page
-                    console.log('success');
+                    const pid = response.pid;
+                    $('#product-' + pid).find('.product-state').html(response.record);
+                    console.log(response);
                 },
                 error: function(xhr) {
                     alert('Error: ' + xhr.responseText);

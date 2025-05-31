@@ -11,6 +11,7 @@ return array(
     'form\\' => array($baseDir . '/core/form'),
     'exception\\' => array($baseDir . '/core/exception'),
     'cuser\\' => array($baseDir . '/core/user'),
+    'cproduct\\' => array($baseDir . '/core/product'),
     'core\\' => array($baseDir . '/core'),
     'controllers\\' => array($baseDir . '/controllers'),
     'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),

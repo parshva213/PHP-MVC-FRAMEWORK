@@ -29,7 +29,8 @@ $users = $db->query("SELECT * FROM ausers")->fetchAll(PDO::FETCH_ASSOC);
                         <td><?= htmlspecialchars($user['uid']) ?></td>
                         <td><?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']) ?></td>
                         <td><?= htmlspecialchars($role) ?></td>
-                        <td><a href="https://mail.google.com/mail/u/0/#inbox?compose=<?= htmlspecialchars($user['email']) ?>" target="_blank"><i class="bi bi-envelope-at"></i></a>
+                        <td>
+                            <a href="https://mail.google.com/mail/u/0/#inbox?compose=<?= htmlspecialchars($user['email']) ?>" target="_blank"><i class="bi bi-envelope-at"></i></a>
 
                             <a href="tel:<?= htmlspecialchars($user['contact']) ?>"><i class='bi bi-telephone'></i></a>
                             <a href="https://www.google.com/maps/search/?api=1&query=<?= urlencode($user['address']) ?>" target="_blank"><i class="bi bi-map"></i></a>
@@ -80,6 +81,7 @@ $users = $db->query("SELECT * FROM ausers")->fetchAll(PDO::FETCH_ASSOC);
 
             const uid = $(this).data('uid');
             const activity = $(this).data('activity');
+
             $.ajax({
                 url: '/adminUserGiveAccess', // update to correct PHP script
                 type: 'GET',
@@ -88,6 +90,9 @@ $users = $db->query("SELECT * FROM ausers")->fetchAll(PDO::FETCH_ASSOC);
                     active: activity
                 },
                 success: function(response) {
+
+                    console.log(response);
+
 
                     location.reload(); // optionally refresh page
                 },

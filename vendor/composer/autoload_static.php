@@ -29,6 +29,7 @@ class ComposerStaticInit6f209a6c0a6183960c5b5a25387494a8
         'c' => 
         array (
             'cuser\\' => 6,
+            'cproduct\\' => 9,
             'core\\' => 5,
             'controllers\\' => 12,
         ),
@@ -72,6 +73,10 @@ class ComposerStaticInit6f209a6c0a6183960c5b5a25387494a8
         'cuser\\' => 
         array (
             0 => __DIR__ . '/../..' . '/core/user',
+        ),
+        'cproduct\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/core/product',
         ),
         'core\\' => 
         array (

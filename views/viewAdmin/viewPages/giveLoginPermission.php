@@ -38,7 +38,7 @@ $records = $statement->fetchAll(PDO::FETCH_ASSOC);
                         <td><a href="tel:<?= htmlspecialchars($record['contact']) ?>"><i class="bi bi-telephone"></i><?= htmlspecialchars($record['contact']) ?></a></td>
                         <td><?= htmlspecialchars($record['address']) ?></td>
                         <td>
-                            <button type="submit" class="btn btn-outline-success allow-btn edit-slink" data-uid="<?= htmlspecialchars($record['uid']) ?>">Allow</button>
+                            <button type="button" class="btn btn-outline-success allow-btn edit-slink" data-uid="<?= htmlspecialchars($record['uid']) ?>">Allow</button>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -65,6 +65,7 @@ $records = $statement->fetchAll(PDO::FETCH_ASSOC);
                     uid: uid
                 },
                 success: function(response) {
+                    console.log(response);
                     location.reload(); // optionally refresh page
                 },
                 error: function(xhr) {
