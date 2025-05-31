@@ -1,6 +1,7 @@
 <?php
 
 use core\Application;
+use core\Need;
 
 include "needs.php";
 
@@ -33,7 +34,7 @@ $request = $app->request;
     <div class="sidebar-wrapper" style="width: 100%;">
       <nav class="mt-2">
         <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu">
-          <?php if ($user && $user->isAdmin()): ?>
+          <?php if ($user && $user->isRole() === Need::ROLE_ADMIN): ?>
             <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon bi bi-speedometer"></i>
@@ -44,33 +45,16 @@ $request = $app->request;
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="/givePermission" class="nav-link">
+                  <a href="/adminGiveLoginPermission" class="nav-link">
                     <i class="bi bi-person"></i>
                     <p>User Register Validation</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="/adminProductList" class="nav-link">
                     <i class="nav-icon bi bi-box-arrow-in-right"></i>
-                    <p>
-                      Product
-                      <i class="nav-arrow bi bi-chevron-right"></i>
-                    </p>
+                    <p> Product </p>
                   </a>
-                  <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                      <a href="./examples/login-v2.html" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
-                        <p>List</p>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a href="./examples/register-v2.html" class="nav-link">
-                        <i class="nav-icon bi bi-circle"></i>
-                        <p>Modify</p>
-                      </a>
-                    </li>
-                  </ul>
                 </li>
               </ul>
             </li>
@@ -84,7 +68,7 @@ $request = $app->request;
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="/usersview" class="nav-link">
+                  <a href="/adminUsersview" class="nav-link">
                     <i class="nav-icon bi bi-circle"></i>
                     <p>Users</p>
                   </a>

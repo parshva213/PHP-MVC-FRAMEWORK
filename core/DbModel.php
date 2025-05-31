@@ -10,7 +10,7 @@ abstract class DbModel extends Model
     abstract public function attributes(): array;
     abstract public static function primaryKey(): string;
     abstract public function getDisplayName(): string;
-    abstract public function isAdmin(): bool;
+    abstract public function isRole(): string;
 
 
 

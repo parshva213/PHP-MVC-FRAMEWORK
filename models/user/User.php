@@ -2,21 +2,13 @@
 
 namespace muser;
 
-use core\Application;
 use core\DbModel;
+use core\Need;
 
 class User extends DbModel
 {
-    public ?int $id = null; // Allow null until it is set
-    const STASTUS_INACTIVE = 0;
-    const STASTUS_ACTIVE = 1;
-    const STASTUS_DELETED = 2;
 
-    const ROLE_ADMIN = 'a';
-    const ROLE_OWNER = 'o';
-    const ROLE_MANUFACTURER = 'm';
-    const ROLE_SUPPLIER = 's';
-    const ROLE_CUSTOMER = 'c';
+    public ?int $id = null; // Allow null until it is set
 
     public string $statement = "";
 
@@ -29,9 +21,8 @@ class User extends DbModel
     public string $email = "";
     public string $contact = "";
     public string $address = "";
-    public int $status = SELF::STASTUS_ACTIVE; // Default to 'active'
+    public int $status = Need::STASTUS_ACTIVE; // Default to 'active'
     public string $user_created_on = "";   // Let MySQL handle this, but define to avoid warnings
-
     public function __construct()
     {
         if (isset($_POST['firstName']))
@@ -89,7 +80,7 @@ class User extends DbModel
 
     public function save()
     {
-        $this->status = self::STASTUS_ACTIVE;
+        $this->status = Need::STASTUS_ACTIVE;
         $this->firstName = ucfirst($this->firstName);
         $this->lastName = ucfirst($this->lastName);
         $this->password = md5($this->password, PASSWORD_DEFAULT);
@@ -107,12 +98,8 @@ class User extends DbModel
         return ucfirst($this->firstName) . ' ' . ucfirst($this->lastName);
     }
 
-    public function isAdmin(): bool
+    public function isRole(): string
     {
-        $user = Application::$app->user;
-        if ($user && $this->user_type === User::ROLE_ADMIN) {
-            return true;
-        }
-        return false;
+        return $this->user_type;
     }
 }

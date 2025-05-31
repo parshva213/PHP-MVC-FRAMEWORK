@@ -11,7 +11,8 @@ use Dotenv\Dotenv;
 use core\Application;
 use controllers\SiteController;
 use controllers\AuthController;
-use controllers\UserController;
+use controllers\AdminController;
+use core\Need;
 use muser\LoginForm;
 
 // Check if the script is accessed from a web browser
@@ -45,12 +46,18 @@ $app->router->post('/register', [AuthController::class, 'register']);
 $app->router->get('/logout', [SiteController::class, 'logout']);
 $app->router->post('/profile', [SiteController::class, 'profile']);
 $app->router->get('/profile', [SiteController::class, 'profile']);
-$app->router->get('/givePermission', [UserController::class, 'givePermission']);
-$app->router->post('/giveAccess', [UserController::class, 'giveAccess']);
-$app->router->get('/giveAccess', [UserController::class, 'giveAccess']);
-$app->router->get('/usersview', [UserController::class, 'userview']);
 $app->router->get('/cpass', [SiteController::class, 'cpass']);
 $app->router->post('/cpass', [SiteController::class, 'cpass']);
 $app->router->get('/forget-password', [AuthController::class, 'fpass']);
 $app->router->post('/forget-password', [AuthController::class, 'fpass']);
+
+if ($app->user->isRole() === Need::ROLE_ADMIN) {
+    $app->router->get('/adminGiveLoginPermission', [AdminController::class, 'usergivePermission']);
+    $app->router->post('/adminUserGiveAccess', [AdminController::class, 'usergiveAccess']);
+    $app->router->get('/adminUserGiveAccess', [AdminController::class, 'usergiveAccess']);
+    $app->router->get('/adminProductGiveAccess', [AdminController::class, 'productgiveAccess']);
+    $app->router->get('/adminUsersview', [AdminController::class, 'userView']);
+    $app->router->get('/adminProductList', [AdminController::class, 'productList']);
+}
+
 $app->run();

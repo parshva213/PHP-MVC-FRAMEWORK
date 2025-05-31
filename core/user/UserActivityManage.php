@@ -3,14 +3,13 @@
 
 namespace cuser;
 
-use controllers\SiteController;
 use core\Application;
 
-class UserActivityManage extends SiteController
+class UserActivityManage
 {
     public int $id;
 
-    public function delete($id)
+    public function adminValidateSuccess($id)
     {
         $this->id = $id;
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['uid'])) {
@@ -25,7 +24,7 @@ class UserActivityManage extends SiteController
         }
     }
 
-    public function update($uid, $activity)
+    public function adminLoginStatusManage($uid, $activity)
     {
         $db = Application::$app->db->pdo;
         $stmt = $db->prepare("UPDATE ausers SET status = ? WHERE uid = ?");

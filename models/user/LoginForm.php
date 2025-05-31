@@ -4,7 +4,7 @@ namespace muser;
 
 use core\Application;
 use core\DbModel;
-use muser\User;
+use core\Need;
 
 class LoginForm extends DbModel
 {
@@ -13,9 +13,6 @@ class LoginForm extends DbModel
     public string $username = "";
     public string $password = "";
     public string $user_type = "";
-    const STATUS_INACTIVE = 0;
-    const STATUS_ACTIVE = 1;
-    const STATUS_DELETED = 2;
 
     public function __construct()
     {
@@ -66,7 +63,7 @@ class LoginForm extends DbModel
             return false;
         }
 
-        if ($user->status === self::STATUS_ACTIVE) {
+        if ($user->status === Need::STASTUS_ACTIVE) {
             $this->addError('username', self::RULE_ACTIVATION);
             return false;
         }
@@ -78,9 +75,8 @@ class LoginForm extends DbModel
         return ucfirst($this->firstname) . ' ' . ucfirst($this->lastname);
     }
 
-    public function isAdmin(): bool
+    public function isRole(): string
     {
-        $user = Application::$app->user;
-        return ($user && $this->user_type === User::ROLE_ADMIN);
+        return $this->user_type;
     }
 }

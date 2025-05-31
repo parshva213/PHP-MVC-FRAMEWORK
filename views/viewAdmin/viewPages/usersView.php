@@ -1,12 +1,9 @@
 <?php
 
 use core\Application;
+use core\Need;
 
 $this->title = 'Users View Action';
-
-const STATUS_INACTIVE = "0";
-const STATUS_ACTIVE = "1";
-const STATUS_DELETED = "2";
 
 $db = Application::$app->db->pdo;
 
@@ -38,29 +35,29 @@ $users = $db->query("SELECT * FROM ausers")->fetchAll(PDO::FETCH_ASSOC);
                             <a href="https://www.google.com/maps/search/?api=1&query=<?= urlencode($user['address']) ?>" target="_blank"><i class="bi bi-map"></i></a>
                         </td>
                         <td class="dropdown">
-                            <?php echo ($user['status'] === STATUS_ACTIVE) ? "<span class='badge bg-success'>Active</span>" : (($user['status'] === STATUS_INACTIVE) ? "<span class='badge bg-warning'>Inactive</span>" : "<span class='badge bg-danger'>Blocked</span>"); ?>
+                            <?php echo ($user['status'] == Need::STASTUS_ACTIVE) ? "<span class='badge bg-success'>Active</span>" : (($user['status'] == Need::STASTUS_INACTIVE) ? "<span class='badge bg-warning'>Inactive</span>" : "<span class='badge bg-danger'>Blocked</span>"); ?>
                             <a href="#" class="text-black" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-three-dots-vertical"></i>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- Nested Dropdown Item -->
-                                <?php if ($user['status'] != 1): ?>
+                                <?php if ($user['status'] != Need::STASTUS_ACTIVE): ?>
                                     <li>
-                                        <button type="button" class="dropdown-item text-success allow-btn edit-status" data-uid="<?= htmlspecialchars($user['uid']) ?>" data-activity="<?= STATUS_ACTIVE ?>">
+                                        <button type="button" class="dropdown-item text-success allow-btn edit-status" data-uid="<?= htmlspecialchars($user['uid']) ?>" data-activity="<?= Need::STASTUS_ACTIVE ?>">
                                             Active
                                         </button>
                                     </li>
                                 <?php endif; ?>
-                                <?php if ($user['status'] != 0): ?>
+                                <?php if ($user['status'] != Need::STASTUS_INACTIVE): ?>
                                     <li>
-                                        <button type="button" class="dropdown-item text-warning allow-btn edit-status" data-uid="<?= htmlspecialchars($user['uid']) ?>" data-activity="<?= STATUS_INACTIVE ?>">
+                                        <button type="button" class="dropdown-item text-warning allow-btn edit-status" data-uid="<?= htmlspecialchars($user['uid']) ?>" data-activity="<?= Need::STASTUS_INACTIVE ?>">
                                             Block
                                         </button>
                                     </li>
                                 <?php endif; ?>
-                                <?php if ($user['status'] != 2): ?>
+                                <?php if ($user['status'] != Need::STASTUS_DELETED): ?>
                                     <li>
-                                        <button type="button" class="dropdown-item text-danger allow-btn edit-status" data-uid="<?= htmlspecialchars($user['uid']) ?>" data-activity="<?= STATUS_DELETED ?>">
+                                        <button type="button" class="dropdown-item text-danger allow-btn edit-status" data-uid="<?= htmlspecialchars($user['uid']) ?>" data-activity="<?= Need::STASTUS_DELETED ?>">
                                             Permanently Blocked
                                         </button>
                                     </li>
@@ -84,7 +81,7 @@ $users = $db->query("SELECT * FROM ausers")->fetchAll(PDO::FETCH_ASSOC);
             const uid = $(this).data('uid');
             const activity = $(this).data('activity');
             $.ajax({
-                url: '/giveAccess', // update to correct PHP script
+                url: '/adminUserGiveAccess', // update to correct PHP script
                 type: 'GET',
                 data: {
                     uid: uid,

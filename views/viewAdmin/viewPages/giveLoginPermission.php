@@ -59,7 +59,7 @@ $records = $statement->fetchAll(PDO::FETCH_ASSOC);
 
             const uid = $(this).data('uid');
             $.ajax({
-                url: '/giveAccess', // update to correct PHP script
+                url: '/adminUserGiveAccess', // update to correct PHP script
                 type: 'POST',
                 data: {
                     uid: uid

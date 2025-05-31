@@ -10,6 +10,7 @@
             "models\\": "models/",
             "form\\": "core/form/",
             "cuser\\": "core/user/",
+            "cproduct\\": "core/product/",
             "muser\\": "models/user/",
             "Dotenv\\": "Dotenv/",
             "exception\\": "core/exception"
