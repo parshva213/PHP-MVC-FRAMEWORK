@@ -15,11 +15,12 @@ class ProductActivityManager
         $statement->bindValue(':pstate', $pstate);
         $statement->bindValue(':pid', $pid);
         if ($statement->execute()) {
-            $sql = "SELECT pstate from $this->tablename where pid = :pid;";
+            $sql = "SELECT * from $this->tablename where pid = :pid;";
             $statement = $db->prepare($sql);
             $statement->bindValue(':pid', $pid);
             $statement->execute();
-            $record = $statement->fetchColumn(0);
+            $record = $statement->fetchAll();
+            $record = $record[0];
             // return $record;
             header('Content-Type: application/json');
             echo json_encode([

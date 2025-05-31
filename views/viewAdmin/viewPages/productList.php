@@ -49,7 +49,20 @@ $products = $db->query("SELECT * FROM product")->fetchAll(PDO::FETCH_ASSOC);
                         <td class="product-quantity"><?php echo $p['quantity'] ?></td>
                         <td class="product-mrp"><?php echo $p['mrp'] ?></td>
                         <td class="product-sp"><?php echo $p['selling_price'] ?></td>
-                        <td class="product-state"><?php echo $p['pstate'] ?></td>
+                        <td class="product-state">
+                            <span><?php echo $p['pstate'] ?></span>
+                            <div class="form-check form-switch">
+                                <?php $isChecked = ($p['pstate'] == Need::PRODUCT_STATE_ACTIVE); ?>
+                                <input
+                                    data-pid="<?= htmlspecialchars($p['pid']) ?>"
+                                    data-state="<?= $isChecked ? Need::PRODUCT_STATE_INACTIVE : Need::PRODUCT_STATE_ACTIVE ?>"
+                                    class="form-check-input status_check"
+                                    type="checkbox"
+                                    role="switch"
+                                    <?= $isChecked ? 'checked' : '' ?> />
+
+                            </div>
+                        </td>
                         <td class="product-created"><?php echo $p['created_at'] ?></td>
                         <td class="product-updated"><?php echo $p['last_updated_at'] ?></td>
                         <td class="product-action dropdown">
@@ -59,7 +72,7 @@ $products = $db->query("SELECT * FROM product")->fetchAll(PDO::FETCH_ASSOC);
                             <ul class="dropdown-menu action-list">
                                 <!-- Nested Dropdown Item -->
                                 <li>
-                                    <button type="button" class="dropdown-item text-success allow-btn edit-state" data-pid="<?= htmlspecialchars($p['pid']) ?>" data-state="<?= (($p['pstate'] != Need::PRODUCT_STATE_ACTIVE) ? Need::PRODUCT_STATE_ACTIVE : Need::PRODUCT_STATE_INACTIVE) ?>">
+                                    <button type="button" class="dropdown-item text-success allow-btn edit-state">
                                         State
                                     </button>
                                 </li>
@@ -82,28 +95,26 @@ $products = $db->query("SELECT * FROM product")->fetchAll(PDO::FETCH_ASSOC);
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('body').on('click', '.edit-state', function(e) {
-            e.preventDefault(); // stop default button action
-
-            const pid = $(this).data('pid');
-            const state = $(this).data('state');
-            $.ajax({
-                url: '/adminProductGiveAccess', // update to correct PHP script
-                type: 'GET',
-                data: {
-                    pid: pid,
-                    state: state
-                },
-                success: function(response) {
-                    const pid = response.pid;
-                    $('#product-' + pid).find('.product-state').html(response.record);
-                    console.log(response);
-                },
-                error: function(xhr) {
-                    alert('Error: ' + xhr.responseText);
-                }
-            });
+    //$(document).ready(function() {
+    $('body').on('change', '.status_check', function(e) {
+        e.preventDefault(); // stop default button action
+        const pid = $(this).data('pid');
+        const state = $(this).data('state');
+        $.ajax({
+            url: '/adminProductGiveAccess', // update to correct PHP script
+            type: 'GET',
+            data: {
+                pid: pid,
+                state: state
+            },
+            success: function(response) {
+                $('#product-' + response.pid).find('.product-state span').text(response.record['pstate']);
+                console.log(response.record);
+            },
+            error: function(xhr) {
+                alert('Error: ' + xhr.responseText);
+            }
         });
     });
+    //});
 </script>
