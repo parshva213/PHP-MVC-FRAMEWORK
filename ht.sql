@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2025 at 02:57 PM
+-- Generation Time: Jun 02, 2025 at 03:38 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,25 +33,26 @@ CREATE TABLE `ausers` (
   `lastname` varchar(50) DEFAULT NULL,
   `username` varchar(100) DEFAULT NULL,
   `password` varchar(100) DEFAULT NULL,
-  `user_type` enum('o','m','s','c') DEFAULT NULL,
+  `user_type` enum('o','m','s','c','a') DEFAULT NULL COMMENT 'a = Admin o = Owner m = Manufacturer s = Supplier c = Customer',
   `email` varchar(100) DEFAULT NULL,
+  `contact` varchar(15) DEFAULT NULL,
   `address` text DEFAULT NULL,
   `status` enum('0','1','2','') DEFAULT NULL,
-  `user_created_on` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `contact` varchar(15) DEFAULT NULL
+  `user_created_on` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ausers`
 --
 
-INSERT INTO `ausers` (`uid`, `firstname`, `lastname`, `username`, `password`, `user_type`, `email`, `address`, `status`, `user_created_on`, `contact`) VALUES
-(1, 'Parshva', 'Shah', 'parshva213', '??|UI???ɱ?D', 'o', 'ljminiproject@gmail.com', 'abc12', '1', '2025-05-29 12:49:49', '+91 99047-88109'),
-(8, 'Ha', 'Shah', '50214', '$2y$10$DIIzzrpna72.PNW6yCghm.eL9f/lhNE5zSslZ0XiFfx08AZWLWFyO', 's', '1234@google.com', '1234567890', '0', '2025-05-29 10:50:04', '+91 94274-16209'),
-(9, 'H', 'Shah', '100', '%???2;E8??bM', 'c', 'dd@mail.cm', '123 gms hospital', '2', '2025-05-28 11:12:01', '+91 12345-67890'),
-(10, 'Ha', 'Shah', '50216', '%???2;E8??bM', 's', '123@google.co', '1234567890', '1', '2025-05-28 11:12:12', '+91 94274-16208'),
-(11, 'Parshva', 'Shah', '5021', '%???2;E8??bM', 'c', '13@google.com', '123 khadiya ', '1', '2025-05-28 11:12:38', '+91 99048-88108'),
-(12, 'Jbshdkb', 'Shah', '1001', '?B???Yu??㥬???', 's', 'kjds@google.com', '321645789', '1', '2025-05-28 11:13:14', '+91 12345-67809');
+INSERT INTO `ausers` (`uid`, `firstname`, `lastname`, `username`, `password`, `user_type`, `email`, `contact`, `address`, `status`, `user_created_on`) VALUES
+(1, 'Parshva', 'Shah', 'parshva213', '8e3c82bbe74ba6ca39e4e9add7d8ba2a', 'a', 'ljminiproject@gmail.com', '+91 99047-88109', 'abc12', '1', '2025-05-30 07:02:14'),
+(8, 'Ha', 'Shah', '50214', '$2y$10$DIIzzrpna72.PNW6yCghm.eL9f/lhNE5zSslZ0XiFfx08AZWLWFyO', 's', '1234@google.com', '+91 94274-16209', '1234567890', '0', '2025-05-31 07:44:04'),
+(9, 'H', 'Shah', '100', '%???2;E8??bM', 'c', 'dd@mail.cm', '+91 12345-67890', '123 gms hospital', '0', '2025-05-31 07:44:14'),
+(10, 'Ha', 'Shah', '50216', '%???2;E8??bM', 's', '123@google.co', '+91 94274-16208', '1234567890', '1', '2025-05-28 11:12:12'),
+(11, 'Parshva', 'Shah', '5021', '%???2;E8??bM', 'c', '13@google.com', '+91 99048-88108', '123 khadiya ', '1', '2025-05-28 11:12:38'),
+(12, 'Jbshdkb', 'Shah', '1001', '?B???Yu??㥬???', 's', 'kjds@google.com', '+91 12345-67809', '321645789', '1', '2025-05-28 11:13:14'),
+(13, '1231', '1321', '13215', '123456789', 'm', '123456789', '1326548790', '1234564879', '0', '2025-05-31 06:12:43');
 
 -- --------------------------------------------------------
 
@@ -65,7 +66,7 @@ CREATE TABLE `causers` (
   `lastname` varchar(50) NOT NULL,
   `username` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `user_type` enum('o','m','s','c') NOT NULL,
+  `user_type` enum('o','m','s','c','a') NOT NULL COMMENT '	a = Admin o = Owner m = Manufacturer s = Supplier c = Customer',
   `email` varchar(100) NOT NULL,
   `contact` varchar(15) DEFAULT NULL,
   `address` text DEFAULT NULL,
@@ -82,25 +83,30 @@ CREATE TRIGGER `before_delete_causers` BEFORE DELETE ON `causers` FOR EACH ROW B
     -- Insert into ausers and let uid auto-increment
     INSERT INTO ausers (
        uid, firstname, lastname, username, password, user_type,
-        email, address, status, user_created_on
+        email, address, status, user_created_on,contact
     )
     VALUES (
        OLD.uid, OLD.firstname, OLD.lastname, OLD.username, OLD.password, OLD.user_type,
-        OLD.email, OLD.address, OLD.status, OLD.user_created_on
-    );
-
-    -- Get the newly generated uid
-
-    -- Insert into usercon using the new uid
-    INSERT INTO usercon (
-        uid, contact
-    )
-    VALUES (
-        OLD.uid, OLD.contact
+        OLD.email, OLD.address, OLD.status, OLD.user_created_on,OLD.contact
     );
 END
 $$
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contact_messages`
+--
+
+CREATE TABLE `contact_messages` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `subject` varchar(255) NOT NULL,
+  `body` text NOT NULL,
+  `post_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -150,29 +156,59 @@ CREATE TABLE `ouserbank` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product_image`
+-- Table structure for table `product`
 --
 
-CREATE TABLE `product_image` (
-  `product_id` int(11) DEFAULT NULL,
-  `product_image_path` text DEFAULT NULL,
-  `uploaded_on` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+CREATE TABLE `product` (
+  `pid` int(11) NOT NULL,
+  `pname` varchar(255) NOT NULL,
+  `product_type` varchar(100) NOT NULL,
+  `image1` varchar(255) DEFAULT NULL,
+  `image2` varchar(255) DEFAULT NULL,
+  `image3` varchar(255) DEFAULT NULL,
+  `image4` varchar(255) DEFAULT NULL,
+  `quantity` decimal(5,0) NOT NULL,
+  `mrp` decimal(10,2) NOT NULL,
+  `selling_price` decimal(10,2) NOT NULL,
+  `uploaded_by_uid` int(11) NOT NULL,
+  `user_name` varchar(100) DEFAULT NULL,
+  `user_type` enum('o','c','m','s','a') NOT NULL COMMENT 'a = Admin\r\no = Owner\r\nm = Manufacturer\r\ns = Supplier\r\nc = Customer\r\n',
+  `pstatus` varchar(100) DEFAULT 'in stock',
+  `hsfno` varchar(100) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `pstate` enum('Active','In Active') NOT NULL DEFAULT 'Active' COMMENT 'Access or Reject product to display',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `last_updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `raw_product`
+-- Dumping data for table `product`
 --
 
-CREATE TABLE `raw_product` (
-  `product_id` int(11) NOT NULL,
-  `uploaded_by` int(11) DEFAULT NULL,
-  `product_name` varchar(100) DEFAULT NULL,
-  `product_type` varchar(100) DEFAULT NULL,
-  `description` varchar(250) DEFAULT NULL,
-  `created_on` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `product` (`pid`, `pname`, `product_type`, `image1`, `image2`, `image3`, `image4`, `quantity`, `mrp`, `selling_price`, `uploaded_by_uid`, `user_name`, `user_type`, `pstatus`, `hsfno`, `description`, `pstate`, `created_at`, `last_updated_at`) VALUES
+(1, 'abc', 'abc', NULL, NULL, NULL, NULL, 0, 12.50, 12.00, 1, NULL, 'a', 'in stock', '5533', 'abc', 'In Active', '2025-05-30 11:07:24', '2025-06-02 12:56:01');
+
+--
+-- Triggers `product`
+--
+DELIMITER $$
+CREATE TRIGGER `set_user_type_on_product_insert` BEFORE INSERT ON `product` FOR EACH ROW BEGIN
+    DECLARE utype CHAR(1);
+    DECLARE fname VARCHAR(50);
+    DECLARE lname VARCHAR(50);
+
+    -- Fetch firstname, lastname, and user_type from ausers table
+    SELECT firstname, lastname, user_type
+    INTO fname, lname, utype
+    FROM ausers
+    WHERE uid = NEW.uploaded_by_uid;
+
+    -- Assign user_type and user_name to new row
+    SET NEW.user_type = utype;
+    SET NEW.user_name = CONCAT(fname, ' ', lname);
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -205,21 +241,6 @@ CREATE TABLE `scompanybank` (
   `gid_no` varchar(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `sell_product`
---
-
-CREATE TABLE `sell_product` (
-  `product_id` int(11) NOT NULL,
-  `uploaded_by` int(11) DEFAULT NULL,
-  `product_name` varchar(100) DEFAULT NULL,
-  `description` varchar(250) DEFAULT NULL,
-  `price` int(11) DEFAULT NULL,
-  `created_on` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 --
 -- Indexes for dumped tables
 --
@@ -228,7 +249,8 @@ CREATE TABLE `sell_product` (
 -- Indexes for table `ausers`
 --
 ALTER TABLE `ausers`
-  ADD PRIMARY KEY (`uid`);
+  ADD PRIMARY KEY (`uid`),
+  ADD UNIQUE KEY `username` (`username`,`email`,`contact`);
 
 --
 -- Indexes for table `causers`
@@ -236,7 +258,14 @@ ALTER TABLE `ausers`
 ALTER TABLE `causers`
   ADD PRIMARY KEY (`uid`),
   ADD UNIQUE KEY `username` (`username`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `contact` (`contact`);
+
+--
+-- Indexes for table `contact_messages`
+--
+ALTER TABLE `contact_messages`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `cusuerbank`
@@ -259,17 +288,11 @@ ALTER TABLE `ouserbank`
   ADD KEY `uid` (`uid`);
 
 --
--- Indexes for table `product_image`
+-- Indexes for table `product`
 --
-ALTER TABLE `product_image`
-  ADD KEY `fk_product_image_sell` (`product_id`);
-
---
--- Indexes for table `raw_product`
---
-ALTER TABLE `raw_product`
-  ADD PRIMARY KEY (`product_id`),
-  ADD KEY `uploaded_by` (`uploaded_by`);
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`pid`),
+  ADD KEY `uploaded_by_uid` (`uploaded_by_uid`);
 
 --
 -- Indexes for table `scompany`
@@ -285,13 +308,6 @@ ALTER TABLE `scompanybank`
   ADD KEY `company_id` (`company_id`);
 
 --
--- Indexes for table `sell_product`
---
-ALTER TABLE `sell_product`
-  ADD PRIMARY KEY (`product_id`),
-  ADD KEY `uploaded_by` (`uploaded_by`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -299,13 +315,19 @@ ALTER TABLE `sell_product`
 -- AUTO_INCREMENT for table `ausers`
 --
 ALTER TABLE `ausers`
-  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `causers`
 --
 ALTER TABLE `causers`
-  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `contact_messages`
+--
+ALTER TABLE `contact_messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `musuerbank`
@@ -320,10 +342,10 @@ ALTER TABLE `ouserbank`
   MODIFY `bank_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `raw_product`
+-- AUTO_INCREMENT for table `product`
 --
-ALTER TABLE `raw_product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `product`
+  MODIFY `pid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `scompany`
@@ -354,17 +376,10 @@ ALTER TABLE `ouserbank`
   ADD CONSTRAINT `ouserbank_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `ausers` (`uid`);
 
 --
--- Constraints for table `product_image`
+-- Constraints for table `product`
 --
-ALTER TABLE `product_image`
-  ADD CONSTRAINT `fk_product_image_sell` FOREIGN KEY (`product_id`) REFERENCES `sell_product` (`product_id`),
-  ADD CONSTRAINT `product_image_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `raw_product` (`product_id`);
-
---
--- Constraints for table `raw_product`
---
-ALTER TABLE `raw_product`
-  ADD CONSTRAINT `raw_product_ibfk_1` FOREIGN KEY (`uploaded_by`) REFERENCES `ausers` (`uid`);
+ALTER TABLE `product`
+  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`uploaded_by_uid`) REFERENCES `ausers` (`uid`);
 
 --
 -- Constraints for table `scompany`
@@ -377,12 +392,6 @@ ALTER TABLE `scompany`
 --
 ALTER TABLE `scompanybank`
   ADD CONSTRAINT `scompanybank_ibfk_1` FOREIGN KEY (`company_id`) REFERENCES `scompany` (`company_id`);
-
---
--- Constraints for table `sell_product`
---
-ALTER TABLE `sell_product`
-  ADD CONSTRAINT `sell_product_ibfk_2` FOREIGN KEY (`uploaded_by`) REFERENCES `ausers` (`uid`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
