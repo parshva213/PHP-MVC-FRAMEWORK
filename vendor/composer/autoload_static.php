@@ -16,6 +16,7 @@ class ComposerStaticInit6f209a6c0a6183960c5b5a25387494a8
         'm' => 
         array (
             'muser\\' => 6,
+            'mproduct\\' => 9,
             'models\\' => 7,
         ),
         'f' => 
@@ -57,6 +58,10 @@ class ComposerStaticInit6f209a6c0a6183960c5b5a25387494a8
         'muser\\' => 
         array (
             0 => __DIR__ . '/../..' . '/models/user',
+        ),
+        'mproduct\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/models/product',
         ),
         'models\\' => 
         array (

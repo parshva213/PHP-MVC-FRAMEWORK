@@ -3,6 +3,7 @@
 namespace cproduct;
 
 use core\Application;
+use core\Need;
 
 class ProductActivityManager
 {
@@ -21,11 +22,28 @@ class ProductActivityManager
             $statement->execute();
             $record = $statement->fetchAll();
             $record = $record[0];
-            // return $record;
+            $isChecked = ($record['pstate'] == Need::PRODUCT_STATE_ACTIVE);
+            $dataState = $isChecked ? Need::PRODUCT_STATE_INACTIVE : Need::PRODUCT_STATE_ACTIVE;
+            $checkedAttr = $isChecked ? 'checked' : '';
+
+            $html = '
+<td class="product-state">
+    <span>' . htmlspecialchars($record['pstate']) . '</span>
+    <span class="form-check form-switch">
+        <input
+            data-pid="' . htmlspecialchars($record['pid']) . '"
+            data-state="' . $dataState . '"
+            class="form-check-input status_check"
+            type="checkbox"
+            role="switch"
+            ' . $checkedAttr . ' />
+    </span>
+</td>';
+
             header('Content-Type: application/json');
             echo json_encode([
                 'pid' => $pid,
-                'record' => $record
+                'record' => $html
             ]);
             exit;
         } else {
@@ -33,5 +51,19 @@ class ProductActivityManager
             // echo json_encode(['error' => 'Update failed']);
             exit;
         }
+    }
+
+    public function adminProductFetchById($pid)
+    {
+        $db = Application::$app->db->pdo;
+        $sql = "SELECT * FROM $this->tablename where pid = $pid";
+        $statement = $db->prepare($sql);
+        $statement->execute();
+        $fetchData = $statement->fetchObject();
+        header('Content-Type: application/json');
+        echo json_encode([
+            'fetchData' => $fetchData
+        ]);
+        exit;
     }
 }

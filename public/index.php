@@ -36,14 +36,13 @@ $config = [
 
 $app = new Application(dirname(__DIR__), $config);
 
-if ($app->user->isRole() === Need::ROLE_ADMIN) {
-    $app->router->post('/adminUserGiveAccess', [AdminController::class, 'usergiveAccess']);
-    $app->router->get('/adminGiveLoginPermission', [AdminController::class, 'usergivePermission']);
-    $app->router->get('/adminUserGiveAccess', [AdminController::class, 'usergiveAccess']);
-    $app->router->get('/adminProductGiveAccess', [AdminController::class, 'productgiveAccess']);
-    $app->router->get('/adminUsersview', [AdminController::class, 'userView']);
-    $app->router->get('/adminProductList', [AdminController::class, 'productList']);
-}
+
+$app->router->post('/adminUserGiveAccess', [AdminController::class, 'usergiveAccess']);
+$app->router->get('/adminGiveLoginPermission', [AdminController::class, 'usergivePermission']);
+$app->router->get('/adminUserGiveAccess', [AdminController::class, 'usergiveAccess']);
+$app->router->get('/adminProductGiveAccess', [AdminController::class, 'productgiveAccess']);
+$app->router->get('/adminUsersview', [AdminController::class, 'userView']);
+$app->router->get('/adminProductList', [AdminController::class, 'productList']);
 
 $app->router->get('/', [SiteController::class, 'Home']);
 $app->router->post('/contact', [SiteController::class, 'Contact']);

@@ -2,7 +2,10 @@
 
 namespace controllers;
 
+use core\Application;
 use core\Controller;
+use core\Request;
+use mproduct\AdminProductUpdate;
 
 class AdminController extends Controller
 {
@@ -27,10 +30,19 @@ class AdminController extends Controller
         return $this->render($this->rootPages . 'usersView');
     }
 
-    public function productList()
+    public function productList(Request $request)
     {
+
+        $productUpdate = new AdminProductUpdate();
+
+        if ($request->isPost()) {
+            $session = Application::$app->session;
+        }
+
         $this->setLayout('main');
-        return $this->render($this->rootPages . 'productList');
+        return $this->render($this->rootPages . 'productList', [
+            'model' => $productUpdate
+        ]);
     }
     public function productgiveAccess()
     {

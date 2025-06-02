@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'muser\\' => array($baseDir . '/models/user'),
+    'mproduct\\' => array($baseDir . '/models/product'),
     'models\\' => array($baseDir . '/models'),
     'form\\' => array($baseDir . '/core/form'),
     'exception\\' => array($baseDir . '/core/exception'),

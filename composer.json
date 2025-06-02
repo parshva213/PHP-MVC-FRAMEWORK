@@ -12,6 +12,7 @@
             "cuser\\": "core/user/",
             "cproduct\\": "core/product/",
             "muser\\": "models/user/",
+            "mproduct\\": "models/product",
             "Dotenv\\": "Dotenv/",
             "exception\\": "core/exception"
         }
