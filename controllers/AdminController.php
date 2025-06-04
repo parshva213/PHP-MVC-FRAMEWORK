@@ -6,6 +6,7 @@ use core\Application;
 use core\Controller;
 use core\Request;
 use mproduct\AdminProductUpdate;
+use muser\AddSupplier;
 
 class AdminController extends Controller
 {
@@ -44,5 +45,27 @@ class AdminController extends Controller
     {
         $this->setLayout('auth');
         return $this->render($this->rootAccess . 'manageProductHendel');
+    }
+
+    public function supplierView()
+    {
+        $this->setLayout('main');
+        return $this->render($this->rootPages . 'supplierView');
+    }
+
+    public function supplierAdd()
+    {
+        $addSupplier = new AddSupplier();
+        if (Application::$app->request->isPost()) {
+            $addSupplier->loadData(Application::$app->request->getBody());
+            if ($addSupplier->validate() && $addSupplier->save()) {
+                Application::$app->session->setFlash('success', 'Supplier added successfully.');
+                return Application::$app->response->redirect('/adminSupplierList');
+            }
+        }
+        $this->setLayout('main');
+        return $this->render($this->rootPages . 'addSupplier', [
+            'model' => $addSupplier
+        ]);
     }
 }

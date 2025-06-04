@@ -73,6 +73,12 @@ $request = $app->request;
                     <p>Users</p>
                   </a>
                 </li>
+                <li class="nav-item">
+                  <a href="/adminSupplierList" class="nav-link">
+                    <i class="nav-icon bi bi-circle"></i>
+                    <p>Suppliers</p>
+                  </a>
+                </li>
               </ul>
             </li>
           <?php endif; ?>
@@ -182,7 +188,7 @@ $request = $app->request;
         </div>
       </div>
 
-      <div class="container">
+      <div class="container container-fluid">
         <?php if ($session->getFlash('error')): ?>
           <div class="alert alert-danger">
             <?= $session->getFlash('error'); ?>
