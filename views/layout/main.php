@@ -163,7 +163,7 @@ $request = $app->request;
 
 
     <!-- Main Content -->
-    <main class="app-main position-absolute" style="top: 5vh; width:100%;">
+    <main class="app-main position-absolute" style="top: 5vh; bottom:5vh; width:100%;">
       <div class="app-content-header">
         <div class="container-fluid">
           <div class="row">
@@ -205,7 +205,7 @@ $request = $app->request;
     </main>
 
     <!-- Footer -->
-    <footer class="app-footer" style="position:absolute; right:0; bottom:0; width:100%">
+    <footer class="app-footer" style="position:fixed; right:0; bottom:0; width:87%">
       <div class="float-end d-sm-inline">Anything you want</div>
       <strong>&copy; 2002-<?php echo date("Y") ?> <a href="https://adminlte.io" class="text-decoration-none">HT</a>.</strong>
       All rights reserved.

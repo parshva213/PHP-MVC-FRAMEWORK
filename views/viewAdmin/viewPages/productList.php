@@ -72,18 +72,10 @@ $products = $db->query("SELECT * FROM product")->fetchAll(PDO::FETCH_ASSOC);
                         </td>
                         <td class="product-created"><?php echo $p['created_at'] ?></td>
                         <td class="product-updated"><?php echo $p['last_updated_at'] ?></td>
-                        <td class="product-action dropdown">
-                            <a href="#" class="text-black" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-three-dots-vertical"></i>
-                            </a>
-                            <ul class="dropdown-menu action-list">
-                                <!-- Nested Dropdown Item -->
-                                <li>
-                                    <button type="button" class="dropdown-item text-success edit-field" data-work="UpdateFetch" data-pid="<?= htmlspecialchars($p['pid']) ?>" data-bs-toggle="modal" data-bs-target="#staticBackdropedit">
-                                        Edit
-                                    </button>
-                                </li>
-                            </ul>
+                        <td class="product-action">
+                            <button type="button" class="btn btn-sm btn-warning edit-field" data-work="UpdateFetch" data-pid="<?= htmlspecialchars($p['pid']) ?>" data-bs-toggle="modal" data-bs-target="#staticBackdropedit">
+                                Edit
+                            </button>
                         </td>
                     </tr>
                 <?php
