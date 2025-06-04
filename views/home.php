@@ -20,7 +20,7 @@ $displayCount = ($count < 10) ? $count
 
 ?>
 <div class="line">
-    <div class="card text-center shadow" style="width: 20rem;" <?php if (Application::$app->user && Application::$app->user->isRole() === Need::ROLE_ADMIN): ?>onclick="window.location.href='/usersview'" <?php endif; ?>>
+    <div class="card text-center shadow" style="width: 20rem;" <?php if (Application::$app->user && Application::$app->user->isRole() === Need::ROLE_ADMIN): ?>onclick="window.location.href='/adminUsersview'" <?php endif; ?>>
         <div class="card-body bg-primary text-white d-flex align-items-center justify-content-center" style="height: 150px;">
             <h1 class="display-4 m-0 fw-bold"><?= $displayCount ?></h1>
         </div>

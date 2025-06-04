@@ -35,10 +35,6 @@ class AdminController extends Controller
 
         $productUpdate = new AdminProductUpdate();
 
-        if ($request->isPost()) {
-            $session = Application::$app->session;
-        }
-
         $this->setLayout('main');
         return $this->render($this->rootPages . 'productList', [
             'model' => $productUpdate

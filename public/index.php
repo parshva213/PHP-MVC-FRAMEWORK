@@ -38,6 +38,7 @@ $app = new Application(dirname(__DIR__), $config);
 
 
 $app->router->post('/adminUserGiveAccess', [AdminController::class, 'usergiveAccess']);
+$app->router->post('/adminProductGiveAccess', [AdminController::class, 'productgiveAccess']);
 $app->router->get('/adminGiveLoginPermission', [AdminController::class, 'usergivePermission']);
 $app->router->get('/adminUserGiveAccess', [AdminController::class, 'usergiveAccess']);
 $app->router->get('/adminProductGiveAccess', [AdminController::class, 'productgiveAccess']);

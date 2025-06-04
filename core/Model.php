@@ -60,7 +60,7 @@ abstract class Model
                 if ($ruleName === self::RULE_MATCH && isset($rule['match']) && $value !== $this->{$rule['match']}) {
                     $this->addError($attribute, self::RULE_MATCH, ['match' => $rule['match']]);
                 }
-                if ($ruleName === self::RULE_ISNUM && !ctype_digit($value)) {
+                if ($ruleName === self::RULE_ISNUM && !is_numeric($value)) {
                     $this->addError($attribute, self::RULE_ISNUM);
                 }
 
