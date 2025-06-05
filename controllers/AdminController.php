@@ -7,6 +7,7 @@ use core\Controller;
 use core\Request;
 use mproduct\AdminProductUpdate;
 use muser\AddSupplier;
+use muser\UppdateSupplier;
 
 class AdminController extends Controller
 {
@@ -49,8 +50,13 @@ class AdminController extends Controller
 
     public function supplierView()
     {
+        $supplierUpdate = new UppdateSupplier();
+
+
         $this->setLayout('main');
-        return $this->render($this->rootPages . 'supplierView');
+        return $this->render($this->rootPages . 'supplierView', [
+            'model' => $supplierUpdate
+        ]);
     }
 
     public function supplierAdd()
@@ -67,5 +73,10 @@ class AdminController extends Controller
         return $this->render($this->rootPages . 'addSupplier', [
             'model' => $addSupplier
         ]);
+    }
+    public function supplierPage(Request $request)
+    {
+        $this->setLayout('auth');
+        $this->render($this->rootAccess . 'manageSupplierHendel');
     }
 }

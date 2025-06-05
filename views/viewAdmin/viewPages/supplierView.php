@@ -43,7 +43,7 @@ $suppliers = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td><?= htmlspecialchars($supplier['contact']) ?></td>
                     <td><?= htmlspecialchars($supplier['address']) ?></td>
                     <td>
-                        <button type="button" class="btn btn-sm btn-warning edit-field" data-work="supplierDetailFetch" data-pid="<?= htmlspecialchars($supplier['uid']) ?>" data-bs-toggle="modal" data-bs-target="#supplierEditModal">
+                        <button type="button" class="btn btn-sm btn-warning edit-field" data-work="supplierDetailFetch" data-uid="<?= htmlspecialchars($supplier['uid']) ?>" data-bs-toggle="modal" data-bs-target="#supplierEditModal">
                             Edit
                         </button>
                     </td>
@@ -77,74 +77,56 @@ $suppliers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 <input
                     type="hidden"
-                    placeholder="Product ID"
-                    name="pid"
-                    id="pid"
-                    value="<?= htmlspecialchars($model->pid) ?>" />
-                <div class="mb-3">
+                    placeholder="User ID"
+                    name="uid"
+                    id="uid" />
+                <div class="mb-3 firstname lastname">
                     <div class="input-group">
                         <label for="name" class="fs-3">Name</label>
                     </div>
                     <div class="input-group">
                         <div class="input-group-text"><span class="bi bi-person"></span></div>
-                        <input type="text" class="form-control<?= $model->hasError('firstname') ? ' is-invalid' : '' ?>" id="firstname" name="firstname" placeholder="First Name" value="<?= htmlspecialchars($model->firstname) ?>">
-                        <input type="text" name="lastname" id="lastname" class="form-control<?= $model->hasError('lastname') ? ' is-invalid' : '' ?>" placeholder="Last Name" value="<?= htmlspecialchars($model->lastname) ?>">
+                        <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name" value="<?= htmlspecialchars($model->firstname) ?>">
+                        <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Last Name" value="<?= htmlspecialchars($model->lastname) ?>">
                     </div>
                     <div class="input-group">
-                        <?php if ($model->hasError('firstname')): $c = 1; ?>
-                            <div class="text-danger small ms-1"><?= $model->getFirstError('firstname') ?></div>
-                        <?php else: $c = 0; ?>
-                        <?php endif; ?>
-                        <?php if ($model->hasError('lastname') && $c === 0): ?>
-                            <div class="text-danger small ms-1"><?= $model->getFirstError('lastname') ?></div>
-                        <?php endif; ?>
+                        <div class="text-danger small ms-1" id="error"></div>
                     </div>
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 email">
                     <div class="input-group">
                         <label for="email" class="fs-3">Email</label>
                     </div>
                     <div class="input-group">
                         <div class="input-group-text"><span class="bi bi-envelope"></span></div>
-                        <input type="email" class="form-control<?= $model->hasError('email') ? ' is-invalid' : '' ?>" id="email" name="email" placeholder="Email" value="<?= htmlspecialchars($model->email) ?>">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="<?= htmlspecialchars($model->email) ?>">
                     </div>
                     <div class="input-group">
-                        <?php if ($model->hasError('email')): ?>
-                            <div class="text-danger small ms-1"><?= $model->getFirstError('email') ?></div>
-                        <?php endif; ?>
+                        <div class="text-danger small ms-1" id="error"></div>
                     </div>
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 contact">
                     <div class="input-group">
                         <label for="contact" class="fs-3">Phone Number</label>
                     </div>
                     <div class="input-group">
                         <div class="input-group-text"><span class="bi bi-phone"></span></div>
-                        <input type="text" class="form-control<?= $model->hasError('contact') ? ' is-invalid' : '' ?>" id="contact" name="contact" placeholder="Phone Number" value="<?= htmlspecialchars($model->contact) ?>">
+                        <input type="text" class="form-control" id="contact" name="contact" placeholder="Phone Number" value="<?= htmlspecialchars($model->contact) ?>">
                     </div>
                     <div class="input-group">
-                        <?php if ($model->hasError('contact')): ?>
-                            <div class="text-danger small ms-1"><?= $model->getFirstError('contact') ?></div>
-                        <?php endif; ?>
+                        <div class="text-danger small ms-1" id="error"></div>
                     </div>
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 address">
                     <div class="input-group">
                         <label for="address" class="fs-3">Address</label>
                     </div>
                     <div class="input-group">
                         <div class="input-group-text"><span class="bi bi-house"></span></div>
-                        <textarea name="address" id="address" class="form-control<?= $model->hasError('address') ? ' is-invalid' : '' ?>" placeholder="Address"><?= htmlspecialchars($model->address) ?></textarea>
+                        <textarea name="address" id="address" class="form-control" placeholder="Address"><?= htmlspecialchars($model->address) ?></textarea>
                     </div>
                     <div class="input-group">
-                        <?php if ($model->hasError('address')): ?>
-                            <div class="text-danger small ms-1"><?= $model->getFirstError('address') ?></div>
-                        <?php endif; ?>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <div class="input-group">
-                        <input type="submit" class="btn btn-success ms-auto" value="Add Supplier">
+                        <div class="text-danger small ms-1" id="error"></div>
                     </div>
                 </div>
                 <!-- </form> -->
@@ -156,40 +138,40 @@ $suppliers = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
         $('body').on('click', '.edit-field', function(e) {
             e.preventDefault();
-            const pid = $(this).data('pid');
+            const uid = $(this).data('uid');
             const work = $(this).data('work');
 
             $.ajax({
-                url: '/adminSupplierEdit',
+                url: '/adminSupplierpage',
                 type: 'GET',
                 data: {
-                    pid: pid,
+                    uid: uid,
                     work: work
                 },
                 success: function(response) {
-                    if (response) {
-                        if (response.record) {
-                            $('#product-' + response.pid).find('.product-state').replaceWith(response.record);
-                        }
-                        if (response.UpdateFetch) {
-                            const data = response.UpdateFetch;
-                            $('#pid').val(data.pid);
-                            $('#pname').val(data.pname);
-                            $('#product_type').val(data.product_type);
-                            $('#hsfno').val(data.hsfno);
-                            $('#description').val(data.description);
-                            $('#pstatus').val(data.pstatus);
-                            $('#quantity').val(data.quantity);
-                            $('#mrp').val(data.mrp);
-                            $('#selling_price').val(data.selling_price);
+                    // alert('Response received.');
+                    console.log(response);
+                    if (response.record) {
+                        $('#supplier-' + response.uid).find('.product-state').replaceWith(response.record);
+                    }
+                    if (response.supplierDetailFetch) {
+                        alert('Supplier details fetched successfully.');
+                        const data = response.supplierDetailFetch;
+                        console.log(response.supplierDetailFetch);
+                        $('#uid').val(data.uid);
+                        $('#firstname').val(data.firstname);
+                        $('#lastname').val(data.lastname);
+                        $('#email').val(data.email);
+                        $('#contact').val(data.contact);
+                        $('#address').val(data.address);
 
-                            $('#error').css('display', 'none');
+                        $('#error').css('display', 'none');
 
-                        }
                     }
                 },
                 error: function(xhr) {

@@ -3,7 +3,7 @@
 use core\Need;
 use cproduct\ProductActivityManager;
 
-$controller = new ProductActivityManager;
+$controller = new ProductActivityManager();
 
 if (isset($_GET['pid'])) {
     $pid = $_GET['pid'];

@@ -36,12 +36,17 @@
 
 
 
-    @media screen and (max-width: 992px) {
+    @media screen and (max-width: 472px) {
+
+      .app-sidebar {
+        width: 100%;
+        left: 0;
+      }
 
       .sidebar-footer {
         text-align: start;
         width: 100%;
-        display: none;
+        /* display: none; */
       }
 
       .app-sidebar {

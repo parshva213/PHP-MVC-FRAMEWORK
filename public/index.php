@@ -47,6 +47,8 @@ $app->router->get('/adminProductList', [AdminController::class, 'productList']);
 $app->router->get('/adminSupplierList', [AdminController::class, 'supplierView']);
 $app->router->get('/adminSupplierAdd', [AdminController::class, 'supplierAdd']);
 $app->router->post('/adminSupplierAdd', [AdminController::class, 'supplierAdd']);
+$app->router->get('/adminSupplierpage', [AdminController::class, 'supplierPage']);
+$app->router->post('/adminSupplierpage', [AdminController::class, 'supplierPage']);
 
 $app->router->get('/', [SiteController::class, 'Home']);
 $app->router->get('/contact', [SiteController::class, 'Contact']);
