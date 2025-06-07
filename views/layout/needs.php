@@ -6,7 +6,7 @@
   <meta name="author" content="HT" />
   <meta name="keywords" content="Sari Fall, Astar" />
   <title>Hardik Traders | <?php echo $this->title; ?></title>
-
+  <link rel="icon" href="images/ht_c_logo-removebg-preview.png" type="image/x-icon" />
   <!-- Google Fonts -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css" integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q=" crossorigin="anonymous" />
 
@@ -127,6 +127,8 @@
 
 <!-- SortableJS -->
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js" integrity="sha256-ipiJrswvAR4VAx/th+6zWsdeYmVae0iJuiR+6OqHJHQ=" crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {

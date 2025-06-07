@@ -45,7 +45,7 @@ class User extends DbModel
             $this->address = trim($_POST['address']);
     }
 
-    public static function tableName(): string
+    public static function tableNAME(): string
     {
         return 'ausers';
     }

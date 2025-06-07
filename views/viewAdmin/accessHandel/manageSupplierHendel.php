@@ -1,11 +1,11 @@
 <?php
 
-use cuser\UppdateSupplier;
+use cuser\UpdateSupplier;
 
-$controller = new UppdateSupplier();
-if (isset($_GET['uid'])) {
-    $uid = $_GET['uid'];
-    if (isset($_GET['work']) && $_GET['work'] == 'supplierDetailFetch') {
-        return $controller->supplierDetailFetch($uid);
-    }
+
+$controller = new UpdateSupplier();
+
+if (isset($_POST['work']) && $_POST['work'] == 'updateSupplier') {
+    $data = $_POST['updateSupplierData'];
+    return $controller->updateSupplier($data);
 }

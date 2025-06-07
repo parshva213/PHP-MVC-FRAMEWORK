@@ -43,7 +43,7 @@ class AddSupplier extends DbModel
             'firstname' => [self::RULE_REQUIRED],
             'lastname' => [self::RULE_REQUIRED],
             'email' => [self::RULE_REQUIRED, self::RULE_EMAIL],
-            'contact' => [self::RULE_REQUIRED, self::RULE_ISNUM, [self::RULE_MIN, 'min' => 10], [self::RULE_MAX, 'max' => 10], [self::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'contact', 'tables' => ['causers', 'usercon']]],
+            'contact' => [self::RULE_REQUIRED, self::RULE_ISNUM, [self::RULE_MIN, 'min' => 10], [self::RULE_MAX, 'max' => 10], [self::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'contact',]],
             'address' => [self::RULE_REQUIRED]
         ];
     }

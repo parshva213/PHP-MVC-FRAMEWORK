@@ -19,8 +19,7 @@ $request = $app->request;
   <aside class="app-sidebar bg-body-secondary shadow" data-widget="pushmenu" data-bs-theme="dark" style="width: 13%; position:fixed; top:0; bottom:0; left:0;">
     <div class="sidebar-brand" style="width: 100%;">
       <a href="/" class="brand-link">
-        <img src="images/ht_r_logo.png" alt="Hardik Traders Logo" class="brand-image opacity-75 shadow">
-        <span class="brand-text fw-light">Hardik Traders</span>
+        <img src="images/ht_r_logo.png" alt="Hardik Traders Logo" class="brand-image opacity-75 shadow" style="width: 100%; height: 100%; border-radius: 5%;">
       </a>
       <a class="brand-link toggle-button" data-widget="pushmenu" href="#" role="button">
         <button class="btn d-lg-none toggle-button" onclick="toggleSidebar()">

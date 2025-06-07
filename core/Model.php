@@ -16,6 +16,7 @@ abstract class Model
     public const RULE_UNIQUE = 'unique';
     public const RULE_ACTIVATION = 'Login Activation';
     public const RULE_ISNUM = 'Number';
+    public const RULE_GST = 'gst';
 
     public string $val = "";
 
@@ -63,7 +64,9 @@ abstract class Model
                 if ($ruleName === self::RULE_ISNUM && !is_numeric($value)) {
                     $this->addError($attribute, self::RULE_ISNUM);
                 }
-
+                if ($ruleName === self::RULE_GST && !preg_match("/^([0-9]){2}([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}([a-zA-Z0-9]){3}$/", $value)) {
+                    $this->addError($attribute, self::RULE_GST);
+                }
                 if ($ruleName === self::RULE_UNIQUE && is_array($rule)) {
                     $className = $rule['class'];
                     $uniqueAttr = $rule['attribute'] ?? $attribute;
@@ -73,9 +76,9 @@ abstract class Model
                         $rawContact = (string) $value;
                         $value = '+91 ' . substr($rawContact, 0, 5) . '-' . substr($rawContact, 5);
                     }
-
-
-
+                    if ($uniqueAttr === 'email') {
+                        $value = strtolower($value);
+                    }
                     $statement = Application::$app->db->prepare("SELECT * FROM $tableNames WHERE $uniqueAttr = :attr");
                     $statement->bindValue(":attr", $value);
                     $statement->execute();
@@ -121,6 +124,7 @@ abstract class Model
             self::RULE_UNIQUE => 'This {field} already exist',
             self::RULE_ACTIVATION => 'User account is not active',
             self::RULE_ISNUM => 'Contains Only Digit',
+            self::RULE_GST => 'Invalid GST Number',
         ];
     }
 

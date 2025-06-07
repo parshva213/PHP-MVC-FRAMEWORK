@@ -12,7 +12,6 @@ use core\Application;
 use controllers\SiteController;
 use controllers\AuthController;
 use controllers\AdminController;
-use core\Need;
 use muser\LoginForm;
 
 // Check if the script is accessed from a web browser
@@ -49,6 +48,11 @@ $app->router->get('/adminSupplierAdd', [AdminController::class, 'supplierAdd']);
 $app->router->post('/adminSupplierAdd', [AdminController::class, 'supplierAdd']);
 $app->router->get('/adminSupplierpage', [AdminController::class, 'supplierPage']);
 $app->router->post('/adminSupplierpage', [AdminController::class, 'supplierPage']);
+$app->router->get('/adminSupplierDetail', [AdminController::class, 'supplierDetail']);
+$app->router->get('/addSupplierCompany', [AdminController::class, 'addSupplierCompany']);
+$app->router->post('/addSupplierCompany', [AdminController::class, 'addSupplierCompany']);
+$app->router->get('/adminsupplierCompanyBankDetail', [AdminController::class, 'addSupplierCompanyBank']);
+$app->router->post('/adminsupplierCompanyBankDetail', [AdminController::class, 'addSupplierCompanyBank']);
 
 $app->router->get('/', [SiteController::class, 'Home']);
 $app->router->get('/contact', [SiteController::class, 'Contact']);
