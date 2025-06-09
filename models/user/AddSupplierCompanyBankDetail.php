@@ -10,12 +10,12 @@ class AddSupplierCompanyBankDetail extends DbModel
     public string $acc_hol_name = '';
     public string $acc_no = '';
     public string $bank_ifsc = '';
-    public string $branch_name = '';
+    public string $bank_branch = '';
     public string $bank_name = '';
 
     public function attributes(): array
     {
-        return ['company_id', 'acc_hol_name', 'bank_name', 'acc_no', 'bank_ifsc', 'branch_name'];
+        return ['company_id', 'acc_hol_name', 'bank_name', 'acc_no', 'bank_ifsc', 'bank_branch'];
     }
 
     public static function primaryKey(): string
@@ -40,7 +40,7 @@ class AddSupplierCompanyBankDetail extends DbModel
             'bank_name' => [self::RULE_REQUIRED],
             'acc_no' => [self::RULE_REQUIRED, self::RULE_ISNUM, [self::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'acc_no']],
             'bank_ifsc' => [self::RULE_REQUIRED],
-            'branch_name' => [self::RULE_REQUIRED],
+            'bank_branch' => [self::RULE_REQUIRED],
             'acc_hol_name' => [self::RULE_REQUIRED]
         ];
     }

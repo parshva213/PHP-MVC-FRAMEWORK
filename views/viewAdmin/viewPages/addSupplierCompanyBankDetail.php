@@ -67,15 +67,15 @@ $this->title = "Company Bank Details Form";
             </div>
             <div class="mb-3">
                 <div class="input-group">
-                    <label for="branch_name">Branch Name</label>
+                    <label for="bank_branch">Branch Name</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" name="branch_name" id="branch_name" class="form-control<?= $model->hasError('branch_name') ? ' is-invalid' : '' ?>" value="<?= $model->branch_name ?>" placeholder="Branch Name">
+                    <input type="text" name="bank_branch" id="bank_branch" class="form-control<?= $model->hasError('bank_branch') ? ' is-invalid' : '' ?>" value="<?= $model->bank_branch ?>" placeholder="Branch Name">
                 </div>
-                <?php if ($model->hasError('branch_name')): ?>
+                <?php if ($model->hasError('bank_branch')): ?>
                     <div class="input-group">
                         <div class="text-danger small ms-1" id="error">
-                            <?php echo $model->getFirstError('branch_name'); ?>
+                            <?php echo $model->getFirstError('bank_branch'); ?>
                         </div>
                     </div>
                 <?php endif; ?>
