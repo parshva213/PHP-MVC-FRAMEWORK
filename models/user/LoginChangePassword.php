@@ -3,6 +3,7 @@
 namespace muser;
 
 use core\Application;
+use core\Need;
 use cuser\UpdateUser;
 use PDO;
 
@@ -11,9 +12,9 @@ class LoginChangePassword extends UpdateUser
     public int $id;
 
     public array $rule = [
-        'current_password' => [self::RULE_REQUIRED],
-        'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 8], [self::RULE_MAX, 'max' => 24]],
-        'conform_password' => [self::RULE_REQUIRED, [self::RULE_MATCH, 'match' => 'password']]
+        'current_password' => [Need::RULE_REQUIRED],
+        'password' => [Need::RULE_REQUIRED, [Need::RULE_MIN, 'min' => 8], [Need::RULE_MAX, 'max' => 24]],
+        'conform_password' => [Need::RULE_REQUIRED, [Need::RULE_MATCH, 'match' => 'password']]
     ];
 
     public string $user_password = "";  // hashed password from DB
@@ -67,7 +68,7 @@ class LoginChangePassword extends UpdateUser
 
         // Check if current_password matches the hashed password
         if (md5($this->current_password) !== $this->user_password) {
-            $this->addError('current_password', self::RULE_MATCH, ['match' => 'stored password']);
+            $this->addError('current_password', Need::RULE_MATCH, ['match' => 'stored password']);
             return false;
         }
 

@@ -3,6 +3,7 @@
 namespace muser;
 
 use core\Application;
+use core\Need;
 use cuser\UpdateUser;
 use PDO;
 
@@ -17,16 +18,16 @@ class ProfileForm extends UpdateUser
         'address' => [],
         'email' => [
             'email' => [
-                self::RULE_EMAIL,
-                [self::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'email']
+                Need::RULE_EMAIL,
+                [Need::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'email']
             ]
         ],
         'contact' => [
             'contact' => [
-                self::RULE_ISNUM,
-                [self::RULE_MIN, 'min' => 10],
-                [self::RULE_MAX, 'max' => 10],
-                [self::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'contact'],
+                Need::RULE_ISNUM,
+                [Need::RULE_MIN, 'min' => 10],
+                [Need::RULE_MAX, 'max' => 10],
+                [Need::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'contact'],
             ]
         ],
     ];
@@ -97,7 +98,7 @@ class ProfileForm extends UpdateUser
             $inputValue = trim($_POST[$key] ?? '');
             if (empty($inputValue)) {
                 $this->rule = array_merge($this->rule, [
-                    $key => [self::RULE_REQUIRED]
+                    $key => [Need::RULE_REQUIRED]
                 ]);
             }
 

@@ -66,15 +66,15 @@ class User extends DbModel
     public function rules(): array
     {
         return [
-            'firstName' => [self::RULE_REQUIRED],
-            'lastName' => [self::RULE_REQUIRED],
-            'username' => [self::RULE_REQUIRED, [self::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'username', 'tables' => ['causers', 'ausers']]],
-            'user_type' => [self::RULE_REQUIRED],
-            'address' => [self::RULE_REQUIRED],
-            'email' => [self::RULE_REQUIRED, self::RULE_EMAIL, [self::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'email', 'tables' => ['causers', 'ausers']]],
-            'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 8], [self::RULE_MAX, 'max' => 24]],
-            'conform_password' => [self::RULE_REQUIRED, [self::RULE_MATCH, 'match' => 'password']],
-            'contact' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 10], [self::RULE_MAX, 'max' => 10], [self::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'contact', 'tables' => ['causers', 'usercon']]],
+            'firstName' => [Need::RULE_REQUIRED],
+            'lastName' => [Need::RULE_REQUIRED],
+            'username' => [Need::RULE_REQUIRED, [Need::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'username', 'tables' => ['causers', 'ausers']]],
+            'user_type' => [Need::RULE_REQUIRED],
+            'address' => [Need::RULE_REQUIRED],
+            'email' => [Need::RULE_REQUIRED, Need::RULE_EMAIL, [Need::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'email', 'tables' => ['causers', 'ausers']]],
+            'password' => [Need::RULE_REQUIRED, [Need::RULE_MIN, 'min' => 8], [Need::RULE_MAX, 'max' => 24]],
+            'conform_password' => [Need::RULE_REQUIRED, [Need::RULE_MATCH, 'match' => 'password']],
+            'contact' => [Need::RULE_REQUIRED, [Need::RULE_MIN, 'min' => 10], [Need::RULE_MAX, 'max' => 10], [Need::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'contact', 'tables' => ['causers', 'usercon']]],
         ];
     }
 

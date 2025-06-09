@@ -21,34 +21,32 @@ $suppliers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </div>
 <?php if (count($suppliers) > 0) {
 ?>
-    <div class="table-responsive">
-        <table class="table table-striped supplier-table">
-            <tr class="table-header">
-                <th>#</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Contact</th>
-                <th>Address</th>
-                <th>Redirect</th>
+    <table class="table table-striped supplier-table">
+        <tr class="table-header">
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Contact</th>
+            <th>Address</th>
+            <th>Redirect</th>
+        </tr>
+        <?php
+        $i = 1;
+        foreach ($suppliers as $supplier) {
+        ?>
+            <tr id="supplier-<?= htmlspecialchars($supplier['uid']) ?>">
+                <td><?= $i++; ?></td>
+                <td><?= htmlspecialchars($supplier['firstname']) . ' ' . htmlspecialchars($supplier['lastname']) ?></td>
+                <td><?= htmlspecialchars($supplier['email']) ?></td>
+                <td><?= htmlspecialchars($supplier['contact']) ?></td>
+                <td><?= htmlspecialchars($supplier['address']) ?></td>
+                <td>
+                    <a href="/adminSupplierDetail?uid=<?= $supplier['uid'] ?>" class="btn btn-sm btn-secondary bi bi-box-arrow-up-right"></a>
+                </td>
             </tr>
-            <?php
-            $i = 1;
-            foreach ($suppliers as $supplier) {
-            ?>
-                <tr id="supplier-<?= htmlspecialchars($supplier['uid']) ?>">
-                    <td><?= $i++; ?></td>
-                    <td><?= htmlspecialchars($supplier['firstname']) . ' ' . htmlspecialchars($supplier['lastname']) ?></td>
-                    <td><?= htmlspecialchars($supplier['email']) ?></td>
-                    <td><?= htmlspecialchars($supplier['contact']) ?></td>
-                    <td><?= htmlspecialchars($supplier['address']) ?></td>
-                    <td>
-                        <a href="/adminSupplierDetail?uid=<?= $supplier['uid'] ?>" class="btn btn-sm btn-secondary bi bi-box-arrow-up-right"></a>
-                    </td>
-                </tr>
-            <?php
-            } ?>
-        </table>
-    </div>
+        <?php
+        } ?>
+    </table>
 <?php
 } else {
 ?>

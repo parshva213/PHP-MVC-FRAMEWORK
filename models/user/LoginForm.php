@@ -25,8 +25,8 @@ class LoginForm extends DbModel
     public function rules(): array
     {
         return [
-            'username' => [self::RULE_REQUIRED, self::RULE_USER_NOT_FOUND],
-            'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 8], [self::RULE_MAX, 'max' => 24], self::RULE_PASSWORD_NOT_VERIFY]
+            'username' => [Need::RULE_REQUIRED, Need::RULE_USER_NOT_FOUND],
+            'password' => [Need::RULE_REQUIRED, [Need::RULE_MIN, 'min' => 8], [Need::RULE_MAX, 'max' => 24], Need::RULE_PASSWORD_NOT_VERIFY]
         ];
     }
 
@@ -54,17 +54,17 @@ class LoginForm extends DbModel
     {
         $user = $this->findOne(['username' => $this->username]);
         if (!$user) {
-            $this->addError('username', self::RULE_USER_NOT_FOUND);
+            $this->addError('username', Need::RULE_USER_NOT_FOUND);
             return false;
         }
 
         if ($this->password !== $user->password) {
-            $this->addError('password', self::RULE_PASSWORD_NOT_VERIFY);
+            $this->addError('password', Need::RULE_PASSWORD_NOT_VERIFY);
             return false;
         }
 
         if ($user->status === Need::STASTUS_ACTIVE) {
-            $this->addError('username', self::RULE_ACTIVATION);
+            $this->addError('username', Need::RULE_ACTIVATION);
             return false;
         }
         return Application::$app->login($user);

@@ -3,6 +3,7 @@
 namespace muser;
 
 use core\Application;
+use core\Need;
 use cuser\UpdateUser;
 use PDO;
 
@@ -14,10 +15,10 @@ class ForgetPasswordChange extends UpdateUser
     public string $conform_password = "";
 
     public array $rule = [
-        'identifier' => [self::RULE_REQUIRED],
-        'val' => [self::RULE_REQUIRED],
-        'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 8], [self::RULE_MAX, 'max' => 24]],
-        'conform_password' => [self::RULE_REQUIRED, [self::RULE_MATCH, 'match' => 'password']]
+        'identifier' => [Need::RULE_REQUIRED],
+        'val' => [Need::RULE_REQUIRED],
+        'password' => [Need::RULE_REQUIRED, [Need::RULE_MIN, 'min' => 8], [Need::RULE_MAX, 'max' => 24]],
+        'conform_password' => [Need::RULE_REQUIRED, [Need::RULE_MATCH, 'match' => 'password']]
     ];
 
     public array $attributes = ['password'];
@@ -80,7 +81,7 @@ class ForgetPasswordChange extends UpdateUser
                 $statement->bindValue(':uid', $user);                // Use your UID variable
                 return $statement->execute();
             } else {
-                $this->addError('val', self::RULE_MATCH, ['match' => 'stored password']);
+                $this->addError('val', Need::RULE_MATCH, ['match' => 'stored password']);
                 return false;
             }
         } else {

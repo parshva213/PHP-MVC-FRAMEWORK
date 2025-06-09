@@ -5,23 +5,7 @@ namespace core;
 abstract class Model
 {
 
-    public const RULE_REQUIRED = 'required';
-    public const RULE_EMAIL = 'email';
-    public const RULE_EMAIL_NOT_FOUND = 'email_not_found';
-    public const RULE_USER_NOT_FOUND = 'user_not_found';
-    public const RULE_MIN = 'min';
-    public const RULE_MAX = 'max';
-    public const RULE_MATCH = 'match';
-    public const RULE_PASSWORD_NOT_VERIFY = 'pass_not_found';
-    public const RULE_UNIQUE = 'unique';
-    public const RULE_ACTIVATION = 'Login Activation';
-    public const RULE_ISNUM = 'Number';
-    public const RULE_GST = 'gst';
-
     public string $val = "";
-
-
-
 
     public function loadData($data)
     {
@@ -46,28 +30,28 @@ abstract class Model
                 if (!is_string($ruleName)) {
                     $ruleName = $rule[0];
                 }
-                if ($ruleName === self::RULE_REQUIRED && !$value) {
-                    $this->addError($attribute, self::RULE_REQUIRED);
+                if ($ruleName === Need::RULE_REQUIRED && !$value) {
+                    $this->addError($attribute, Need::RULE_REQUIRED);
                 }
-                if ($ruleName === self::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
-                    $this->addError($attribute, self::RULE_EMAIL, $rule);
+                if ($ruleName === Need::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                    $this->addError($attribute, Need::RULE_EMAIL, $rule);
                 }
-                if ($ruleName === self::RULE_MIN && isset($rule['min']) && strlen($value) < $rule['min']) {
-                    $this->addError($attribute, self::RULE_MIN, ['min' => $rule['min']]);
+                if ($ruleName === Need::RULE_MIN && isset($rule['min']) && strlen($value) < $rule['min']) {
+                    $this->addError($attribute, Need::RULE_MIN, ['min' => $rule['min']]);
                 }
-                if ($ruleName === self::RULE_MAX && isset($rule['max']) && strlen($value) > $rule['max']) {
-                    $this->addError($attribute, self::RULE_MAX, ['max' => $rule['max']]);
+                if ($ruleName === Need::RULE_MAX && isset($rule['max']) && strlen($value) > $rule['max']) {
+                    $this->addError($attribute, Need::RULE_MAX, ['max' => $rule['max']]);
                 }
-                if ($ruleName === self::RULE_MATCH && isset($rule['match']) && $value !== $this->{$rule['match']}) {
-                    $this->addError($attribute, self::RULE_MATCH, ['match' => $rule['match']]);
+                if ($ruleName === Need::RULE_MATCH && isset($rule['match']) && $value !== $this->{$rule['match']}) {
+                    $this->addError($attribute, Need::RULE_MATCH, ['match' => $rule['match']]);
                 }
-                if ($ruleName === self::RULE_ISNUM && !is_numeric($value)) {
-                    $this->addError($attribute, self::RULE_ISNUM);
+                if ($ruleName === Need::RULE_ISNUM && !is_numeric($value)) {
+                    $this->addError($attribute, Need::RULE_ISNUM);
                 }
-                if ($ruleName === self::RULE_GST && !preg_match("/^([0-9]){2}([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}([a-zA-Z0-9]){3}$/", $value)) {
-                    $this->addError($attribute, self::RULE_GST);
+                if ($ruleName === Need::RULE_GST && !preg_match("/^([0-9]){2}([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}([a-zA-Z0-9]){3}$/", $value)) {
+                    $this->addError($attribute, Need::RULE_GST);
                 }
-                if ($ruleName === self::RULE_UNIQUE && is_array($rule)) {
+                if ($ruleName === Need::RULE_UNIQUE && is_array($rule)) {
                     $className = $rule['class'];
                     $uniqueAttr = $rule['attribute'] ?? $attribute;
                     $tableNames = $this->tableNAME() ?? ""; // Array of table names
@@ -85,7 +69,7 @@ abstract class Model
                     $record = $statement->fetchObject();
 
                     if ($record) {
-                        $this->addError($attribute, self::RULE_UNIQUE, ['field' => $attribute]);
+                        $this->addError($attribute, Need::RULE_UNIQUE, ['field' => $attribute]);
                         break; // Exit the loop if a record is found
                     }
                 }
@@ -100,7 +84,8 @@ abstract class Model
 
     public function addError(string $attribute, string $rule, $params = [])
     {
-        $message = $this->errorMessage()[$rule] ?? '';
+        $need = new Need();
+        $message = $need->errorMessage()[$rule] ?? '';
         if (!is_array($params)) {
             $params = array($params);
         }
@@ -110,23 +95,7 @@ abstract class Model
         $this->errors[$attribute][] = $message;
     }
 
-    public function errorMessage()
-    {
-        return [
-            self::RULE_REQUIRED => 'This field is required',
-            self::RULE_EMAIL => 'This field must be a valid Email address',
-            self::RULE_EMAIL_NOT_FOUND => 'This email dose not found',
-            self::RULE_USER_NOT_FOUND => 'This username not found or match',
-            self::RULE_MIN => 'Minimum length of the field must be {min}',
-            self::RULE_MAX => 'Maximum length of the field must be {max}',
-            self::RULE_MATCH => 'This field must match the {match} field',
-            self::RULE_PASSWORD_NOT_VERIFY => 'This password is invalid',
-            self::RULE_UNIQUE => 'This {field} already exist',
-            self::RULE_ACTIVATION => 'User account is not active',
-            self::RULE_ISNUM => 'Contains Only Digit',
-            self::RULE_GST => 'Invalid GST Number',
-        ];
-    }
+
 
     public function hasError($attribute)
     {
@@ -135,6 +104,7 @@ abstract class Model
 
     public function getFirstError($attribute)
     {
-        return $this->errors[$attribute][0] ?? '';
+        $need = new Need();
+        return $need->errors[$attribute][0] ?? '';
     }
 }

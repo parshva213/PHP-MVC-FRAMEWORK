@@ -3,6 +3,7 @@
 namespace muser;
 
 use core\DbModel;
+use core\Need;
 
 class AddCompany extends DbModel
 {
@@ -12,9 +13,9 @@ class AddCompany extends DbModel
     public int $uid = 0;
 
     public array $rules = [
-        'company_name' => [self::RULE_REQUIRED],
-        'company_address' => [self::RULE_REQUIRED],
-        'gst_no' => [self::RULE_REQUIRED, self::RULE_GST, [self::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'gst_no']]
+        'company_name' => [Need::RULE_REQUIRED],
+        'company_address' => [Need::RULE_REQUIRED],
+        'gst_no' => [Need::RULE_REQUIRED, Need::RULE_GST, [Need::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'gst_no']]
     ];
 
     public function attributes(): array

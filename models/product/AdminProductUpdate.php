@@ -2,6 +2,7 @@
 
 namespace mproduct;
 
+use core\Need;
 use cproduct\UpdateProduct;
 
 class AdminProductUpdate extends UpdateProduct
@@ -21,14 +22,14 @@ class AdminProductUpdate extends UpdateProduct
     public function rules(): array
     {
         return [
-            'pname' => [self::RULE_REQUIRED],
-            'product_type' => [self::RULE_REQUIRED],
-            'hsfno' => [self::RULE_REQUIRED, self::RULE_ISNUM],
-            'description' => [self::RULE_REQUIRED],
-            'pstatus' => [self::RULE_REQUIRED],
-            'quantity' => [self::RULE_ISNUM],
-            'mrp' => [self::RULE_REQUIRED, self::RULE_ISNUM],
-            'selling_price' => [self::RULE_REQUIRED, self::RULE_ISNUM]
+            'pname' => [Need::RULE_REQUIRED],
+            'product_type' => [Need::RULE_REQUIRED],
+            'hsfno' => [Need::RULE_REQUIRED, Need::RULE_ISNUM],
+            'description' => [Need::RULE_REQUIRED],
+            'pstatus' => [Need::RULE_REQUIRED],
+            'quantity' => [Need::RULE_ISNUM],
+            'mrp' => [Need::RULE_REQUIRED, Need::RULE_ISNUM],
+            'selling_price' => [Need::RULE_REQUIRED, Need::RULE_ISNUM]
         ];
     }
     public static function tableName(): string

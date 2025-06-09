@@ -40,11 +40,11 @@ class AddSupplier extends DbModel
     public function rules(): array
     {
         return [
-            'firstname' => [self::RULE_REQUIRED],
-            'lastname' => [self::RULE_REQUIRED],
-            'email' => [self::RULE_REQUIRED, self::RULE_EMAIL],
-            'contact' => [self::RULE_REQUIRED, self::RULE_ISNUM, [self::RULE_MIN, 'min' => 10], [self::RULE_MAX, 'max' => 10], [self::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'contact',]],
-            'address' => [self::RULE_REQUIRED]
+            'firstname' => [Need::RULE_REQUIRED],
+            'lastname' => [Need::RULE_REQUIRED],
+            'email' => [Need::RULE_REQUIRED, Need::RULE_EMAIL],
+            'contact' => [Need::RULE_REQUIRED, Need::RULE_ISNUM, [Need::RULE_MIN, 'min' => 10], [Need::RULE_MAX, 'max' => 10], [Need::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'contact',]],
+            'address' => [Need::RULE_REQUIRED]
         ];
     }
 }

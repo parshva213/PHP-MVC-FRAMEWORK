@@ -88,12 +88,8 @@ class AdminController extends Controller
 
     public function supplierDetail(Request $request)
     {
-
-        $model = new UppdateSupplier();
         $this->setLayout('main');
-        return $this->render($this->rootPages . 'supplierDetail', [
-            'model' => $model
-        ]);
+        return $this->render($this->rootPages . 'supplierDetail');
     }
 
     public function addSupplierCompany(Request $request)

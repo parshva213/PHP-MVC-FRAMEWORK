@@ -17,11 +17,11 @@ class UppdateSupplier extends DbModel
     public string $user_type = Need::ROLE_SUPPLIER;
 
     public array $rules = [
-        'firstname' => [self::RULE_REQUIRED],
-        'lastname' => [self::RULE_REQUIRED],
-        'email' => [self::RULE_REQUIRED],
-        'contact' => [self::RULE_REQUIRED],
-        'address' => [self::RULE_REQUIRED]
+        'firstname' => [Need::RULE_REQUIRED],
+        'lastname' => [Need::RULE_REQUIRED],
+        'email' => [Need::RULE_REQUIRED],
+        'contact' => [Need::RULE_REQUIRED],
+        'address' => [Need::RULE_REQUIRED]
     ];
 
     public function attributes(): array
@@ -64,13 +64,13 @@ class UppdateSupplier extends DbModel
         foreach ($this->attributes() as $attribute) {
             if ($result[$attribute] !== $this->{$attribute}) {
                 if ($attribute === 'email') {
-                    $this->rules[$attribute][] = [self::RULE_UNIQUE, 'class' => self::class, 'attribute' => $attribute];
+                    $this->rules[$attribute][] = [Need::RULE_UNIQUE, 'class' => self::class, 'attribute' => $attribute];
                 }
                 if ($attribute === 'contact') {
-                    $this->rules[$attribute][] = self::RULE_ISNUM;
-                    $this->rules[$attribute][] = [self::RULE_MIN, 'min' => 10];
-                    $this->rules[$attribute][] = [self::RULE_MAX, 'max' => 10];
-                    $this->rules[$attribute][] = [self::RULE_UNIQUE, 'class' => self::class, 'attribute' => $attribute];
+                    $this->rules[$attribute][] = Need::RULE_ISNUM;
+                    $this->rules[$attribute][] = [Need::RULE_MIN, 'min' => 10];
+                    $this->rules[$attribute][] = [Need::RULE_MAX, 'max' => 10];
+                    $this->rules[$attribute][] = [Need::RULE_UNIQUE, 'class' => self::class, 'attribute' => $attribute];
                 }
             }
         }

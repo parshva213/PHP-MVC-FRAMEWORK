@@ -3,6 +3,7 @@
 namespace muser;
 
 use core\DbModel;
+use core\Need;
 
 class AddSupplierCompanyBankDetail extends DbModel
 {
@@ -20,7 +21,7 @@ class AddSupplierCompanyBankDetail extends DbModel
 
     public static function primaryKey(): string
     {
-        return 'id';
+        return 'company_id';
     }
 
     public static function tableName(): string
@@ -36,12 +37,12 @@ class AddSupplierCompanyBankDetail extends DbModel
     public function rules(): array
     {
         return [
-            'company_id' => [self::RULE_REQUIRED],
-            'bank_name' => [self::RULE_REQUIRED],
-            'acc_no' => [self::RULE_REQUIRED, self::RULE_ISNUM, [self::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'acc_no']],
-            'bank_ifsc' => [self::RULE_REQUIRED],
-            'bank_branch' => [self::RULE_REQUIRED],
-            'acc_hol_name' => [self::RULE_REQUIRED]
+            'company_id' => [Need::RULE_REQUIRED],
+            'bank_name' => [Need::RULE_REQUIRED],
+            'acc_no' => [Need::RULE_REQUIRED, Need::RULE_ISNUM, [Need::RULE_UNIQUE, 'class' => self::class, 'attribute' => 'acc_no']],
+            'bank_ifsc' => [Need::RULE_REQUIRED],
+            'bank_branch' => [Need::RULE_REQUIRED],
+            'acc_hol_name' => [Need::RULE_REQUIRED]
         ];
     }
     public function getDisplayName(): string

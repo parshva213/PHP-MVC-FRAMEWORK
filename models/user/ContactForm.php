@@ -3,6 +3,7 @@
 namespace muser;
 
 use core\Application;
+use core\Need;
 use cuser\updateUser;
 
 class ContactForm extends UpdateUser
@@ -29,10 +30,10 @@ class ContactForm extends UpdateUser
     public function rules(): array
     {
         $array = [
-            'subject' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 5], [self::RULE_MAX, 'max' => 100]],
-            'email' => [self::RULE_REQUIRED, self::RULE_EMAIL],
-            'body' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 20]],
-            'name' => [self::RULE_REQUIRED]
+            'subject' => [Need::RULE_REQUIRED, [Need::RULE_MIN, 'min' => 5], [Need::RULE_MAX, 'max' => 100]],
+            'email' => [Need::RULE_REQUIRED, Need::RULE_EMAIL],
+            'body' => [Need::RULE_REQUIRED, [Need::RULE_MIN, 'min' => 20]],
+            'name' => [Need::RULE_REQUIRED]
         ];
         return $array;
     }
