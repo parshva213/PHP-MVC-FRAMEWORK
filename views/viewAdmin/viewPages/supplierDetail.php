@@ -367,6 +367,7 @@ if (!$supplier) {
             const work = $(this).data('work');
             const company_id = $(this).data('company_id');
 
+            // Send GET request to fetch company details
             $.ajax({
                 url: '/adminSupplierpage',
                 type: 'GET',
@@ -375,7 +376,6 @@ if (!$supplier) {
                     company_id: company_id
                 },
                 success: function(response) {
-                    // console.log(response);
                     if (response && response.company) {
                         const company = response.company;
                         $('#company_name').val(company.company_name);
@@ -394,6 +394,7 @@ if (!$supplier) {
                 }
             });
         });
+
         $('body').on('click', '.company-update-btn', function(e) {
             e.preventDefault();
             const work = $(this).data('work');
@@ -420,7 +421,27 @@ if (!$supplier) {
                     companyData: companyData
                 },
                 success: function(response) {
+                    alert(1);
                     console.log(response);
+                    if (response.attribute) {
+                        attribute = response.attribute;
+                        Object.entries(attribute).forEach(attr => {
+                            const field = attr[1];
+                            const row = $('.' + field);
+                            const classupdate = row.find('#' + field);
+                            const errorshow = row.find('#error');
+                            classupdate.removeClass('is-invalid')
+                            errorshow.replaceWith(`<div class = "text-danger small ms-1" id = "error"></div>`);
+                        });
+                    }
+
+                    if (response.noupdate) {
+                        // console.log(response.noupdate);
+                        $('#companyEditModal').css('display', 'none'); // ✅
+                        $('#companyEditModal').removeClass('show'); // ✅
+                        $('body').removeClass('modal-open'); // ✅
+                        $('.modal-backdrop').remove(); // ✅
+                    }
 
                     // if (response.html) {
                     //     const html = response.html;
@@ -428,21 +449,21 @@ if (!$supplier) {
                     //     $('#companyEditModal').modal('hide');
                     // }
 
-                    // if (response.errors) {
-                    //     const error = response.errors;
-                    //     console.log(error);
-                    //     Object.entries(error).forEach(attr => {
-                    //         const field = attr[0];
-                    //         const error_value = attr[1][0];
-                    //         const row = $('.' + field);
-                    //         const classupdate = row.find('#' + field);
-                    //         const errorshow = row.find('#error');
-                    //         classupdate.addClass('is-invalid');
-                    //         errorshow.replaceWith(`<div class="text-danger small ms-1" id="error">${error_value}</div>`);
-                    //     });
-                    // }
+                    if (response.errors) {
+                        const error = response.errors;
+                        Object.entries(error).forEach(attr => {
+                            const field = attr[0];
+                            const error_value = attr[1][0];
+                            const row = $('.' + field);
+                            const classupdate = row.find('#' + field);
+                            const errorshow = row.find('#error');
+                            classupdate.addClass('is-invalid');
+                            errorshow.replaceWith(`<div class="text-danger small ms-1" id="error">${error_value}</div>`);
+                        });
+                    }
                 },
                 error: function(xhr) {
+                    alert(2);
                     console.log('Error: ' + xhr.responseText);
                 }
             });

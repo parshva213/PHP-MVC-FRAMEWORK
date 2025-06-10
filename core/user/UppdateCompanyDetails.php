@@ -10,6 +10,7 @@ class UppdateCompanyDetails extends UpdateCompanyDetails
 {
     public function fetchcompany(int $company_id, int $isAjax = 0)
     {
+        echo "In fetchcompany" . http_response_code();
         $this->company_id = $company_id;
         $db = Application::$app->db->pdo;
         $stmt = $db->prepare("SELECT * FROM scompany WHERE company_id = :company_id");
@@ -28,6 +29,8 @@ class UppdateCompanyDetails extends UpdateCompanyDetails
             ]);
             exit;
         } else {
+            echo " else in fetchcompany" . http_response_code();
+            $this->company_id = $result['company_id'];
             $this->company_name = $result['company_name'];
             $this->company_address = $result['company_address'];
             $this->gst_no = $result['gst_no'];
@@ -36,13 +39,32 @@ class UppdateCompanyDetails extends UpdateCompanyDetails
             $this->bank_ifsc = $result['bank_ifsc'];
             $this->bank_name = $result['bank_name'];
             $this->bank_branch = $result['bank_branch'];
+            echo " else out fetchcompany" . http_response_code();
             return true;
         }
     }
 
     public function UpdateCompany(array $data)
     {
+        echo "IN updatecompany" . http_response_code();
         if ($this->fetchcompany($data['company_id'], 1)) {
+            echo "fetchcompany success" . http_response_code();
+            if ($this->check($data) === "Rule is empty") {
+                echo "check success => Rule is empty" . http_response_code();
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'attribute' => $this->attributes(),
+                    'noupdate' => "hide"
+                ]);
+            }
+            if ($this->check($data) === "Validate success") {
+                echo "validate";
+                exit;
+                if ($this->update()) {
+                    echo "1";
+                    exit;
+                }
+            }
         }
     }
 }

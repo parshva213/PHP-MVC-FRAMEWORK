@@ -2,10 +2,11 @@
 
 namespace muser;
 
+use core\Application;
 use core\Model;
 use core\Need;
 
-class UpdateCompanyDetails
+class UpdateCompanyDetails extends Model
 {
     public int $company_id = 0;
     public string $company_name = '';
@@ -17,17 +18,15 @@ class UpdateCompanyDetails
     public string $bank_name = '';
     public string $bank_branch = '';
 
-    public function attributes(): array
+    public function checkattributes(): array
     {
         return [
             'scompany' => [
-                'company_id',
                 'company_name',
                 'company_address',
                 'gst_no'
             ],
             'scompanybank' => [
-                'company_id',
                 'acc_hol_name',
                 'bank_name',
                 'acc_no',
@@ -36,10 +35,22 @@ class UpdateCompanyDetails
             ]
         ];
     }
+    public function attributes(): array
+    {
+        return [
+            'company_name',
+            'company_address',
+            'gst_no',
+            'acc_hol_name',
+            'bank_name',
+            'acc_no',
+            'bank_ifsc',
+            'bank_branch',
+        ];
+    }
 
-    public array $rules = [
+    public array $needrules = [
         'scompany' => [
-            'company_id' => [],
             'company_name' => [],
             'company_address' => [],
             'gst_no' => [
@@ -47,12 +58,13 @@ class UpdateCompanyDetails
                 [
                     Need::RULE_UNIQUE,
                     'class' => self::class,
-                    'attribute' => 'gst_no'
+                    'attribute' => 'gst_no',
+                    'table' => 'scompany'
                 ]
+
             ]
         ],
         'scompanybank' => [
-            'company_id' => [],
             'acc_hol_name' => [],
             'bank_name' => [],
             'acc_no' => [
@@ -60,41 +72,88 @@ class UpdateCompanyDetails
                 [
                     Need::RULE_UNIQUE,
                     'class' => self::class,
-                    'attribute' => 'acc_no'
+                    'attribute' => 'acc_no',
+                    'table' => 'scompanybank'
                 ]
             ],
-            'bank_ifsc' => [],
-            'bank_branch' => []
+            'bank_ifsc' => []
         ]
     ];
 
+    public array $dummyrule = [
+        'company_id' => [],
+        'company_name' => [],
+        'company_address' => [],
+        'gst_no' => [],
+        'acc_hol_name' => [],
+        'bank_name' => [],
+        'acc_no' => [],
+        'bank_ifsc' => [],
+        'bank_branch' => [],
+    ];
+
+    public array $rules = [];
+
     public function rules(): array
     {
-        return [
-            'scompany' => [
-                'company_id' => [Need::RULE_REQUIRED],
-                'company_name' => [Need::RULE_REQUIRED],
-                'company_address' => [Need::RULE_REQUIRED],
-                'gst_no' => [Need::RULE_REQUIRED]
-            ],
-            'scompanybank' => [
-                'company_id' => [Need::RULE_REQUIRED],
-                'acc_hol_name' => [Need::RULE_REQUIRED],
-                'bank_name' => [Need::RULE_REQUIRED],
-                'acc_no' => [Need::RULE_REQUIRED],
-                'bank_ifsc' => [Need::RULE_REQUIRED],
-                'bank_branch' => [Need::RULE_REQUIRED]
-            ]
-        ];
+        return $this->rules;
+    }
+    public static function tableName(): string
+    {
+        return "";
     }
 
     public function check($data)
     {
-        foreach ($this->attributes() as $table => $attributes) {
+        echo "In check" . http_response_code();
+        foreach ($this->checkattributes() as $table => $attributes) {
             foreach ($attributes as $attribute) {
-                if ($data[$attribute] !== $this->{$attribute}) {
+                if ($attribute === 'company_id') {
+                    $this->{$attribute} = $data[$attribute] ?? 0;
+                    continue;
                 }
+                if (empty($data[$attribute])) {
+                    $this->rules[$attribute] = Need::RULE_REQUIRED;
+                    // continue;
+                }
+
+                if ($data[$attribute] !== $this->{$attribute}) {
+                    // $this->rules[$attribute] = $this->dummyrule[$attribute];
+                    $this->rules[$attribute] = array_merge($this->rules, $this->needrules[$table][$attribute]);
+                }
+                $this->{$attribute} = $data[$attribute] ?? '';
             }
+        }
+        echo "check is success" . http_response_code();
+
+
+        if (empty($this->rules))
+            return "Rule is empty";
+        if ($this->validate()) {
+            return "Validate success";
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode([
+            'errors' => $this->errors,
+            'attribute' => $this->attributes()
+        ]);
+        exit;
+    }
+
+    public function update()
+    {
+        echo "5";
+        $db = Application::$app->db->pdo;
+        foreach ($this->checkattributes() as $table => $attributes) {
+            $params = array_map(fn($attr) => "$attr = :$attr", $attributes);
+            $stmt = $db->prepare("UPDATE $table SET " . implode(',', $params) . "WHERE company_id = :company_id");
+            foreach ($attributes as $a) {
+                $stmt->bindValue(":$a", $this->{$a});
+            }
+            $stmt->bindValue(":company_id", $this->company_id);
+            echo "4";
+            exit;
         }
     }
 }

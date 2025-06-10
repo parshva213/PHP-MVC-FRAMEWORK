@@ -54,7 +54,7 @@ abstract class Model
                 if ($ruleName === Need::RULE_UNIQUE && is_array($rule)) {
                     $className = $rule['class'];
                     $uniqueAttr = $rule['attribute'] ?? $attribute;
-                    $tableNames = $this->tableNAME() ?? ""; // Array of table names
+                    $tableNames = $rule['table'] ?? $this->tableNAME() ??  ""; // Array of table names
 
                     if ($uniqueAttr === 'contact') {
                         $rawContact = (string) $value;
@@ -70,7 +70,7 @@ abstract class Model
 
                     if ($record) {
                         $this->addError($attribute, Need::RULE_UNIQUE, ['field' => $attribute]);
-                        break; // Exit the loop if a record is found
+                        // break; // Exit the loop if a record is found
                     }
                 }
             }
@@ -105,6 +105,6 @@ abstract class Model
     public function getFirstError($attribute)
     {
         $need = new Need();
-        return $need->errors[$attribute][0] ?? '';
+        return $need->errorMessage[$attribute][0] ?? '';
     }
 }

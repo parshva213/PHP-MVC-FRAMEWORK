@@ -206,7 +206,7 @@ $request = $app->request;
     <!-- Footer -->
     <footer class="app-footer" style="position:fixed; right:0; bottom:0; width:87%">
       <div class="float-end d-sm-inline">Anything you want</div>
-      <strong>&copy; 2002-<?php echo date("Y") ?> <a href="https://adminlte.io" class="text-decoration-none">HT</a>.</strong>
+      <strong>&copy; 2002-<?php echo date("Y") ?> <a href="/" class="text-decoration-none">HT</a>.</strong>
       All rights reserved.
     </footer>
   </div>

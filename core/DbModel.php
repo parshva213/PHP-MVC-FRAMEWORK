@@ -14,6 +14,7 @@ abstract class DbModel extends Model
 
 
 
+
     public function save()
     {
         $db = Application::$app->db->pdo;
