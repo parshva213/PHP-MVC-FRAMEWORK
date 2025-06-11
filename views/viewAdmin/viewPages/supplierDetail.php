@@ -367,7 +367,6 @@ if (!$supplier) {
             const work = $(this).data('work');
             const company_id = $(this).data('company_id');
 
-            // Send GET request to fetch company details
             $.ajax({
                 url: '/adminSupplierpage',
                 type: 'GET',
@@ -376,6 +375,7 @@ if (!$supplier) {
                     company_id: company_id
                 },
                 success: function(response) {
+                    // console.log(response);
                     if (response && response.company) {
                         const company = response.company;
                         $('#company_name').val(company.company_name);
@@ -421,7 +421,7 @@ if (!$supplier) {
                     companyData: companyData
                 },
                 success: function(response) {
-                    alert(1);
+
                     console.log(response);
                     if (response.attribute) {
                         attribute = response.attribute;
@@ -463,7 +463,13 @@ if (!$supplier) {
                     }
                 },
                 error: function(xhr) {
-                    alert(2);
+                    fetch(window.location.href)
+                        .then(response => {
+                            console.log("HTTP Status Code:", response.status);
+                        })
+                        .catch(error => {
+                            console.error("Fetch failed:", error);
+                        });
                     console.log('Error: ' + xhr.responseText);
                 }
             });
