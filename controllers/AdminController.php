@@ -129,4 +129,9 @@ class AdminController extends Controller
             'model' => $model
         ]);
     }
+
+    public function orderPageManage()
+    {
+        return $this->render($this->rootPages . 'orderManagePageCompany');
+    }
 }

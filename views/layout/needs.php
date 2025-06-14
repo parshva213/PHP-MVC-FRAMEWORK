@@ -131,6 +131,12 @@
 <!-- ajax -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<!-- jquery validation -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"></script> -->
+
+<!-- swal success or error popup -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     // Enable OverlayScrollbars
@@ -174,5 +180,15 @@
   window.addEventListener('resize', function() {
 
     document.documentElement.style.setProperty('--device-width', window.innerWidth + 'px');
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const textarea = document.getElementById('company_address');
+    textarea.style.overflowY = 'hidden';
+    textarea.addEventListener('input', function() {
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 'px';
+    });
+    textarea.dispatchEvent(new Event('input'));
   });
 </script>

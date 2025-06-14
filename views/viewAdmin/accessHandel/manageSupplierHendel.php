@@ -2,8 +2,7 @@
 
 use cuser\UppdateCompanyDetails;
 use cuser\UpdateSupplier;
-
-echo "manage" . http_response_code();
+use mproduct\AddOrder;
 
 if (isset($_POST['work']) && $_POST['work'] == 'updateSupplier') {
     $controller = new UpdateSupplier();
@@ -18,8 +17,17 @@ if (isset($_GET['work']) && isset($_GET['company_id']) && $_GET['work'] === 'Upd
 }
 
 if (isset($_POST['work']) && $_POST['work'] === 'UpdateCompany') {
-    echo "manage if" . http_response_code();
     $controller = new UppdateCompanyDetails();
     $data = $_POST['companyData'];
     return $controller->UpdateCompany($data);
+}
+
+$add = new AddOrder();
+if (isset($_POST['work']) && ($_POST['work'] === 'place_1')) {
+    $data = $_POST['orderData'];
+    return $add->place_1($data);
+}
+
+if (isset($_POST['work']) && ($_POST['work'] === 'place1')) {
+    return $add->back1();
 }

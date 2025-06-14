@@ -274,13 +274,6 @@ if (count($products) > 0) {
                             $('#staticBackdropedit').removeClass('show'); // ✅
                             $('body').removeClass('modal-open'); // ✅
                             $('.modal-backdrop').remove(); // ✅
-                            Swal.fire({
-                                position: "top-end",
-                                icon: "success",
-                                title: "Product Updated Successfully",
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
                         }
 
                         if (response.error) {

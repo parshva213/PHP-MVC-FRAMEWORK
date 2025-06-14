@@ -29,6 +29,11 @@ class Need
     public const RULE_ACTIVATION = 'Login Activation';
     public const RULE_ISNUM = 'Number';
     public const RULE_GST = 'gst';
+    public const RULE_UNIQUE_SAME = 'unique not in company';
+    public const RULE_TODAY_AFTER_DATE = 'Date is not today or after';
+    public const RULE_TODAY_DATE = 'date is not today';
+    public const RULE_TODAY_BEFORE_DATE = 'Date is not today or before';
+
     public function errorMessage()
     {
         return [
@@ -43,7 +48,11 @@ class Need
             self::RULE_UNIQUE => 'This {field} already exist',
             self::RULE_ACTIVATION => 'User account is not active',
             self::RULE_ISNUM => 'Contains Only Digit',
-            self::RULE_GST => 'Invalid GST Number',
+            self::RULE_GST => 'Invalid GST number',
+            self::RULE_UNIQUE_SAME => 'This is alrady in data',
+            self::RULE_TODAY_AFTER_DATE => 'It should be today or after',
+            self::RULE_TODAY_DATE => 'Invalid Date',
+            self::RULE_TODAY_BEFORE_DATE => 'It should be today or before',
         ];
     }
 }

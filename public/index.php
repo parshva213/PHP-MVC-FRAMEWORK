@@ -53,6 +53,7 @@ $app->router->get('/addSupplierCompany', [AdminController::class, 'addSupplierCo
 $app->router->post('/addSupplierCompany', [AdminController::class, 'addSupplierCompany']);
 $app->router->get('/adminsupplierCompanyBankDetail', [AdminController::class, 'addSupplierCompanyBank']);
 $app->router->post('/adminsupplierCompanyBankDetail', [AdminController::class, 'addSupplierCompanyBank']);
+$app->router->post('/adminSupplierCompanyOrder', [AdminController::class, 'orderPageManage']);
 
 $app->router->get('/', [SiteController::class, 'Home']);
 $app->router->get('/contact', [SiteController::class, 'Contact']);

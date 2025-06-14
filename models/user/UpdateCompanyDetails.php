@@ -22,16 +22,16 @@ class UpdateCompanyDetails extends Model
     {
         return [
             'scompany' => [
-                'company_name',
                 'company_address',
-                'gst_no'
+                'company_name',
+                'gst_no',
             ],
             'scompanybank' => [
-                'acc_hol_name',
-                'bank_name',
                 'acc_no',
+                'acc_hol_name',
+                'bank_branch',
                 'bank_ifsc',
-                'bank_branch'
+                'bank_name',
             ]
         ];
     }
@@ -76,20 +76,9 @@ class UpdateCompanyDetails extends Model
                     'table' => 'scompanybank'
                 ]
             ],
-            'bank_ifsc' => []
+            'bank_ifsc' => [],
+            'bank_branch' => []
         ]
-    ];
-
-    public array $dummyrule = [
-        'company_id' => [],
-        'company_name' => [],
-        'company_address' => [],
-        'gst_no' => [],
-        'acc_hol_name' => [],
-        'bank_name' => [],
-        'acc_no' => [],
-        'bank_ifsc' => [],
-        'bank_branch' => [],
     ];
 
     public array $rules = [];
@@ -105,7 +94,6 @@ class UpdateCompanyDetails extends Model
 
     public function check($data)
     {
-        echo "In check" . http_response_code();
         foreach ($this->checkattributes() as $table => $attributes) {
             foreach ($attributes as $attribute) {
                 if ($attribute === 'company_id') {
@@ -113,22 +101,23 @@ class UpdateCompanyDetails extends Model
                     continue;
                 }
                 if (empty($data[$attribute])) {
-                    $this->rules[$attribute] = Need::RULE_REQUIRED;
-                    // continue;
+                    $this->rules[$attribute] = [Need::RULE_REQUIRED];
                 }
 
                 if ($data[$attribute] !== $this->{$attribute}) {
-                    // $this->rules[$attribute] = $this->dummyrule[$attribute];
-                    $this->rules[$attribute] = array_merge($this->rules, $this->needrules[$table][$attribute]);
+                    $this->rules[$attribute] = array_merge(
+                        $this->rules[$attribute] ?? [],
+                        $this->needrules[$table][$attribute]
+                    );
                 }
                 $this->{$attribute} = $data[$attribute] ?? '';
             }
         }
-        echo "check is success" . http_response_code();
 
 
         if (empty($this->rules))
             return "Rule is empty";
+
         if ($this->validate()) {
             return "Validate success";
         }
@@ -143,17 +132,26 @@ class UpdateCompanyDetails extends Model
 
     public function update()
     {
-        echo "5";
         $db = Application::$app->db->pdo;
+        $sql = "SAVEPOINT sp1;";
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
         foreach ($this->checkattributes() as $table => $attributes) {
             $params = array_map(fn($attr) => "$attr = :$attr", $attributes);
-            $stmt = $db->prepare("UPDATE $table SET " . implode(',', $params) . "WHERE company_id = :company_id");
+            $sql = "UPDATE $table SET " . implode(', ', $params) . " WHERE company_id = :company_id";
+            $stmt = $db->prepare($sql);
             foreach ($attributes as $a) {
                 $stmt->bindValue(":$a", $this->{$a});
             }
             $stmt->bindValue(":company_id", $this->company_id);
-            echo "4";
-            exit;
+            if (!$stmt->execute()) {
+                $sql = "ROLLBACK TO SAVEPOINT sp1;";
+                $stmt = $db->prepare($sql);
+                $stmt->execute();
+                return false;
+            }
         }
+
+        return true;
     }
 }

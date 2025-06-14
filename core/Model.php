@@ -2,6 +2,8 @@
 
 namespace core;
 
+use DateTime;
+
 abstract class Model
 {
 
@@ -30,7 +32,7 @@ abstract class Model
                 if (!is_string($ruleName)) {
                     $ruleName = $rule[0];
                 }
-                if ($ruleName === Need::RULE_REQUIRED && !$value) {
+                if ($ruleName === Need::RULE_REQUIRED && empty($value)) {
                     $this->addError($attribute, Need::RULE_REQUIRED);
                 }
                 if ($ruleName === Need::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
@@ -51,8 +53,26 @@ abstract class Model
                 if ($ruleName === Need::RULE_GST && !preg_match("/^([0-9]){2}([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}([a-zA-Z0-9]){3}$/", $value)) {
                     $this->addError($attribute, Need::RULE_GST);
                 }
+                date_default_timezone_set('Asia/Kolkata');
+
+                $today = new DateTime('today');
+                // print_r($today);
+                if ($ruleName === Need::RULE_TODAY_AFTER_DATE) {
+                    $inputDate = DateTime::createFromFormat('Y-m-d', $value);
+                    if (!$inputDate || $inputDate <= $today) {
+                        $this->addError($attribute, Need::RULE_TODAY_AFTER_DATE);
+                    }
+                }
+                if ($ruleName === Need::RULE_TODAY_BEFORE_DATE) {
+                    $inputDate = DateTime::createFromFormat('Y-m-d', $value);
+                    if (!$inputDate || $inputDate >= $today) {
+                        $this->addError($attribute, Need::RULE_TODAY_BEFORE_DATE);
+                    }
+                }
+                if ($ruleName === Need::RULE_TODAY_DATE && $value === $today) {
+                    $this->addError($attribute, Need::RULE_TODAY_DATE);
+                }
                 if ($ruleName === Need::RULE_UNIQUE && is_array($rule)) {
-                    $className = $rule['class'];
                     $uniqueAttr = $rule['attribute'] ?? $attribute;
                     $tableNames = $rule['table'] ?? $this->tableNAME() ??  ""; // Array of table names
 
@@ -70,7 +90,29 @@ abstract class Model
 
                     if ($record) {
                         $this->addError($attribute, Need::RULE_UNIQUE, ['field' => $attribute]);
-                        // break; // Exit the loop if a record is found
+                    }
+                }
+                if ($ruleName === Need::RULE_UNIQUE_SAME && is_array($rule)) {
+                    $uniqueAtt = $rule['attribute'];
+                    $tableName = $rule['table'];
+
+                    $params = implode(" AND ", array_map(fn($a) => "$a = :$a", $uniqueAtt));
+
+                    // Ensure primary_value is properly bound
+                    $sql = "SELECT * FROM $tableName WHERE $params ;";
+                    // echo "<pre>";
+                    // print_r($sql);
+                    // echo "</pre>";
+                    // exit();
+                    $statement = Application::$app->db->prepare($sql);
+                    foreach ($uniqueAtt as $a) {
+                        $statement->bindValue(":$a", $this->{$a}); // Bind the unique attribute value
+                    }
+                    $statement->execute();
+                    $record = $statement->fetchObject();
+
+                    if ($record) {
+                        $this->addError($attribute, Need::RULE_UNIQUE_SAME, ['field' => $attribute]);
                     }
                 }
             }
