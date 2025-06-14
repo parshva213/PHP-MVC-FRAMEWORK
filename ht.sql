@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 04, 2025 at 03:21 PM
+-- Generation Time: Jun 14, 2025 at 01:59 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -47,7 +47,7 @@ CREATE TABLE `ausers` (
 
 INSERT INTO `ausers` (`uid`, `firstname`, `lastname`, `username`, `password`, `user_type`, `email`, `contact`, `address`, `status`, `user_created_on`) VALUES
 (1, 'Parshva', 'Shah', 'parshva213', '8e3c82bbe74ba6ca39e4e9add7d8ba2a', 'a', 'ljminiproject@gmail.com', '+91 99047-88109', 'abc12', '1', '2025-05-30 07:02:14'),
-(8, 'Ha', 'Shah', '50214', '$2y$10$DIIzzrpna72.PNW6yCghm.eL9f/lhNE5zSslZ0XiFfx08AZWLWFyO', 's', '1234@google.com', '+91 94274-16209', '1234567890', '2', '2025-06-04 07:01:03'),
+(8, 'hardik b', 'Shah', '50214', '$2y$10$DIIzzrpna72.PNW6yCghm.eL9f/lhNE5zSslZ0XiFfx08AZWLWFyO', 's', '1234@google.com', '9427416209', '1234567890 adac\nkjab njasn ', '2', '2025-06-12 04:48:53'),
 (9, 'H', 'Shah', '100', '%???2;E8??bM', 'c', 'dd@mail.cm', '+91 12345-67890', '123 gms hospital', '0', '2025-05-31 07:44:14'),
 (10, 'Ha', 'Shah', '50216', '%???2;E8??bM', 's', '123@google.co', '+91 94274-16208', '1234567890', '2', '2025-06-04 07:01:32'),
 (11, 'Parshva', 'Shah', '5021', '%???2;E8??bM', 'c', '13@google.com', '+91 99048-88108', '123 khadiya ', '2', '2025-06-04 07:01:28'),
@@ -226,6 +226,13 @@ CREATE TABLE `scompany` (
   `company_created_on` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `scompany`
+--
+
+INSERT INTO `scompany` (`company_id`, `uid`, `company_name`, `company_address`, `gst_no`, `company_created_on`) VALUES
+(1, 8, '12', 'asd', '24OZHJZ9582F6Z8', '2025-06-12 06:12:51');
+
 -- --------------------------------------------------------
 
 --
@@ -240,6 +247,28 @@ CREATE TABLE `scompanybank` (
   `acc_no` varchar(100) DEFAULT NULL,
   `acc_hol_name` varchar(100) DEFAULT NULL,
   `gid_no` varchar(15) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `scompanybank`
+--
+
+INSERT INTO `scompanybank` (`company_id`, `bank_name`, `bank_branch`, `bank_ifsc`, `acc_no`, `acc_hol_name`, `gid_no`) VALUES
+(1, 'State Bank of India', 'Sabarmati', 'SBI000001', '23000025022', 'Hardik Shah', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sorder`
+--
+
+CREATE TABLE `sorder` (
+  `order_id` int(11) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `company_invoice_number` varchar(100) NOT NULL,
+  `date_of_invoice` date NOT NULL,
+  `e_way_bill_number` varchar(100) NOT NULL,
+  `due_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -309,6 +338,13 @@ ALTER TABLE `scompanybank`
   ADD KEY `company_id` (`company_id`);
 
 --
+-- Indexes for table `sorder`
+--
+ALTER TABLE `sorder`
+  ADD PRIMARY KEY (`order_id`),
+  ADD KEY `fk_company` (`company_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -352,7 +388,13 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `scompany`
 --
 ALTER TABLE `scompany`
-  MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `sorder`
+--
+ALTER TABLE `sorder`
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -393,6 +435,12 @@ ALTER TABLE `scompany`
 --
 ALTER TABLE `scompanybank`
   ADD CONSTRAINT `scompanybank_ibfk_1` FOREIGN KEY (`company_id`) REFERENCES `scompany` (`company_id`);
+
+--
+-- Constraints for table `sorder`
+--
+ALTER TABLE `sorder`
+  ADD CONSTRAINT `fk_company` FOREIGN KEY (`company_id`) REFERENCES `scompany` (`company_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
