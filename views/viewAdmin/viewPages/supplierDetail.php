@@ -593,6 +593,11 @@ if (!$supplier) {
                     companyData: companyData
                 },
                 success: function(response) {
+<<<<<<< HEAD
+=======
+
+                    console.log(response);
+>>>>>>> 115ae3d36fdef83e3a0231e24afd15e992b32ebc
                     if (response.attribute) {
                         attribute = response.attribute;
                         Object.entries(attribute).forEach(attr => {
