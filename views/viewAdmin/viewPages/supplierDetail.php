@@ -384,6 +384,7 @@ if (!$supplier) {
                 </div>
                 <!-- Totail item Places -->
                 <div class="d-none new-order-place-to-next2">
+                    <!-- total_items -->
                     <div class="mb-3 total_items">
                         <div class="input-group">
                             <label for="total_items">Total Item</label>
@@ -395,12 +396,18 @@ if (!$supplier) {
                             <div class="text-danger small ms-1" id="error"></div>
                         </div>
                     </div>
+                    <!-- price_are_same -->
                     <div class="mb-3 price_are_same">
                         <div class="input-group">
                             <label for="price_are_same">All Price are <b>same</b></label>
                         </div>
                         <div class="input-group">
-                            <input type="checkbox" role="switch" name="price_are_same" id="price_are_same" class="form-control">
+                            <span class="form-check edit-field form-switch">
+                                <input
+                                    class="form-check-input edit-field"
+                                    type="checkbox"
+                                    role="switch">
+                            </span>
                         </div>
                         <div class="input-group">
                             <div class="text-danger small ms-1" id="error"></div>
@@ -431,7 +438,7 @@ if (!$supplier) {
                     </button>
                 </div>
                 <!-- second page -->
-                <div class="new-order-place-to-next2 d-none ms-auto">
+                <div class="new-order-place-to-next2 d-none d-flex justify-content-between">
                     <button type="button" class="btn btn-primary back" data-work="place1">
                         <span class="bi bi-arrow-left"></span>
                         Back
@@ -593,11 +600,6 @@ if (!$supplier) {
                     companyData: companyData
                 },
                 success: function(response) {
-<<<<<<< HEAD
-=======
-
-                    console.log(response);
->>>>>>> 115ae3d36fdef83e3a0231e24afd15e992b32ebc
                     if (response.attribute) {
                         attribute = response.attribute;
                         Object.entries(attribute).forEach(attr => {
@@ -651,40 +653,43 @@ if (!$supplier) {
         //cleare new order data form 
         $('body').on('click', '.add-order-model', function(e) {
             e.preventDefault();
+
             const cid = $(this).data('company_id');
             $('#company_id').val(cid);
-            $('#company_invoice_number').val('');
-            $('#date_of_invoice').val('');
-            $('#due_date').val('');
-            $('#e_way_bill_number').val('');
-            $('#total_items').val('');
 
+            const fields = [
+                'company_invoice_number',
+                'date_of_invoice',
+                'due_date',
+                'e_way_bill_number',
+                'total_items',
+                'price_are_same'
+            ];
 
-            const row1 = 'new-order-place-to-next1';
-            $('#' + row1).removeClass('d-none');
-            const row2 = 'new-order-place-to-next2';
-            $('#' + row2).addClass('d-none');
-            const row3 = 'new-order-place-to-next3';
-            $('#' + row3).addClass('d-none');
-
-            attribute = {
-                0: 'company_invoice_number',
-                1: 'date_of_invoice',
-                2: 'e_way_bill_number',
-                3: 'due_date',
-                4: 'total_items',
-            };
-            Object.entries(attribute).forEach(attr => {
-                const field = attr[1];
-                const row = $('.' + field);
-                const classupdate = row.find('#' + field);
-                const errorshow = row.find('#error');
-                classupdate.removeClass('is-invalid')
-                errorshow.replaceWith(`<div class = "text-danger small ms-1" id = "error"></div>`);
+            fields.forEach(id => {
+                $('#' + id).val('');
             });
+            // alert(1);
+            $('.new-order-place-to-next1').removeClass('d-none');
+            $('.new-order-place-to-next2, #new-order-place-to-next3').addClass('d-none');
 
-            $('#error').replaceWith(`<div class = "text-danger small ms-1" id = "error"></div>`);
+            const attributes = [
+                'company_invoice_number',
+                'date_of_invoice',
+                'e_way_bill_number',
+                'due_date',
+                'total_items'
+            ];
+
+            attributes.forEach(field => {
+                const row = $('.' + field);
+                const input = row.find('#' + field);
+                const error = row.find('.error-msg'); // use class, not id
+                input.removeClass('is-invalid');
+                error.html('');
+            });
         });
+
         // New order page 1 check
         $('body').on('click', '.check1', function(e) {
             e.preventDefault();

@@ -3,7 +3,6 @@
 use core\Application;
 use core\Need;
 
-include "needs.php";
 
 $app = Application::$app;
 $user = $app->user;
@@ -12,6 +11,8 @@ $request = $app->request;
 ?>
 <!doctype html>
 <html lang="en">
+
+<?php include "needs.php"; ?>
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary" style="display: flex; flex-direction:row;">
   <!-- App Wrapper -->
