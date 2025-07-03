@@ -11,8 +11,8 @@ $this->title = "Contact Us"
           <p>
             <a href="https://www.google.com/maps/dir//215,+Swaminaryan+Complex,+Opposite+Madhubaug,+Sarangpur,+Sarangpur,+Ahmedabad,+Gujarat+380002/@23.0190878,72.5187342,12z/data=!4m8!4m7!1m0!1m5!1m1!1s0x395e85cd3aaaaaab:0x5880a827f528d1be!2m2!1d72.6011358!2d23.0191091?entry=ttu&g_ep=EgoyMDI1MDUxNS4xIKXMDSoASAFQAw%3D%3D">215, Swaminaryan Complex, Opposite Madhubaug, <br> Sarangpur, Ahmedabad, Gujarat 380002<br></a>
             Phone:<br>
-            <a class="icon-link icon-link-hover link-underline-opacity-25" href="tel:+919427416209"><i class="bi bi-telephone-outbound-fill"></i>Hardik Shah</a><br>
-            <a class="icon-link icon-link-hover link-underline-opacity-25" href="tel:+91947329029"><i class="bi bi-telephone-outbound-fill"></i>Hardik Shah</a><br>
+            <a class="icon-link icon-link-hover link-underline-opacity-25" href="tel:+919427416208"><i class="bi bi-telephone-outbound-fill"></i>Hardik Shah</a><br>
+            <a class="icon-link icon-link-hover link-underline-opacity-25" href="tel:+91947329028"><i class="bi bi-telephone-outbound-fill"></i>Hardik Shah</a><br>
             <a class="icon-link icon-link-hover link-underline-opacity-25" href="tel:+919904788108"><i class="bi bi-telephone-outbound-fill"></i>Parshva Shah</a><br>
           </p>
         </div>
